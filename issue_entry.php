@@ -256,31 +256,28 @@
                         </div>
                     </div>
                     <div class="row" style="">
-                      
-						
-						
-						
-						
-						<!-- Comments: Total Amount,  id=allsum   -->
-                        <div class="col-xs-3">
-                            <td width="" style="text-align:right;">Total Amount</td>
+						<div class="col-sm-8">
+							<div class="form-group">
+                                <label>Remarks</label>
+                                <textarea id="remarks" name="remarks" class="form-control" rows="6"></textarea>
+                            </div>
+						</div>
+						<div class="col-sm-4">
+							<table class="table table-bordered">
+								<tr>
+									<td>Total Amount</td>
 									<td><input type="text" class="form-control" maxlength="10" name="total_amount" id="allsum" readonly /></td>
-                        </div>
-						
-						<div class="col-xs-3">
-                            <td width="" style="text-align:right;">Paid Amount</td>
-									<td> <input type="text" class="form-control" name="paid_amount" id="paid_amount" class="form-control"></td>
-                        </div>
-						
-						
-						<div class="col-xs-3">
-                            <td width="" style="text-align:right;">Due Amount</td>
-									<td><input type="text" class="form-control" name="due_amount" id="due_amount" class="form-control"></td>
-                        </div>
-						
-						
-						
-						
+								</tr>
+								<tr>
+									<td>Paid Amount</td>
+									<td><input type="text" class="form-control" name="paid_amount" id="paid" class="form-control"></td>
+								</tr>
+								<tr>
+									<td>Due Amount</td>
+									<td><input type="text" class="form-control" name="due_amount" id="due" class="form-control"></td>
+								</tr>
+							</table>
+						</div>
                     </div>
 					
 					
@@ -318,10 +315,7 @@
 					
                     <div class="row" style="">
                         <div class="col-xs-12">
-                            <div class="form-group">
-                                <label>Remarks</label>
-                                <textarea id="remarks" name="remarks" class="form-control"></textarea>
-                            </div>
+                            
                         </div>
                         <div class="col-xs-12">
                             <div class="form-group">
@@ -414,6 +408,12 @@
         }
         document.getElementById('allsum').value = newTot.toFixed(2);
     }
+	
+	$(function () {
+	  $("#allsum, #paid").keyup(function () {
+		$("#due").val(+$("#allsum").val() - +$("#paid").val());
+	  });
+	});
 </script>
 <script>
     $(function () {

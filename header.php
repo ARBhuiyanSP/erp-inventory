@@ -75,6 +75,15 @@ include 'includes/party_payment_process.php';
 	font-size:10px;
 	font-weight:bold;
 }
+
+/* input.form-control{
+	height:30px !important;
+	padding:0px;
+}
+select.form-control{
+	height:30px !important;
+	padding:0px;
+} */
 </style>
 <body id="page-top">
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
