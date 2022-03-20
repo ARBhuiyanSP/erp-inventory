@@ -22,9 +22,17 @@ include 'includes/warehouse_process.php';
 include 'includes/suppliers_process.php';
 include 'includes/format_process.php';
 include 'includes/return_process.php';
-include 'includes/payment_process.php';
 
+include 'includes/payment_process.php';
 include 'includes/party_payment_process.php';
+
+
+
+
+include 'includes/scrap_process.php';
+include 'includes/damage_process.php';
+include 'includes/damageout_process.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

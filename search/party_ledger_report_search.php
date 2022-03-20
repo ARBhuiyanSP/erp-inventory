@@ -7,30 +7,35 @@
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-search"></i>
-        Receive Report Search</div>
+        Party Ledger Report Search</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
                         <tr>  
+						
+						
+						
+						
+						
 							<td>
 								<div class="form-group">
-									<label for="id">Supplier</label>
-									<select class="form-control select2" id="supplier_name" name="supplier_name" required onchange="getItemCodeByParam(this.value, 'suppliers', 'code', 'supplier_id');">
+									<label for="id">party</label>
+									<select class="form-control select2" id="partyname" name="partyname" required onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
 										<option value="">Select</option>
 										<?php
-										$projectsData = getTableDataByTableName('suppliers');
+										$projectsData = getTableDataByTableName('party');
 
 										if (isset($projectsData) && !empty($projectsData)) {
 											foreach ($projectsData as $data) {
-												if($_GET['supplier_name'] == $data['id']){
+												if($_GET['partyname'] == $data['id']){
 													$selected	= 'selected';
 													}else{
 													$selected	= '';
 													}
 													?>
-												<option value="<?php echo $data['id']; ?>" <?php echo $selected; ?>><?php echo $data['name']; ?></option>
+												<option value="<?php echo $data['id']; ?>" <?php echo $selected; ?>><?php echo $data['partyname']; ?></option>
 												<?php
 											}
 										}
@@ -38,19 +43,32 @@
 									</select>
 								</div>
 							</td>
+							
+							
+							
+							
 							<td style="width:10%">
 							
 								<div class="form-group">
-									<label for="id">Supplier ID</label>
-									<input type="text" name="supplier_id" id="supplier_id" class="form-control" value="<?php if(isset($_GET['supplier_id'])){ echo $_GET['supplier_id']; } ?>" required>
+									<label for="id">Party ID</label>
+									<input type="text" name="party_id" id="party_id" class="form-control" value="<?php if(isset($_GET['party_id'])){ echo $_GET['party_id']; } ?>" required>
 								</div>
 							</td>
+							
+							
+							
+							
+							
 							<td style="width:10%">
                                 <div class="form-group">
                                     <label for="todate">From Date</label>
                                     <input type="text" class="form-control" id="from_date" name="from_date" value="<?php if(isset($_GET['from_date'])){ echo $_GET['from_date']; } ?>" autocomplete="off" required >
                                 </div>
                             </td>
+							
+							
+							
+							
 							<td style="width:10%">
                                 <div class="form-group">
                                     <label for="todate">To Date</label>
@@ -64,7 +82,7 @@
 							<td style="width:15%">
                                 <div class="form-group">
                                     <label for="todate">.</label>
-									<button type="submit" name="submit" class="form-control btn btn-primary">Supplier Details</button>
+									<button type="submit" name="submit" class="form-control btn btn-primary">Party Details</button>
                                 </div>
                             </td>
 							
@@ -75,7 +93,7 @@
 							<td style="width:15%">
                                 <div class="form-group">
                                     <label for="todate">.</label>
-									<button type="submit" name="submitLedger" class="form-control btn btn-primary">Supplier Ledger</button>
+									<button type="submit" name="submitLedger" class="form-control btn btn-primary">Party Ledger</button>
                                 </div>
                             </td>
 							
@@ -90,37 +108,50 @@
         </form>
     </div>
 </div>
+
+
+                                                                        <!-- party Details Start -->
 <?php
 if(isset($_GET['submit'])){
 	
-	$supplier_name	=	$_GET['supplier_name'];
-	$supplier_id	=	$_GET['supplier_id'];
+	$partyname	=	$_GET['partyname'];
+	$party_id	=	$_GET['party_id'];
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
 	//$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
-										$sqlunit	=	"SELECT * FROM `suppliers` WHERE `code` = '$supplier_id' ";
+										$sqlunit	=	"SELECT * FROM `party` WHERE `party_id` = '$party_id	' ";
 										$resultunit = mysqli_query($conn, $sqlunit);
 										$rowunit=mysqli_fetch_array($resultunit);
-										$supplier	= $rowunit['name'];
+										$Party	= $rowunit['partyname'];
 ?>
 <center>
 	
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10" id="printableArea">
+		
+		
+		
+		
 			<div class="row">
 				<div class="col-sm-12">	
 					<center>
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>Supplier Receive Report</span><br>
-							<span><?php echo $supplier; ?></span><br>
+							<span>Party Ledger Report</span><br>
+							<span><?php echo $partyname; ?></span><br>
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
 				</div>
 			</div>
-				<table id="" class="table table-bordered">
+			
+			
+
+
+			
+			
+	<table id="" class="table table-bordered">
 					<thead>
 						<tr>
 							<th>Material ID</th>
@@ -135,38 +166,44 @@ if(isset($_GET['submit'])){
 						<?php
 							/* $sql	=	"SELECT * FROM `inv_receive` where `supplier_id`='$supplier_id' AND `warehouse_id` = '$warehouse_id' AND `mrr_date` BETWEEN '$from_date' AND '$to_date';"; */
 							
-							$sql	=	"SELECT * FROM `inv_receive` where `supplier_id`='$supplier_id' AND `mrr_date` BETWEEN '$from_date' AND '$to_date';";
+							$sql	=	"SELECT * FROM `inv_issue` where `party_id`='$party_id' AND `issue_date` BETWEEN '$from_date' AND '$to_date';";
 							$result = mysqli_query($conn, $sql);
 							while($row=mysqli_fetch_array($result))
 							{
 						?>
+						
+						
 						<tr style="background-color:#E9ECEF;">
-							<td>MRR No : <?php echo $row['mrr_no']; ?></td>
-							<td>Date : <?php echo date("jS F Y", strtotime($row['mrr_date']));?></td>
-							<td>PO No : <?php echo $row['purchase_id']; ?></td>
-							<td>Challan No : <?php echo $row['challanno']; ?></td>
-							<td colspan="2">Supplier : <?php 
-								$supplier_id = $row['supplier_id'];
-								$sqlunit	=	"SELECT * FROM `suppliers` WHERE `code` = '$supplier_id'  ";
+							<td>MRR No : <?php echo $row['issue_id']; ?></td>
+							<td>Date : <?php echo date("jS F Y", strtotime($row['issue_date']));?></td>
+							
+							<td colspan="2">Party : <?php 
+								$party_id = $row['party_id'];
+								$sqlunit	=	"SELECT * FROM `party` WHERE `party_id` = '$party_id'  ";
 								$resultunit = mysqli_query($conn, $sqlunit);
 								$rowunit=mysqli_fetch_array($resultunit);
-								echo $rowunit['name'];
+								echo $rowunit['partyname'];
 								?>
 							</td>
 						</tr>
+						
+						
+						
 						<?php
 							$totalQty = 0;
 							$totalAmount = 0;
-							$mrr_no = $row['mrr_no'];
-							$sqlall	=	"SELECT * FROM `inv_receivedetail` WHERE `mrr_no` = '$mrr_no';";
+							$issue_id = $row['issue_id'];
+							$sqlall	=	"SELECT * FROM `inv_issuedetail` WHERE `issue_id` = '$issue_id';";
 							$resultall = mysqli_query($conn, $sqlall);
 							while($rowall=mysqli_fetch_array($resultall))
 							{
-								$totalQty += $rowall['receive_qty'];
-								$totalAmount += $rowall['total_receive'];
+								$totalQty += $rowall['issue_qty'];
+								$totalAmount += $rowall['amount'];
 						?>
 						<tr>
 							<td><?php echo $rowall['material_id']; ?></td>
+							
+							
 							<td><?php 
 								$mb_materialid = $rowall['material_id'];
 								$sqlname	=	"SELECT * FROM `inv_material` WHERE `material_id_code` = '$mb_materialid' ";
@@ -175,10 +212,13 @@ if(isset($_GET['submit'])){
 								echo $rowname['material_description'];
 							?>
 							</td>
-							<td><?php echo getDataRowByTableAndId('inv_item_unit', $rowall['unit_id'])->unit_name; ?></td>
-							<td><?php echo $rowall['receive_qty']; ?></td>
-							<td><?php echo $rowall['unit_price']; ?></td>
-							<td><?php echo $rowall['total_receive']; ?></td>
+							
+							
+							
+							<td><?php echo getDataRowByTableAndId('inv_item_unit', $rowall['unit'])->unit_name; ?></td>
+							<td><?php echo $rowall['issue_qty']; ?></td>
+							<td><?php echo $rowall['issue_price']; ?></td>
+							<td><?php echo $rowall['amount']; ?></td>
 						</tr>
 						<?php } ?>
 						<tr>
@@ -189,7 +229,18 @@ if(isset($_GET['submit'])){
 						</tr>
 						<?php } ?>
 					</tbody>
-				</table>
+	</table>
+
+
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				<center><div class="row">
 					<div class="col-sm-6"></br></br>--------------------</br>Receiver Signature</div>
 					<div class="col-sm-6"></br></br>--------------------</br>Authorised Signature</div>
@@ -205,17 +256,29 @@ if(isset($_GET['submit'])){
 		<center><button class="btn btn-default" onclick="printDiv('printableArea')"><i class="fa fa-print" aria-hidden="true" style="    font-size: 17px;"> Print</i></button></center>
 		<div class="col-md-1"></div>
 </center>
+
+
+                                                            <!-- party Details End -->
+
+
+
+
+
+
+
+
+
 <?php } else if(isset($_GET['submitLedger'])){
-	$supplier_name	=	$_GET['supplier_name'];
-	$supplier_id	=	$_GET['supplier_id'];
+	$partyname	=	$_GET['partyname'];
+	$party_id	=	$_GET['party_id'];
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
 	//$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
 	
-										$sqlunit	=	"SELECT * FROM `suppliers` WHERE `code` = '$supplier_id' ";
+									    $sqlunit	=	"SELECT * FROM `party` WHERE `party_id` = '$party_id	' ";
 										$resultunit = mysqli_query($conn, $sqlunit);
 										$rowunit=mysqli_fetch_array($resultunit);
-										$supplier	= $rowunit['name'];
+										$Party	= $rowunit['partyname'];
 	?>
 	
 <center>
@@ -228,8 +291,8 @@ if(isset($_GET['submit'])){
 					<center>
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>Supplier Ledger Report</span><br>
-							<span><?php echo $supplier; ?></span><br>
+							<span>Party Ledger Report</span><br>
+							<span><?php echo $partyname; ?></span><br>
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
@@ -252,7 +315,7 @@ if(isset($_GET['submit'])){
 							
 							$sqlpreinqty = "SELECT SUM(`sb_cr_amount`)- SUM(`sb_dr_amount`) AS due FROM `inv_supplierbalance` WHERE `sb_supplier_id` = '$supplier_id' AND `warehouse_id`='$warehouse_id' AND `sb_date` < '$from_date'"; */
 							
-							$sqlpreinqty = "SELECT SUM(`sb_cr_amount`)- SUM(`sb_dr_amount`) AS due FROM `inv_supplierbalance` WHERE `sb_supplier_id` = '$supplier_id'  AND `sb_date` < '$from_date'";
+							$sqlpreinqty = "SELECT SUM(`pb_cr_amount`)- SUM(`pb_dr_amount`) AS due FROM `inv_partybalance` WHERE `pb_party_id` = '$party_id'  AND `pb_date` < '$from_date'";
 							$resultpreinqty = mysqli_query($conn, $sqlpreinqty);
 							$rowpreinqty = mysqli_fetch_object($resultpreinqty);
 							
@@ -274,33 +337,49 @@ if(isset($_GET['submit'])){
 						<?php
 							/* $sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `sb_supplier_id`='$supplier_id' AND `warehouse_id`='$warehouse_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date';"; */
 							
-							$sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `sb_supplier_id`='$supplier_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date';";
+							$sql	=	"SELECT * FROM `inv_partybalance` WHERE `pb_party_id`='$party_id' AND `pb_date` BETWEEN '$from_date' AND '$to_date';";
 							$result = mysqli_query($conn, $sql);
 							$totaldebit = 0;
 							$totalcredit = 0;
 							while($row=mysqli_fetch_array($result))
 							{
-								$debit = $row['sb_dr_amount'];
-								$totaldebit += $row['sb_dr_amount'];
+								$debit = $row['pb_dr_amount'];
+								$totaldebit += $row['pb_dr_amount'];
 								
-								$credit = $row['sb_cr_amount'];
-								$totalcredit += $row['sb_cr_amount'];
+								$credit = $row['pb_cr_amount'];
+								$totalcredit += $row['pb_cr_amount'];
+								
+								
+								
+								
+								
+								
+								
 									
-								$balance = $opening_stock + $totalcredit - $totaldebit;
+								$balance = $opening_stock +  $totaldebit-$totalcredit ;
+								
+								
+								
+								
+								
+								
+								
+								
+								
 						?>
 						<tr style="background-color:#E9ECEF;">
-							<td><?php echo date("jS F Y", strtotime($row['sb_date']));?></td>
-							<td><?php echo $row['sb_ref_id']; ?></td>
-							<td><?php echo $row['sb_remark']; ?></td>
-							<td><?php echo $row['sb_dr_amount']; ?></td>
-							<td><?php echo $row['sb_cr_amount']; ?></td>
+							<td><?php echo date("jS F Y", strtotime($row['pb_date']));?></td>
+							<td><?php echo $row['pb_ref_id']; ?></td>
+							<td><?php echo $row['pb_remark']; ?></td>
+							<td><?php echo $row['pb_dr_amount']; ?></td>
+							<td><?php echo $row['pb_cr_amount']; ?></td>
 							
 							<?php 
-							$adate			=	$row['sb_date'];
+							$adate			=	$row['pb_date'];
 							/* $sqlcredit 		=	"SELECT SUM(`sb_cr_amount`) AS tcredit FROM `inv_supplierbalance` WHERE `sb_supplier_id` = '$supplier_id' AND `warehouse_id`='$warehouse_id' AND `sb_date` < '$adate'"; */
 							
 							
-							$sqlcredit 		=	"SELECT SUM(`sb_cr_amount`) AS tcredit FROM `inv_supplierbalance` WHERE `sb_supplier_id` = '$supplier_id' AND `sb_date` < '$adate'";
+							$sqlcredit 		=	"SELECT SUM(`pb_cr_amount`) AS tcredit FROM `inv_partybalance` WHERE `pb_party_id` = '$party_id' AND `pb_date` < '$adate'";
 							$resultcredit 	= 	mysqli_query($conn, $sqlcredit);
 							$rowcredit 		=	mysqli_fetch_object($resultcredit);
 							$creditamount	=	$rowcredit->tcredit;

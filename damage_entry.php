@@ -7,27 +7,27 @@
         <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Return from party Entry</li>
+        <li class="breadcrumb-item active">Damage Receive Entry</li>
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Return Entry Form</div>
+            Damage Receive Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
-                <form action="" method="post" name="add_issue" id="return_entry_form" onsubmit="showFormIsProcessing('return_entry_form');">
+                <form action="" method="post" name="add_damage" id="damage_entry_form" onsubmit="showFormIsProcessing('damage_entry_form');">
                     <div class="row" id="div1" style="">
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Return Date</label>
-                                <input type="text" autocomplete="off" name="return_date" id="return_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <label> Date</label>
+                                <input type="text" autocomplete="off" name="damage_date" id="damage_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Return No</label>
+                                <label>Damage Receive No</label>
 								<?php if($_SESSION['logged']['user_type'] == 'whm')
 									{
 										$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
@@ -35,13 +35,13 @@
 										$result = mysqli_query($conn, $sql);
 										$row=mysqli_fetch_array($result);
 										$short_name = $row['short_name'];
-										$returnCode= 'RTN-'.$short_name;
+										$damageCode= 'DRTN-'.$short_name;
 									} else{
-										$returnCode= 'RTN-CW';
+										$damageCode= 'DRTN-CW';
 									}
 								?>
-                                <input type="text" name="return_id" id="return_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_return', 'return_id', '03d', '001', $returnCode) ?>">
-                                <input type="hidden" name="return_no" id="return_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_return', 'return_id', '03d', '001', $returnCode) ?>">
+                                <input type="text" name="damage_id" id="damage_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damage', 'damage_id', '03d', '001', $damageCode) ?>">
+                                <input type="hidden" name="damage_no" id="damage_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damage', 'damage_id', '03d', '001', $damageCode) ?>">
                             </div>
                         </div>
 						
@@ -215,7 +215,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="modal-footer">
-                                    <input type="submit" name="return_submit" id="return_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
+                                    <input type="submit" name="damage_submit" id="damage_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
                                 </div>    
                             </div>
                         </div>

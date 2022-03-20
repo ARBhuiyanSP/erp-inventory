@@ -21,6 +21,27 @@ include 'header.php';
                 <form action="" method="post" name="add_name" id="add_name">
                     <div class="row" id="div1" style="">
 					
+					
+					<div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Partner Name</label>
+								<select class="form-control" id="partner_id" name="partner_id" required>
+                                    <option value="">Select</option>
+                                    <?php
+                                    $projectsData = getTableDataByTableName('partner');
+                                    ;
+                                    if (isset($projectsData) && !empty($projectsData)) {
+                                        foreach ($projectsData as $data) {
+                                            ?>
+                                            <option value="<?php echo $data['partner_id']; ?>"><?php echo $data['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+					
 						<div class="col-xs-4">
                             <div class="form-group">
                                 <label>Party ID</label>
@@ -49,25 +70,7 @@ include 'header.php';
                         </div> -->
 						
 						
-						<div class="col-xs-4">
-                            <div class="form-group">
-                                <label>Partner Name</label>
-								<select class="form-control" id="partner_id" name="partner_id" required>
-                                    <option value="">Select</option>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('partner');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['partner_id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
+						
 						<div class="col-xs-12">
                             <div class="form-group">
                                 <input type="submit" name="party_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   

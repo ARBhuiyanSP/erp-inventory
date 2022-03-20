@@ -10,9 +10,9 @@
     <div class="card-header">
 	
 		<button class="btn btn-info linktext" onclick="window.location.href='consumption_report.php';"> Individual Consumption Report</button>
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_type_report.php';"> Type Wise Consumption Report</button>
+		
         <button class="btn btn-info linktext" onclick="window.location.href='consumption_group_report.php';"> Material Groupwise Consumption Report</button>
-		<button class="btn btn-success linktext"> Package and Bulding Wise Consumption Report</button>
+		
 		</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">

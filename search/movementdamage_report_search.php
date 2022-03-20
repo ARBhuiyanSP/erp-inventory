@@ -68,7 +68,7 @@ if(isset($_GET['submit'])){
 							<th colspan="9">
 								<center>
 										<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-										<span>Material Movement Report</span><br>
+										<span>Damage Material Movement Report</span><br>
 										From  <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?> </span>To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span>
 								</center>
 							</th>
@@ -78,11 +78,11 @@ if(isset($_GET['submit'])){
 							<th width="30%">Material Name</th>
 							<th>Unit</th>
 							<th width="10%">Opening Stock</th>
-							<th>Receive</th>
-							<th>Issue</th>
-							<th>Return</th>
+							<th>Damage Receive</th>
+							<th>Damage Issue</th>
+							
 							<th width="15%">Closing Stock</th>
-							<th>Unit Price</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -93,9 +93,9 @@ if(isset($_GET['submit'])){
 					
     <?php
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_materialbalance` GROUP BY `mb_materialid`";
+							$sql	=	"SELECT * FROM `inv_damagebalance` GROUP BY `mb_materialid`";
 						}else{
-							$sql	=	"SELECT * FROM `inv_materialbalance` WHERE `warehouse_id` = $warehouse_id GROUP BY `mb_materialid`";
+							$sql	=	"SELECT * FROM `inv_damagebalance` WHERE `warehouse_id` = $warehouse_id GROUP BY `mb_materialid`";
 						}
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
@@ -147,9 +147,9 @@ if(isset($_GET['submit'])){
 							<td style="text-align:right;">
 								<?php 
 									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_materialbalance` WHERE `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
+										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_damagebalance` WHERE `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
 									}else{
-										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_materialbalance` WHERE `warehouse_id` = '$warehouse_id' AND `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
+										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_damagebalance` WHERE `warehouse_id` = '$warehouse_id' AND `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
 									}
 									
 									$resultpreinqty = mysqli_query($conn, $sqlpreinqty);
@@ -167,19 +167,19 @@ if(isset($_GET['submit'])){
 							</td>
 							
 							
-							<!-- RECEIEV -->
+							<!-- Damage Return -->
 							<td style="text-align:right;">
 								<?php 
 									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_materialbalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='Receive' and mb_date BETWEEN '$from_date' AND '$to_date'";
+										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_damagebalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='Damage Return' and mb_date BETWEEN '$from_date' AND '$to_date'";
 									}else{
-										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id AND `mbtype`='Receive' and `mb_materialid` = '$mb_materialid' AND mb_date BETWEEN '$from_date' AND '$to_date'";
+										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_damagebalance` WHERE warehouse_id = $warehouse_id AND `mbtype`='Damage Return' and `mb_materialid` = '$mb_materialid' AND mb_date BETWEEN '$from_date' AND '$to_date'";
 									}
 									
 									$resultinqty = mysqli_query($conn, $sqlinqty);
 									$rowinqty = mysqli_fetch_object($resultinqty) ;
 									$stockin = $rowinqty->totalin;
-									echo number_format((float)$stockin, 2, '.', '');
+									echo number_format((float)$stockin);
 								?>
 							</td>
 							
@@ -187,43 +187,25 @@ if(isset($_GET['submit'])){
 							
 							
 							
-							<!-- ISSUE -->
+							<!-- Damage Out -->
 							
 							<td style="text-align:right;">
 							<?php 
 							if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_materialbalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='Issue' AND mb_date BETWEEN '$from_date' AND '$to_date'";
+							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_damagebalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='Damage Out' AND mb_date BETWEEN '$from_date' AND '$to_date'";
 							}else{
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id  AND `mb_materialid` = '$mb_materialid' AND `mbtype`='Issue' AND mb_date BETWEEN '$from_date' AND '$to_date'";
+							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_damagebalance` WHERE warehouse_id = $warehouse_id  AND `mb_materialid` = '$mb_materialid' AND `mbtype`='Damage Out' AND mb_date BETWEEN '$from_date' AND '$to_date'";
 							}
 							
 							$resultoutqty = mysqli_query($conn, $sqloutqty);
 							$rowoutqty = mysqli_fetch_object($resultoutqty) ;
 							$stockout = $rowoutqty->totalout;
-							echo number_format((float)$stockout, 2, '.', '');
+							echo number_format((float)$stockout);
 							?>
 							</td>
 							
 							
 							
-							
-							
-									<!-- RETURN -->
-							
-							<td style="text-align:right;">
-								<?php 
-									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlReturnqty = "SELECT SUM(`mbin_qty`) AS totalReturn FROM `inv_materialbalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='Return' and mb_date BETWEEN '$from_date' AND '$to_date'";
-									}else{
-										$sqlReturnqty = "SELECT SUM(`mbin_qty`) AS totalReturn FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id AND `mbtype`='Return' and `mb_materialid` = '$mb_materialid' AND mb_date BETWEEN '$from_date' AND '$to_date'";
-									}
-									
-									$resultReturnqty = mysqli_query($conn, $sqlReturnqty);
-									$rowReturnqty = mysqli_fetch_object($resultReturnqty) ;
-									$stockReturn = $rowReturnqty->totalReturn;
-									echo number_format((float)$stockReturn, 2, '.', '');
-								?>
-							</td>
 							
 							
 							
@@ -233,30 +215,14 @@ if(isset($_GET['submit'])){
 							
 							<!-- RETURN -->
 							<td style="text-align:right;">
-								<?php $closingStock = $opening_stock + $stockin -$stockout+$stockReturn; echo number_format((float)$closingStock, 2, '.', '');?>
+								<?php $closingStock = $opening_stock + $stockin -$stockout; echo number_format((float)$closingStock);?>
 							</td>
 							
 							
 							
 							
 							
-							<!-- IN VALUE -->
-							<td style="text-align:right;">
-								<?php
-								if($_SESSION['logged']['user_type'] !== 'whm'){
-									$sqlinval = "SELECT SUM(`mbin_val`) AS totalinval FROM `inv_materialbalance` WHERE `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
-								}else{
-									$sqlinval = "SELECT SUM(`mbin_val`) AS totalinval FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id AND `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
-								}
-								
-								$resultinval= mysqli_query($conn, $sqlinval);
-								$rowinval = mysqli_fetch_object($resultinval) ;								
-								if($stockin){
-								$avgprice = $rowinval->totalinval / $stockin;
-								echo number_format((float)$avgprice, 2, '.', '');
-								} ?>
-					
-					</td>
+						
 							
 							
 							

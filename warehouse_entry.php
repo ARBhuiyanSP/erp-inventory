@@ -35,7 +35,7 @@ include 'header.php';
 						<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Short Name</label>
-                                <input type="text" name="short_name" id="short_name" placeholder="like 'LN for Londa'" class="form-control">
+                                <input type="text" name="short_name" id="short_name" placeholder="like 'UT for Uttara'" class="form-control">
                             </div>
                         </div>
 						<div class="col-xs-2">

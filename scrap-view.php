@@ -1,5 +1,5 @@
 <?php include 'header.php';
-$mrr_no=$_GET['no']; ?>
+$ss_id=$_GET['no']; ?>
 <style>
 .table-bordered {
 	border: 1px solid #000000;
@@ -14,15 +14,12 @@ $mrr_no=$_GET['no']; ?>
 .challan{
 	font-weight:bold;
 }
-.amountWords{
-	text-decoration:underline;
-	font-style:italic;
-	color:#f26522;
-}
-
-
 </style>
-
+<?php
+	$sqld = "select * from `inv_scrap` where `ss_id`='$ss_id'";
+	$resultd = mysqli_query($conn, $sqld);
+	$rowd = mysqli_fetch_array($resultd);
+?>
 <link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css">
 <script src="js/jquery.fancybox.js"></script>
 
@@ -31,14 +28,9 @@ $mrr_no=$_GET['no']; ?>
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Material Receive Report
-			<?php
-				$sqld = "select * from `inv_receive` where `mrr_no`='$mrr_no'";
-				$resultd = mysqli_query($conn, $sqld);
-				$rowd = mysqli_fetch_array($resultd);
-			?>
+            Material Sale Report
 			<!-- Your HTML content goes here -->
-			<div style="display: none;" id="hidden-content"><img src="images/<?php echo $rowd['mrr_image']; ?>" /></div>
+			<div style="display: none;" id="hidden-content"><img src="images/<?php echo $rowd['issue_image']; ?>" /></div>
 			<button class="btn btn-info" data-fancybox data-src="#hidden-content" onclick="javascript:;"><i class="fa fa-eye" aria-hidden="true"></i> View Attached File </button>
 			<button class="btn btn-default" onclick="printDiv('printableArea')" style="float:right;"><i class="fa fa-print" aria-hidden="true" style="font-size: 17px;"> Print</i></button></div>
 			<div class="card-body" id="printableArea">
@@ -49,27 +41,32 @@ $mrr_no=$_GET['no']; ?>
 							<div class="col-sm-6">	
 								<p>
 								<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/>
-																<h5>MAA MOTORS</h5><span>CNG PUMP,BANDARI MARKET,DOKKIN KHAN,DHAKA-1230</span></br></p></div>
+								<h5>MAA MOTORS</h5><span>CNG PUMP,BANDARI MARKET,DOKKIN KHAN,DHAKA-1230</span></br></p></div>
 							<div class="col-sm-6">
 								<table class="table table-bordered">
 									<tr>
-										<th>MRR No:</th>
-										<td><?php echo $mrr_no; ?></td>
+										<th>SS ID:</th>
+										<td><?php echo $ss_id; ?></td>
 									</tr>
 									<tr>
-										<th>MRR Date:</th>
+										<th>SS Date:</th>
 										<td><?php
-										echo $rowd['mrr_date']; ?></td>
+										echo $rowd['ss_date'] ?></td>
 									</tr>
-									<tr>
-										<th>Project:</th>
-										<td>
-											<?php 
-											$dataresult =   getDataRowByTableAndId('projects', $rowd['project_id']);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
-											?>
-										</td>
+								
+								
+								
+								
+								
+								<tr>
+										<th>Party:</th>
+										<td><?php
+										echo $rowd['party_id'] ?></td>
 									</tr>
+									
+									
+									
+									
 									<tr>
 										<th>Warehouse:</th>
 										<td>
@@ -79,22 +76,11 @@ $mrr_no=$_GET['no']; ?>
 											?>
 										</td>
 									</tr>
-									<tr>
-										<th>Supplier:</th>
-										<td>
-											<?php 
-											$supplier_id = $rowd['supplier_id'];
-											$sqlunit	=	"SELECT * FROM `suppliers` WHERE `code` = '$supplier_id' ";
-											$resultunit = mysqli_query($conn, $sqlunit);
-											$rowunit=mysqli_fetch_array($resultunit);
-											echo $rowunit['name'];
-											?>
-										</td>
-									</tr>
 								</table>
 							</div>
 						</div>
-						<center><button class="btn btn-block btn-secondary challan">MATERIAL RECEIVE DETAILS</button></center>
+						<center><h3 >SCRAP SALE INVOICE</h3></center>
+						
 						<table class="table table-bordered" id="material_receive_list"> 
 							<thead>
 								<tr>
@@ -103,14 +89,14 @@ $mrr_no=$_GET['no']; ?>
 									<th>Material Name</th>
 									<th>Material Unit</th>
 									<th>Quantity</th>
-									<th>Unit Price</th>
+									<th>Rate</th>
 									<th>Amount</th>
 								</tr>
 							</thead>
 							<tbody id="material_receive_list_body">
 								<?php
-								$transfer_id=$_GET['no'];
-								$sql = "select * from `inv_receivedetail` where `mrr_no`='$mrr_no'";
+								$SS_id=$_GET['no'];
+								$sql = "select * from `inv_scrapdetail` where `ss_id`='$ss_id'";
 								$result = mysqli_query($conn, $sql);
 									for($i=1; $row = mysqli_fetch_array($result); $i++){
 								?>
@@ -123,57 +109,103 @@ $mrr_no=$_GET['no']; ?>
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->material_description : '');
 										?>
 									</td>
+									
+									
 									<td>
 										<?php 
-										$dataresult =   getDataRowByTableAndId('inv_item_unit', $row['unit_id']);
+										$dataresult =   getDataRowByTableAndId('inv_item_unit', $row['unit']);
 										echo (isset($dataresult) && !empty($dataresult) ? $dataresult->unit_name : '');
 										?>
 									</td>
-									<td><?php echo $row['receive_qty'] ?></td>
-									<td><?php echo $row['unit_price'] ?></td>
-									<td><?php echo $row['total_receive'] ?></td>
+									
+									<td><?php echo $row['issue_qty'] ?></td>
+									<td><?php echo $row['issue_price'] ?></td>
+									<td><?php echo $row['amount'] ?></td>
+									
 								</tr>
 								<?php } ?>
+								
+								
+								
+						
+								
+								
+								
+								
 								<tr>
-									<td colspan="4" class="grand_total">Grand Total:</td>
+									<td colspan="6" class="grand_total">Total Amount:</td>
 									<td>
 										<?php 
-										$sql2 			= "SELECT sum(receive_qty) FROM  `inv_receivedetail` where `mrr_no`='$mrr_no'";
-										$result2 		= mysqli_query($conn, $sql2);
+										$sql2 = "SELECT totalamount FROM  `inv_scrap` where `ss_id`='$ss_id'";
+										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$totalReceived	=$row2['sum(receive_qty)'];
-										echo $totalReceived ;
+										$fgfg3=number_format((float)$row2['totalamount'], 2, '.', '');
+										
+										echo $fgfg3 ;
 										}
 										?>
 									</td>
-									<td></td>
+									<td colspan="2" class=""></td>
+								</tr>
+								
+								
+								
+								
+									<tr>
+									<td colspan="6" class="grand_total">Paid Amount:</td>
 									<td>
 										<?php 
-										$sql2			= "SELECT sum(total_receive) FROM  `inv_receivedetail` where `mrr_no`='$mrr_no'";
-										$result2		= mysqli_query($conn, $sql2);
+										$sql2 = "SELECT paidamount FROM  `inv_scrap` where `ss_id`='$ss_id'";
+										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$totalAmount	= number_format((float)$row2['sum(total_receive)'], 2, '.', '');
-										echo $totalAmount ;
+										$fgfg3=number_format((float)$row2['paidamount'], 2, '.', '');
+										
+										echo $fgfg3 ;
 										}
+										?>
+									</td>
+									<td colspan="2" class=""></td>
+								</tr>
+								
+								
+								<tr>
+									<td colspan="6" class="grand_total">Due Amount:</td>
+									<td>
+										<?php 
+										$sql2 = "SELECT Dueamount FROM  `inv_scrap` where `ss_id`='$ss_id'";
+										$result2 = mysqli_query($conn, $sql2);
+										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
+										$fgfg3=number_format((float)$row2['Dueamount'], 2, '.', '');
+										
+										echo $fgfg3 ;
+										}
+										?>
+									</td>
+									<td colspan="2" class=""></td>
+								</tr>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								<tr>
+									<td colspan="7">Remarks:</br>
+										<?php 
+										echo $rowd['remarks'];
 										?>
 									</td>
 								</tr>
 							</tbody>
 						</table>
-						<b>Total Amount in words: 
-							<span class="amountWords"><?php echo convertNumberToWords($totalAmount).' Only';?></span>
-						</b> 
 						<div class="row" style="text-align:center">
-							<div class="col-sm-5"></br><?php 
-										if($rowd['received_by']){
-										$dataresult =   getDataRowByTableAndId('users', $rowd['received_by']);
-										echo (isset($dataresult) && !empty($dataresult) ? $dataresult->first_name . ' ' .$dataresult->last_name : '');	
-										}?></br>--------------------</br>Receiver Signature</div>
-										
-										
-										
+							<div class="col-sm-5"></br><?php echo $rowd['received_by'];?></br>--------------------</br>Receiver Signature</div>			
 							<div class="col-sm-2">
-								<?php $queryedit	= "SELECT `approval_status` FROM `inv_receive` WHERE `mrr_no`='$mrr_no'";
+								<?php $queryedit	= "SELECT `approval_status` FROM `inv_issue` WHERE `issue_id`='$issue_id'";
 								$result		=	$conn->query($queryedit);
 								$row		=	mysqli_fetch_assoc($result);
 								if($row['approval_status'] == 0){?>

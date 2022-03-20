@@ -7,27 +7,27 @@
         <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Issue Entry</li>
+        <li class="breadcrumb-item active">Scrap Entry</li>
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Issue Entry Form</div>
+            Scrap Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
-                <form action="" method="post" name="add_issue" id="issue_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('issue_entry_form');">
+                <form action="" method="post" name="add_scrap" id="scrap_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('scrap_entry_form');">
                     <div class="row" id="div1" style="">
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Bill Date</label>
-                                <input type="text" autocomplete="off" name="issue_date" id="issue_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <label>Date</label>
+                                <input type="text" autocomplete="off" name="ss_date" id="ss_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Bill No</label>
+                                <label>SS No</label>
                                 <?php
                                 if ($_SESSION['logged']['user_type'] == 'whm') {
                                     $warehouse_id = $_SESSION['logged']['warehouse_id'];
@@ -35,22 +35,20 @@
                                     $result = mysqli_query($conn, $sql);
                                     $row = mysqli_fetch_array($result);
                                     $short_name = $row['short_name'];
-                                    $issueCode = 'IS-' . $short_name;
+                                    $ssCode = 'SS-' . $short_name;
                                 } else {
-                                    $issueCode = 'IS-CW';
+                                    $ssCode = 'SS-CW';
                                 }
                                 ?>
-                                <input type="text" name="issue_id" id="issue_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_issue', 'issue_id', '03d', '001', $issueCode) ?>" readonly>
-                                <input type="hidden" name="issue_no" id="issue_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_issue', 'issue_id', '03d', '001', $issueCode) ?>">
+                                <input type="text" name="ss_id" id="ss_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_scrap', 'ss_id', '03d', '001', $ssCode) ?>" readonly>
+                                <input type="hidden" name="ss_no" id="ss_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_scrap', 'ss_id', '03d', '001', $ssCode) ?>">
                             </div>
                         </div>
 						
 						
 						
 						
-						
-						
-							   <div class="col-xs-2">
+						   <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Partner Name</label>
                                 <select class="form-control" id="partner_id" name="partner_id" readonly >
@@ -73,32 +71,7 @@
 						
 						
 						
-						
-						
-						   <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>Party Name</label>
-                                <select class="form-control" id="party_id" name="party_id" readonly >
-                                    <?php
-                                    $projectsData = getTableDataByTableName('party');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['party_id']; ?>"><?php echo $data['partyname']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-						
-						
-						
-						
-						
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Project</label>
                                 <select class="form-control" id="project_id" name="project_id" readonly >
@@ -116,7 +89,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-xs-2">
+                        <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Warehouse</label>
 
@@ -209,7 +182,7 @@
                                 <th width="10%">Material ID</th>
                                 <th width="10%">Unit</th>
                                 <th width="10%">Brand</th>
-                                <th width="10%">In Stock</th>
+                              
 								
 								
                                 <th width="10%">Qty<span class="reqfield"> ***required</span></th>
@@ -267,7 +240,15 @@
                                                 ?>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly ></td>
+										
+										
+										
+										
+										
+                                      
+										
+										
+										
 										
 										
 										<!-- Comments: text QTY and Unit Price and Total amount -->
@@ -347,7 +328,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="modal-footer">
-                                    <input type="submit" name="issue_submit" id="issue_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
+                                    <input type="submit" name="scrap_submit" id="scrap_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
                                 </div>    
                             </div>
                         </div>

@@ -8,11 +8,11 @@
 </style>
 <div class="card mb-3">
     <div class="card-header">
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_report.php';"> Individual Consumption Report</button>
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_type_report.php';"> Type Wise Consumption Report</button>
-        <button class="btn btn-success linktext"> Material Groupwise Consumption Report</button> 
+		<button class="btn btn-info linktext" onclick="window.location.href='consumption_report.php';"> Individual Material sales Report</button>
 		
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_pakg_build_report.php';"> Package and Bulding Wise Consumption Report</button>
+        <button class="btn btn-success linktext"> Material Groupwise Sales Report</button> 
+		
+		
 		</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">

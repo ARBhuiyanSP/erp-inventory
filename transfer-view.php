@@ -30,7 +30,7 @@ $transfer_id=$_GET['no']; ?>
 							<div class="col-sm-6">	
 								<p>
 								<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/>
-								<h5>E-engineering Ltd</h5><span>Payra Project</span></br></p></div>
+																<h5>MAA MOTORS</h5><span>CNG PUMP,BANDARI MARKET,DOKKIN KHAN,DHAKA-1230</span></br></p></div>
 							<div class="col-sm-6">
 								<table class="table table-bordered">
 									<tr>

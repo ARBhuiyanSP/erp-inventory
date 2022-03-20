@@ -28,7 +28,7 @@ $issue_id=$_GET['no']; ?>
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Material Issue Report
+            Material Sale Report
 			<!-- Your HTML content goes here -->
 			<div style="display: none;" id="hidden-content"><img src="images/<?php echo $rowd['issue_image']; ?>" /></div>
 			<button class="btn btn-info" data-fancybox data-src="#hidden-content" onclick="javascript:;"><i class="fa fa-eye" aria-hidden="true"></i> View Attached File </button>
@@ -41,7 +41,7 @@ $issue_id=$_GET['no']; ?>
 							<div class="col-sm-6">	
 								<p>
 								<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/>
-								<h5>E-engineering Ltd</h5><span>Payra Project</span></br></p></div>
+								<h5>MAA MOTORS</h5><span>CNG PUMP,BANDARI MARKET,DOKKIN KHAN,DHAKA-1230</span></br></p></div>
 							<div class="col-sm-6">
 								<table class="table table-bordered">
 									<tr>
@@ -53,15 +53,20 @@ $issue_id=$_GET['no']; ?>
 										<td><?php
 										echo $rowd['issue_date'] ?></td>
 									</tr>
-									<tr>
-										<th>Project:</th>
-										<td>
-											<?php 
-											$dataresult =   getDataRowByTableAndId('projects', $rowd['project_id']);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
-											?>
-										</td>
+								
+								
+								
+								
+								
+								<tr>
+										<th>Party:</th>
+										<td><?php
+										echo $rowd['party_id'] ?></td>
 									</tr>
+									
+									
+									
+									
 									<tr>
 										<th>Warehouse:</th>
 										<td>
@@ -74,8 +79,8 @@ $issue_id=$_GET['no']; ?>
 								</table>
 							</div>
 						</div>
-						<center><h3 >GATE PASS</h3></center>
-						<center>MATERIAL ISSUE DETAILS</center>
+						<center><h3 >BILL/INVOICE</h3></center>
+						
 						<table class="table table-bordered" id="material_receive_list"> 
 							<thead>
 								<tr>
@@ -84,8 +89,8 @@ $issue_id=$_GET['no']; ?>
 									<th>Material Name</th>
 									<th>Material Unit</th>
 									<th>Quantity</th>
-									<th>Package</th>
-									<th>Building</th>
+									<th>Rate</th>
+									<th>Amount</th>
 								</tr>
 							</thead>
 							<tbody id="material_receive_list_body">
@@ -104,35 +109,90 @@ $issue_id=$_GET['no']; ?>
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->material_description : '');
 										?>
 									</td>
+									
+									
 									<td>
 										<?php 
 										$dataresult =   getDataRowByTableAndId('inv_item_unit', $row['unit']);
 										echo (isset($dataresult) && !empty($dataresult) ? $dataresult->unit_name : '');
 										?>
 									</td>
+									
 									<td><?php echo $row['issue_qty'] ?></td>
-									<td><?php 
-											$dataresult =   getDataRowByTableAndId('packages', $row['package_id']);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
-										?></td>
-									<td><?php echo $row['building_id'] ?></td>
+									<td><?php echo $row['issue_price'] ?></td>
+									<td><?php echo $row['amount'] ?></td>
+									
 								</tr>
 								<?php } ?>
+								
+								
+								
+						
+								
+								
+								
+								
 								<tr>
-									<td colspan="4" class="grand_total">Grand Total:</td>
+									<td colspan="6" class="grand_total">Total Amount:</td>
 									<td>
 										<?php 
-										$sql2 = "SELECT sum(issue_qty) FROM  `inv_issuedetail` where `issue_id`='$issue_id'";
+										$sql2 = "SELECT totalamount FROM  `inv_issue` where `issue_id`='$issue_id'";
 										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$fgfg2=number_format((float)$row2['sum(issue_qty)'], 3, '.', '');
+										$fgfg3=number_format((float)$row2['totalamount'], 2, '.', '');
 										
-										echo $fgfg2 ;
+										echo $fgfg3 ;
 										}
 										?>
 									</td>
 									<td colspan="2" class=""></td>
 								</tr>
+								
+								
+								
+								
+									<tr>
+									<td colspan="6" class="grand_total">Paid Amount:</td>
+									<td>
+										<?php 
+										$sql2 = "SELECT paidamount FROM  `inv_issue` where `issue_id`='$issue_id'";
+										$result2 = mysqli_query($conn, $sql2);
+										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
+										$fgfg3=number_format((float)$row2['paidamount'], 2, '.', '');
+										
+										echo $fgfg3 ;
+										}
+										?>
+									</td>
+									<td colspan="2" class=""></td>
+								</tr>
+								
+								
+								<tr>
+									<td colspan="6" class="grand_total">Due Amount:</td>
+									<td>
+										<?php 
+										$sql2 = "SELECT Dueamount FROM  `inv_issue` where `issue_id`='$issue_id'";
+										$result2 = mysqli_query($conn, $sql2);
+										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
+										$fgfg3=number_format((float)$row2['Dueamount'], 2, '.', '');
+										
+										echo $fgfg3 ;
+										}
+										?>
+									</td>
+									<td colspan="2" class=""></td>
+								</tr>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
 								<tr>
 									<td colspan="7">Remarks:</br>
 										<?php 
