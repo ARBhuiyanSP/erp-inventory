@@ -31,7 +31,7 @@
 	font-style:italic;
 }
 </style>
-<ul class="sidebar navbar-nav">
+<ul class="sidebar navbar-nav" style="height:100px;">
 	<li class="nav-item active">
         <a class="nav-link" href="dashboard.php">
             <i class="fas fa-fw fa-tachometer-alt" style="color: #007BFF;"></i>

@@ -243,7 +243,7 @@ if(isset($_GET['process_type']) && $_GET['process_type'] == 'get_party_by_partne
     if (isset($tableData) && !empty($tableData)) {
         echo "<option value=''>Please Select</option>";
         foreach ($tableData as $data) { ?>
-            <option value="<?php echo $data['id']; ?>"><?php echo $data['partyname'].'('.$data['id'].')'; ?></option>
+            <option value="<?php echo $data['id']; ?>"><?php echo $data['partyname']; ?></option>
             <?php
         }
     }
