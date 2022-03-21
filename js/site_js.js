@@ -313,7 +313,25 @@ function getSubCategoryByParent(parent_id, selector = false) {
     }
 }
 
-
+function getPartyByPartner(parent_id, selector = false) {
+    if (parent_id) {
+        $.ajax({
+            url: baseUrl + "includes/item_process.php?process_type=get_party_by_partner",
+            type: 'POST',
+            dataType: 'html',
+            data: 'parent_id=' + parent_id,
+            success: function(response) {
+                if (selector) {
+                    $('#' + selector).html(response);
+                } else {
+                    $('#main_sub_item_id').html(response);
+                }
+            }
+        });
+    } else {
+        $('#main_sub_item_id').html('');
+    }
+}
 
 function openMaterialEditForm(edit_id) {
     $.ajax({

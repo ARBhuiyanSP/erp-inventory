@@ -92,6 +92,14 @@ select.form-control{
 	height:30px !important;
 	padding:0px;
 } */
+input.form-control{
+	height:30px !important;
+	padding:0px 10px 0px 10px;
+}
+select.form-control{
+	height:30px !important;
+	padding:0px 5px 0px 5px;
+}
 </style>
 <body id="page-top">
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">

@@ -234,7 +234,20 @@ if(isset($_GET['process_type']) && $_GET['process_type'] == 'get_sub_by_parent')
     }
 }
 
-
+if(isset($_GET['process_type']) && $_GET['process_type'] == 'get_party_by_partner'){
+    include '../connection/connect.php';
+    include '../helper/utilities.php';
+    $parent_id      =    $_POST['parent_id'];
+    $tableName      =    'party where partner_id='.$parent_id;
+    $tableData      = getTableDataByTableName($tableName, '', 'partyname');
+    if (isset($tableData) && !empty($tableData)) {
+        echo "<option value=''>Please Select</option>";
+        foreach ($tableData as $data) { ?>
+            <option value="<?php echo $data['id']; ?>"><?php echo $data['partyname'].'('.$data['id'].')'; ?></option>
+            <?php
+        }
+    }
+}
 
 /*
  *   Category, Sub category and material
