@@ -30,8 +30,14 @@
 	font-weight:bold;
 	font-style:italic;
 }
+.scroll-area{
+  width:100%;
+  height:100%;
+  float:left;
+  overflow-y:scroll;
+}
 </style>
-<ul class="sidebar navbar-nav" style="height:100px;">
+<ul class="sidebar navbar-nav scroll-area" style="height:100px;">
 	<li class="nav-item active">
         <a class="nav-link" href="dashboard.php">
             <i class="fas fa-fw fa-tachometer-alt" style="color: #007BFF;"></i>
