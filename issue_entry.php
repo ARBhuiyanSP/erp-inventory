@@ -275,6 +275,15 @@
 									<td>Due Amount</td>
 									<td><input type="text" class="form-control" name="due_amount" id="due" class="form-control"></td>
 								</tr>
+								
+								
+								<tr>
+									<td>Profit</td>
+									<td><input type="text" class="form-control" name="profit" id="due" class="form-control"></td>
+								</tr>
+								
+								
+								
 							</table>
 						</div>
                     </div>
