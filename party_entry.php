@@ -33,7 +33,7 @@ include 'header.php';
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                             ?>
-                                            <option value="<?php echo $data['partner_id']; ?>"><?php echo $data['name']; ?></option>
+                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
                                             <?php
                                         }
                                     }
@@ -98,7 +98,10 @@ include 'header.php';
 									<tr>
 										<td><?php echo $data['party_id']; ?></td>
 										<td><?php echo $data['partyname']; ?></td>
-										<td><?php echo $data['partner_id']; ?></td>
+										<td><?php 
+											$dataresult =   getDataRowByTableAndId('partner', $data['partner_id']);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
+										?></td>
 										<td>
 											<a href="#"><i class="fas fa-edit text-success"></i></a>
 											<a href="#"><i class="fa fa-trash text-danger"></i></a>
