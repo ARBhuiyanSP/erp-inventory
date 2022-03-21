@@ -96,7 +96,7 @@ input.form-control{
 	height:30px !important;
 	padding:0px 10px 0px 10px;
 }
-select.form-control{
+select.form-control .select2{
 	height:30px !important;
 	padding:0px 5px 0px 5px;
 }
