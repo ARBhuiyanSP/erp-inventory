@@ -97,6 +97,13 @@
             </a>
 			
 			
+			<a class="dropdown-item" href="buyprice.php">
+                <i class="fa fa-bullseye" aria-hidden="true" style="color: #007BFF;"></i>
+                <span class="sub_menu_text_design">Price set</span>
+            </a>
+			
+			
+			
 			
             
         </div>
