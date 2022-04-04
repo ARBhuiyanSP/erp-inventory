@@ -5,7 +5,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="consumption_report.php">Report</a>
         </li>
         <li class="breadcrumb-item active">Issue Entry</li>
     </ol>
@@ -49,7 +49,7 @@
 						<div class="col-xs-2">
 							<div class="form-group">
 								<label for="id">Partner</label><span class="reqfield"> ***required</span>
-								<select class="form-control" id="main_item_id" name="parent_item_id" onchange="getPartyByPartner(this.value);">
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
 									<option value="">Select</option>
 									<?php
 									$parentCats = getTableDataByTableName('partner', '', 'name');
@@ -62,6 +62,9 @@
 								</select>
 							</div>
                         </div>
+						
+						
+						
                         <div class="col-xs-3">
 							<div class="form-group">
 								<label for="id">Party</label><span class="reqfield"> ***required</span>
@@ -185,8 +188,8 @@
 								
 								
                                 <th width="10%">Qty<span class="reqfield"> ***required</span></th>
-								<th width="15%">Unit</th>
-                                <th width="15%">Amount</th>
+								<th width="15%">Sale Price</th>
+                                <th width="15%">Sale Amount</th>
 								
 								
                                 <th width="5%"></th>
@@ -279,7 +282,7 @@
 								
 								<tr>
 									<td>Profit</td>
-									<td><input type="text" class="form-control" name="profit" id="due" class="form-control"></td>
+									<td><input type="text" class="form-control" name="profitamount" id="profitamount" class="form-control"></td>
 								</tr>
 								
 								

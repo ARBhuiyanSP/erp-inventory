@@ -5,7 +5,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="movementdamage_report.php">Report</a>
         </li>
         <li class="breadcrumb-item active">Damage Receive Entry</li>
     </ol>
@@ -13,7 +13,7 @@
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Damage Receive Entry Form</div>
+            Replace Receive Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Damage Receive No</label>
+                                <label>Replace Receive No</label>
 								<?php if($_SESSION['logged']['user_type'] == 'whm')
 									{
 										$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
@@ -35,9 +35,9 @@
 										$result = mysqli_query($conn, $sql);
 										$row=mysqli_fetch_array($result);
 										$short_name = $row['short_name'];
-										$damageCode= 'DRTN-'.$short_name;
+										$damageCode= 'RR-'.$short_name;
 									} else{
-										$damageCode= 'DRTN-CW';
+										$damageCode= 'RR-CW';
 									}
 								?>
                                 <input type="text" name="damage_id" id="damage_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damage', 'damage_id', '03d', '001', $damageCode) ?>">
@@ -48,27 +48,56 @@
 						
 						
 						
-						  <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>Party Name</label>
-                                <select class="form-control" id="party_id" name="party_id" readonly >
-                                    <?php
-                                    $projectsData = getTableDataByTableName('party');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['party_id']; ?>"><?php echo $data['partyname']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
+						
+							<div class="col-xs-2">
+							<div class="form-group">
+								<label for="id">Partner</label><span class="reqfield"> ***required</span>
+		
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
+	
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('partner', '', 'name');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
                         </div>
 						
 						
 						
+						
+						
+						
+					       <div class="col-xs-3">
+							<div class="form-group">
+								<label for="id">Party</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('party','','partyname');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+						<div class="col-xs-1">
+                            <div class="form-group">
+                                <label for="id">party ID</label>
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
+                            </div>
+                        </div>
+						
+						<input type="hidden" value="2" name="project_id" />
 						
                         <div class="col-xs-2">
                             <div class="form-group">
@@ -80,24 +109,9 @@
 								<input type="text" autocomplete="off" name="warehouse_id" id="warehouse_id" class="form-control datepicker" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>" readonly >
                             </div>
                         </div>
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Project</label><span class="reqfield"> ***required</span>
-                                <select class="form-control" id="project_id" name="project_id" required>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('projects');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
+						
+						
+                  
 					<!--	<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Package</label><span class="reqfield"> ***required</span>

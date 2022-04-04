@@ -2,7 +2,7 @@
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © Saif ERP <?php echo date('Y') ?></span>
+            <span>Copyright © ERP inventory<?php echo date('Y') ?></span>
           </div>
         </div>
       </footer>
@@ -80,6 +80,54 @@
 			  $('#supplier_id').val('');
 		  }
         }
+		
+		
+		
+		
+		
+		
+		    // the following function will be use for cross check receive
+    // Added by Tanveer Qureshee:2021-05-29
+    function get_all_rcv_details_table(form_id) {
+        if (form_id) {
+            var url = baseUrl + "cross_checking/rcv_details_table.php";
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "html",
+                data: $("#" + form_id).serialize(),
+                success: function (response) {
+                    $('#showDataArea').html(response);
+                }
+            });
+        } else {
+            $('#supplier_id').val('');
+        }
+    }
+    
+    function cross_update_invoice_receive(form_id, table_update_type, message_selector) {
+        if (form_id) {
+            var url = baseUrl + "cross_checking/rcv_details_update.php?cross_update="+table_update_type;
+            $.ajax({
+                url     : url,
+                type    : "POST",
+                dataType: "html",
+                data    : $("#" + form_id).serialize(),
+                success : function (response) {
+                    $('#'+message_selector).html(response);
+                    setTimeout(function(){ 
+                        $('#'+message_selector).html(""); 
+                    }, 4000);
+                }
+            });
+        } else {
+            $('#supplier_id').val('');
+        }
+    }
+	
+	
+	
+	
     </script>
 	<script>
 	$(".select2").select2();

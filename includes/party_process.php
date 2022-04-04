@@ -11,9 +11,10 @@ if (isset($_POST['party_submit']) && !empty($_POST['party_submit'])) {
         */ 
         $party_id	= $_POST['party_id'];
         $partyname	= $_POST['partyname'];    
-        $partner_id		= $_POST['partner_id'];     
+        $partner_id		= $_POST['partner_id']; 
+        $serial		= $_POST['serial'];		
                
-        $query = "INSERT INTO `party` (`party_id`,`partyname`,`partner_id`) VALUES ('$party_id','$partyname','$partner_id')";
+        $query = "INSERT INTO `party` (`party_id`,`partyname`,`partner_id`,`serial`) VALUES ('$party_id','$partyname','$partner_id','$serial')";
         $conn->query($query);
         
 		$_SESSION['success']    =   "party Entry process have been successfully completed.";

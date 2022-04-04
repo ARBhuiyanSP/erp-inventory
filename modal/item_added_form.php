@@ -59,19 +59,25 @@
                                 <input type="text" class="form-control" id="brand_name" placeholder="brand name" name="brand_name">
                             </div>
                         </div>
+						
+						
+						
+						
+						
 						<div class="form-group">
                             <label class="control-label col-sm-5" for="parent_code">Type:</label>
                             <div class="col-sm-7">
                                 <select class="form-control" id="type" name="type">
                                     <option value="">Select</option>
-                                    <option value="CIVIL">CIVIL</option>
-									<option value="ELECTRICAL">ELECTRICAL</option>
-									<option value="MACHANICAL">MACHANICAL</option>
-									<option value="SANITARY">SANITARY</option>
-									<option value="HARDWARE">HARDWARE</option>
+                                    <option value="CIVIL">BATTERY</option>
+								
                                 </select>
                             </div>
                         </div>
+						
+						
+						
+						
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="parent_code">Unit:</label>
                             <div class="col-sm-7">

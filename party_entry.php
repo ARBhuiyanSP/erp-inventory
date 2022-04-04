@@ -7,6 +7,7 @@ include 'header.php';
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="dashboard.php">Dashboard</a>
+			
         </li>
         <li class="breadcrumb-item active"> Party Entry</li>
     </ol>
@@ -14,6 +15,9 @@ include 'header.php';
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i> Party Entry Form
+			
+			<a href="partnerpartyreport.php">Partner wise party Print</a>
+			
 		</div>
         <div class="card-body">
             <!--here your code will go-->
@@ -42,20 +46,35 @@ include 'header.php';
                             </div>
                         </div>
 					
-						<div class="col-xs-4">
+						
+						
+				
+						
+						 <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Party ID</label>
-                                <input type="text" name="party_id" id="party_id" class="form-control">
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly="readonly" value="<?php echo getDefaultCategoryCode('party', 'party_id', '03d', 'P01', 'PA-') ?>">
                             </div>
                         </div>
 						
 						
-						<div class="col-xs-4">
+						
+						
+						
+						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Party Name</label>
                                 <input type="text" name="partyname" id="partyname" class="form-control">
                             </div>
                         </div>
+						
+						<div class="col-xs-2">
+                            <div class="form-group">
+                                <label>serial</label>
+                                <input type="text" name="serial" id="serial" class="form-control">
+                            </div>
+                        </div>
+						
 						
 						
 						<!--<div class="col-xs-4">

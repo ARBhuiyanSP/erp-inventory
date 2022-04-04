@@ -26,7 +26,7 @@
  
  * *****************************************************************************
  */  
-if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit'])) 
+if (isset($_POST['damarage_submit']) && !empty($_POST['damarage_submit'])) 
 {
 	
 	
@@ -37,20 +37,20 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
                                     $result = mysqli_query($conn, $sql);
                                     $row = mysqli_fetch_array($result);
                                     $short_name = $row['short_name'];
-                                    $ssCode = 'SS-' . $short_name;
+                                    $dsCode = 'DS-' . $short_name;
                 } else 
 								{
-                                    $ssCode = 'SS-CW';
+                                    $dsCode = 'DS-CW';
                                 }
                                 
 	// check duplicate:
-	$ss_id	= getDefaultCategoryCodeByWarehouse('inv_scrap', 'ss_id', '03d', '001', $ssCode);
-    $table		= 'inv_scrap';
-    $where		= "ss_id='$ss_id'";
-    if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit']))
+	$ss_id	= getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $dsCode);
+    $table		= 'inv_damaragesale';
+    $where		= "ds_id='$ds_id'";
+    if(isset($_POST['ds_update_submit']) && !empty($_POST['ds_update_submit']))
 	
 	                    {
-        $notWhere   =   "id!=".$_POST['ss_update_submit'];
+        $notWhere   =   "id!=".$_POST['ds_update_submit'];
         $duplicatedata = isDuplicateData($table, $where, $notWhere);
                         }
 	
@@ -70,14 +70,15 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
 			                           {
 				
 				/*
-				 *  Insert Data Into inv_scrapdetail Table:
+				 *  Insert Data Into inv_damaragedetailsale Table:
 				*/       
 				
-				$ss_date         = $_POST['ss_date'];
-				$ss_id           = $_POST['ss_id'];
+				$ds_date         = $_POST['ds_date'];
+				$ds_id           = $_POST['ds_id'];
 				
+					$partner_id       = $_POST['partner_id'];
+				$party_id         = $_POST['party_id'];
 				
-				$partner_id         = $_POST['partner_id'];
 
 				$project_id         = $_POST['project_id'];
 				$warehouse_id   	= $_POST['warehouse_id'];
@@ -91,9 +92,11 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
 				$amount           = $_POST['amount'][$count];
 				
 				
+			
 				
-				$package_id   		= $_POST['package_id'][$count];
-				$building_id   		= $_POST['building_id'][$count];
+				
+				
+				
 				$received_by		= $_POST['received_by'];     
 				$receiver_phone		= $_POST['receiver_phone'];     
 				$remarks            = $_POST['remarks'];   
@@ -116,44 +119,32 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
 					$q = move_uploaded_file($temp_file,"images/".$issue_image);
 				} 
         
-				$query = "INSERT INTO `inv_scrapdetail` (`ss_id`,`ss_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`package_id`,`building_id`,`approval_status`) VALUES ('$ss_id','$ss_date','$material_id','$material_name','$unit','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$package_id','$building_id','0')";
+				$query = "INSERT INTO `inv_damaragedetailsale` (`ds_id`,`ds_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$ds_id','$ds_date','$material_id','$material_name','$unit','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
 				$conn->query($query);
 									   }
 				
-				/*
-				 *  Insert Data Into inv_materialbalance Table:
-				*/
+			
 				
 			/*
-			*  Insert Data Into inv_issue Table:
+			*  Insert Data Into inv_damaragesale Table:
 			*/
-			$query2 = "INSERT INTO `inv_scrap` (`ss_id`,`ss_date`,`partner_id`,`received_by`,`totalamount`,`paidamount`,`Dueamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$ss_id','$ss_date','$partner_id','$received_by','$total_amount','$paid_amount','$due_amount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
+			$query2 = "INSERT INTO `inv_damaragesale` (`ds_id`,`ds_date`,`partner_id`,`party_id`,`received_by`,`totalamount`,`paidamount`,`Dueamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$ds_id','$ds_date','$partner_id','$party_id','$received_by','$total_amount','$paid_amount','$due_amount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
 			$result2 = $conn->query($query2);
 			
 			
 			
-			
-			/*
-			PARTNER BALACNCE TABLE HAVETO CREATE  discuss ma motors
-			
-			 $query3 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`,`approval_status`) VALUES ('$issue_id','$warehouse_id','$issue_date','$party_id','$total_amount','$paid_amount','$remarks','$issue_id','$approval_status')";
-    $result2 = $conn->query($query3);
-	
-	
-	*/
-	
 	
 	
 	
 	/*
 			*  Insert Data Into inv_profitsharescrap Table:
-			*/
+			
 	
 	
 $query4 = "INSERT INTO `inv_profitsharescrap` (`billno`,`billdate`,`partnerid`,`ownerid`,`totalamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`) VALUES ('$ss_id','$ss_date','$partner_id','MM-1','$total_amount','$var_profit','$var_profit','$warehouse_id')";
 $result2 = $conn->query($query4);
 
-
+*/
 
 
 
@@ -162,8 +153,8 @@ $result2 = $conn->query($query4);
 	
 	
 			
-			$_SESSION['success']    =   "scrap sale process have been successfully completed.";
-			header("location: scrap_sale.php");
+			$_SESSION['success']    =   "Damarage sale process have been successfully completed.";
+			header("location: damarage_sale.php");
 			exit();
 			                                       }
 	
@@ -273,7 +264,7 @@ if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit'])){
     $mrr_no             =   $_POST['issue_no'];
     
     // first delete all from inv_receivedetail; 
-    $delsql    = "DELETE FROM `inv_scrapdetail` WHERE `ss_id`='$mrr_no'";
+    $delsql    = "DELETE FROM `inv_damaragedetailsale` WHERE `ds_id`='$mrr_no'";
     $conn->query($delsql);
    /*
    // first delete all from inv_materialbalance; 
@@ -286,8 +277,8 @@ if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit'])){
          *  Insert Data Into inv_scrapdetail Table:
         */       
         
-				$issue_date         = $_POST['issue_date'];
-				$issue_id           = $_POST['issue_id'];
+				$ds_date         = $_POST['ds_date'];
+				$ds_id           = $_POST['ds_id'];
 				$project_id         = $_POST['project_id'];
 				$warehouse_id   	= $_POST['warehouse_id'];
 				
@@ -296,8 +287,8 @@ if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit'])){
 				$unit               = $_POST['unit'][$count];
 				$brand            	= $_POST['brand'][$count];
 				$quantity           = $_POST['quantity'][$count];
-				$package_id   		= $_POST['package_id'][$count];
-				$building_id   		= $_POST['building_id'][$count];
+				$partner_id  		= $_POST['partner_id'][$count];
+				$party_id   		= $_POST['party_id'][$count];
 
 
 				
@@ -313,7 +304,7 @@ if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit'])){
 					$q = move_uploaded_file($temp_file,"images/".$issue_image);
 				} 
         
-				$query = "INSERT INTO `inv_scrapdetail` (`ss_id`,`ss_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`part_no`,`project_id`,`warehouse_id`,`package_id`,`building_id`,`approval_status`) VALUES ('$issue_id','$issue_date','$material_id','$material_name','$unit','$quantity','0','$brand','$project_id','$warehouse_id','$package_id','$building_id','0')";
+				$query = "INSERT INTO `inv_damaragedetailsale` (`ds_id`,`ds_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$issue_id','$issue_date','$material_id','$material_name','$unit','$quantity','0','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
 				$conn->query($query);
 				
 				/*
@@ -342,8 +333,8 @@ if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit'])){
     /*
         *  Update Data Into inv_receive Table:
     */
-				$issue_date         = $_POST['issue_date'];
-				$issue_id           = $_POST['issue_id'];
+				$ds_date         = $_POST['ds_date'];
+				$ds_id           = $_POST['ds_id'];
 				$project_id         = $_POST['project_id'];
 				$warehouse_id   	= $_POST['warehouse_id'];
 
@@ -353,11 +344,11 @@ if(isset($_POST['ss_update_submit']) && !empty($_POST['ss_update_submit'])){
 				$receiver_phone		= $_POST['receiver_phone'];     
 				$remarks            = $_POST['remarks'];
 
-    $query2    = "UPDATE inv_scrap SET ss_id='$ss_id',ss_date='$ss_date',received_by='$received_by',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',approval_status='0',issue_image='$issue_image' WHERE id=$edit_id";
+    $query2    = "UPDATE inv_scrap SET ds_id='$ds_id',ds_date='$ds_date',received_by='$received_by',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',approval_status='0',issue_image='$issue_image' WHERE id=$edit_id";
     $result2 = $conn->query($query2);
     
     $_SESSION['success']    =   "scrap sale process have been successfully updated.";
-    header("location: scrap_edit.php?edit_id=".$edit_id);
+    header("location: damarage_edit.php?edit_id=".$edit_id);
     exit();
 }
 

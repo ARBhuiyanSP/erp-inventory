@@ -10,9 +10,28 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="dashboard.php">Dashboard</a>
+            <a href="receive_report.php">Report</a>
         </li>
         <li class="breadcrumb-item active">Receive Entry</li>
+		
+		
+		
+		
+		
+		
+        <li class="breadcrumb-item" style="text-align:right;">
+								
+								<?php  
+									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
+									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
+								
+								echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
+		</li>
+		
+		
+		
+		
+		
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
@@ -50,43 +69,63 @@
                                 <input type="hidden" name="receive_no" id="receive_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_receive', 'mrr_no', '03d', '001', $mrrcode) ?>">
                             </div>
                         </div>
+						
+						<!--
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Purchase ID</label>
                                 <input type="text" name="purchase_id" id="purchase_id" class="form-control">
                             </div>
                         </div>
+				
+						
+						
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Purchase Date</label>
-                                <input type="text" autocomplete="off" name="Purchase_date" id="Purchase_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">	
+                                <input type="text" autocomplete="off" name="Purchase_date" id="Purchase_date" class="form-control datepicker" value="<?php //echo date('Y-m-d'); ?>">	
                             </div>
                         </div>
+						
+								-->
+						
+						
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label for="id">Supplier Challan No</label>
+                                <label for="id">Memo/Challan No</label>
                                 <input type="text" name="challan_no" id="challan_no" class="form-control">
                             </div>
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label for="id">Challan Date</label>
+                                <label for="id">Memo/Challan Date</label>
                                 <input type="text" autocomplete="off" name="challan_date" id="challan_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
+						
+						
+					<!--
+						
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label for="id">Requisition No.</label>
                                 <input type="text" name="requisition_no" id="requisition_no" class="form-control">
-								<!-- <input type="text" id="requisition_no" name="requisition_no" class="form-control" onkeypress="return event.charCode > 47 && event.charCode < 58;" pattern="[0-9]{5}" required></input> -->
+								<!-- <input type="text" id="requisition_no" name="requisition_no" class="form-control" onkeypress="return event.charCode > 47 && event.charCode < 58;" pattern="[0-9]{5}" required></input> 
                             </div>
+							
+							
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label for="id">Requisition Date</label>
-                                <input type="text" autocomplete="off" name="requisition_date" id="requisition_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <input type="text" autocomplete="off" name="requisition_date" id="requisition_date" class="form-control datepicker" value="<?php //echo date('Y-m-d'); ?>">
                             </div>
                         </div>
+						
+						
+						-->
+						
+						
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label for="id">Supplier</label><span class="reqfield"> ***required</span>
@@ -112,6 +151,14 @@
                                 <input type="text" name="supplier_id" id="supplier_id" class="form-control" required>
                             </div>
                         </div>
+						
+						
+						
+						
+						
+						
+						<!--
+						
 						<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Project</label>
@@ -130,20 +177,26 @@
 								</select>
                             </div>
                         </div>
-						<div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Warehouse</label>
+						-->
+						
+						
+						
+						<!-- warehouse field data come but text box not show   [type="hidden"] palash code    -->
 								
 								<?php  
 									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
 									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
 								?>
-								<input type="text" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
+								<input type="hidden" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
 								
 								<input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control" readonly="readonly" value="<?php echo $_SESSION['logged']['warehouse_id']; ?>">
 								
-                            </div>
-                        </div>
+                            
+						
+						
+						
+						
+						
                     </div>
                     <div class="row" id="div1"  style="">
                         <div class="table-responsive">

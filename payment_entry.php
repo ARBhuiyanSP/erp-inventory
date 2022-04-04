@@ -6,7 +6,7 @@ include 'header.php';
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="dashboard.php">Dashboard</a>
+            <a href="supplier_ledger.php">Report</a>
         </li>
         <li class="breadcrumb-item active"> Payment Information</li>
     </ol>

@@ -3,12 +3,12 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Sales Report Filters</a>
+            <a href="#">Cross Check</a>
         </li>
-        <li class="breadcrumb-item active">List</li>
+        <li class="breadcrumb-item active"> Receives</li>
     </ol>
     <!-- receive search start here -->
-    <?php include 'search/consumption_group_report_search.php'; ?>
+    <?php include 'search/cross_check_receives_search.php'; ?>
     <!-- end receive search -->
 
 

@@ -6,12 +6,31 @@
 	font-size:12px;
 }
 </style>
+
+
+
+
+
+
+
+
+
 <div class="card mb-3">
     <div class="card-header">
+	
+	
+	
+	
+	
+	
+	
 		<button class="btn btn-info linktext" onclick="window.location.href='consumption_report.php';"> Individual Material sales Report</button>
 		
         <button class="btn btn-success linktext"> Material Groupwise Sales Report</button> 
 		
+		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit  Report</button>
+		
+		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
 		
 		</div>
     <div class="card-body">
@@ -47,6 +66,11 @@
         </form>
     </div>
 </div>
+
+
+
+
+
 <?php
 if(isset($_GET['submit'])){
 	
@@ -56,6 +80,12 @@ if(isset($_GET['submit'])){
 	
 	
 ?>
+
+
+
+
+
+
 <center>
 	
 	<div class="row">

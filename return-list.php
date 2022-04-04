@@ -12,7 +12,8 @@
 					<tr>
 						<th>Return ID</th>
 						<th>Return Date</th>
-						<th>Project</th>
+						<th>Partner</th>
+						<th>Party</th>
 						<th>Ware House</th>
 						
 					     <th>Action</th>
@@ -33,12 +34,28 @@
 							<tr>
 								<td><?php echo $item['return_id']; ?></td>
 								<td><?php echo $item['return_date']; ?></td>
+								
+								
 								<td>
 									<?php 
-									$dataresult =   getDataRowByTableAndId('projects', $item['project_id']);
+									$dataresult =   getDataRowByTableAndId('partner', $item['partner_id']);
 									echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 									?>
 								</td>
+								
+								
+								
+								<td>
+									<?php 
+									$dataresult =   getDataRowByTableAndId1('party', $item['party_id']);
+									echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+									?>
+								</td>
+								
+								
+								
+								
+								
 								<td>
 									<?php 
 									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $item['warehouse_id']);

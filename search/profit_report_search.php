@@ -17,8 +17,7 @@
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit Report</button>
 		
-		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date Wise Sales Report</button>
-		
+		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
 		
 		
 	</div>
@@ -30,25 +29,26 @@
                     <tbody>
                         <tr> 
 							<td>
-                                <div class="form-group">
-									<label for="sel1">Material:</label>
-									<select class="form-control select2" id="material_id" name="material_id" required>
-										<option value="">Select</option>
-										<?php
-										$warehouse = getTableDataByTableName('inv_material','','material_description');
-										if (isset($warehouse) && !empty($warehouse)) {
-											foreach ($warehouse as $data) {
-												if($_GET['material_id'] == $data['material_id_code']){
-													$selected	= 'selected';
-													}else{
-													$selected	= '';
-													}
-												?>
-												<option value="<?php  echo $data['material_id_code'] ?>" <?php echo $selected; ?>><?php echo $data['material_description'] ?></option>
-											<?php }
-										} ?>
-									</select>
-								</div>
+                          
+                            <div class="form-group">
+                                <label>Partner Name</label>
+                                <select class="form-control" id="id" name="id" readonly >
+                                    <?php
+                                    $projectsData = getTableDataByTableName('partner');
+                                    ;
+                                    if (isset($projectsData) && !empty($projectsData)) {
+                                        foreach ($projectsData as $data) {
+                                            ?>
+                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                       
+						
+						
                             </td>
 							<td>
                                 <div class="form-group">
@@ -82,7 +82,7 @@ if(isset($_GET['submit'])){
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
-	$material_id	=	$_GET['material_id'];
+	$partner_id	=	$_GET['id'];
 	
 	
 ?>
@@ -96,7 +96,7 @@ if(isset($_GET['submit'])){
 					<center>
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>Material Consumption Report</span><br>
+							<span>Sales Profit Share Report</span><br>
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
@@ -105,64 +105,70 @@ if(isset($_GET['submit'])){
 				<table id="" class="table table-bordered table-striped ">
 					<thead>
 						<tr>
-							<th>Material ID</th>
-							<th>Material Name</th>
-							<th>Unit</th>
-							<th>Issue Date</th>
-							<th>Issue Qty</th>
+							<th>Bill No</th>
+							<th>Bill date</th>
+							<th>Party ID</th>
+							<th>total amount</th>
+							<th>Profit amount</th>
+							<th>Profit Share amount</th>
 						</tr>
 					</thead>
 					<tbody>
+					
+					
+					
+					
+					
 					<?php
 					
-						$totalQty = 0;
+						$totalshareamount = 0;
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_issuedetail` WHERE `material_id` = '$material_id' AND `issue_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_profitshare` WHERE `partnerid` = '$partner_id' AND `billdate` BETWEEN '$from_date' AND '$to_date'";
 						}else{
-							$sql	=	"SELECT * FROM `inv_issuedetail` WHERE `warehouse_id` = '$warehouse_id' AND `material_id` = '$material_id' AND `issue_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_profitshare` WHERE `warehouse_id` = '$warehouse_id' AND `partnerid` = '$partner_id' AND `billdate` BETWEEN '$from_date' AND '$to_date'";
 						}
 						$result = mysqli_query($conn, $sql);
+
 						while($row=mysqli_fetch_array($result))
 						{
-							$totalQty += $row['issue_qty'];
+							$totalshareamount += $row['profitpatneramount'];
 					?>
-						<tr>
-							<td><?php echo $row['material_id']; ?></td>
-							<td>
-								<?php 
-								$mb_materialid = $row['material_id'];
-								$sqlname	= "SELECT * FROM `inv_material` WHERE `material_id_code` = '$mb_materialid' ";
-								$resultname = mysqli_query($conn, $sqlname);
-								$rowname	= mysqli_fetch_array($resultname);
-								echo $rowname['material_description'];
-								?>
-							</td>
-							<td>
-								<?php 
-								$qty_unit	= $rowname['qty_unit'];
-								$sqlunit	= "SELECT * FROM `inv_item_unit` WHERE `id` = '$qty_unit' ";
-								$resultunit = mysqli_query($conn, $sqlunit);
-								$rowunit	= mysqli_fetch_array($resultunit);
-								echo $rowunit['unit_name'];
-								
-								?>
-								
-							</td>
+					
+					
+					
+					
+				<tr>
+							<td><?php echo $row['billno']; ?></td>
 							
 							
-							<td><?php echo $row['issue_date']; ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$row['issue_qty'], 2, '.', ''); ?></td>
-						</tr>
+							
+							<td><?php echo $row['billdate']; ?></td>
+							
+							<td><?php echo $row['partnerid']; ?></td>
+							
+							
+							
+							
+							<td style="text-align:right;"><?php echo number_format((float)$row['totalamount'], 2, '.', ''); ?></td>
+							<td style="text-align:right;"><?php echo number_format((float)$row['profitamount'], 2, '.', ''); ?></td>
+							<td style="text-align:right;"><?php echo number_format((float)$row['profitpatneramount'], 2, '.', ''); ?></td>
+				</tr>
 						<?php
 							}?>
+							
+							
 							
 						<tr>
 							<td colspan="5" class="grand_total" style="text-align:right;">Grand Total:</td>
 							<td style="text-align:right;">
-								<?php echo number_format((float)$totalQty, 2, '.', '');
+								<?php echo number_format((float)$totalshareamount, 2, '.', '');
 								?>
 							</td>
 						</tr>
+						
+						
+						
+						
 						<?php 
 							$rowcount=mysqli_num_rows($result);
 							if($rowcount < 1) { ?>

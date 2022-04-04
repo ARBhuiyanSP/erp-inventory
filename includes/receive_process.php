@@ -55,7 +55,7 @@ if (isset($_POST['receive_submit']) && !empty($_POST['receive_submit'])) {
         $requisition_date   = $_POST['requisition_date'];
         $supplier_name      = $_POST['supplier_name'];
         $supplier_id        = $_POST['supplier_id'];
-        $project_id			= $_POST['project_id'];
+        
         $warehouse_id		= $_POST['warehouse_id'];
 
 
@@ -68,7 +68,7 @@ if (isset($_POST['receive_submit']) && !empty($_POST['receive_submit'])) {
         $unit_price         = $_POST['unit_price'][$count];
         $totalamount        = $_POST['totalamount'][$count];
         $receive_total      = $receive_total+$totalamount;
-        $project_id         = $_POST['project_id'];
+        $project_id			= '2';
         $vat_challan_no     = $_POST['vat_challan_no'];  
         $remarks            = $_POST['remarks'];  
 		

@@ -172,6 +172,10 @@ function getDataRowIdAndTable($table){
     }
 }
 
+
+
+                      // numeric type value
+
 function getDataRowByTableAndId($table, $id){
     global $conn;
     $sql    = "SELECT * FROM $table where id=".$id;
@@ -183,6 +187,24 @@ function getDataRowByTableAndId($table, $id){
         return false;
     }
 }
+
+                      // varchar type value
+
+function getDataRowByTableAndId1($table, $id1){
+    global $conn;
+    $sql    = "SELECT * FROM $table WHERE party_id='$id1'";
+    $result = $conn->query($sql);
+    $name   =   '';
+    if ($result->num_rows > 0) {
+        return $result->fetch_object();
+    }else{
+        return false;
+    }
+}
+
+
+
+
 function getDefaultCategoryCode($table, $fieldName, $modifier, $defaultCode, $prefix){
     global $conn;
     $sql    = "SELECT count($fieldName) as total_row FROM $table";
@@ -194,6 +216,21 @@ function getDefaultCategoryCode($table, $fieldName, $modifier, $defaultCode, $pr
     return $defaultCode;
     
 }
+
+
+
+// added by tanveer Qureshee: 2021-05-29
+    function check_input_data($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+     }
+
+
+
+
+
 
 function getDefaultCategoryCodeByWarehouse($table, $fieldName, $modifier, $defaultCode, $prefix){
     global $conn;

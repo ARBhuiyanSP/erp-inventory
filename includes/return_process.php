@@ -28,7 +28,7 @@ if (isset($_POST['return_submit']) && !empty($_POST['return_submit'])) {
         $unit_price         = $_POST['unit_price'][$count];
         $totalamount        = $_POST['totalamount'][$count];
         $receive_total      = $receive_total+$totalamount;
-        $project_id         = $_POST['project_id'];
+        $project_id         = '2';
         $remarks            = $_POST['remarks'];     
         $expense_acct_id    =   '0';
         $cost_center        =   '0';
@@ -39,8 +39,8 @@ if (isset($_POST['return_submit']) && !empty($_POST['return_submit'])) {
         $sales_margin       =   '0';
         $id_serial_id       =   '0';  
         $warehouse_id		=	$_SESSION['logged']['warehouse_id'];
-        $package_id   		= $_POST['package_id'];
-        $building_id   		= $_POST['building_id'];
+        $partner_id   		= $_POST['partner_id'];
+        $party_id   		= $_POST['party_id'];
         
         $query = "INSERT INTO `inv_returndetail` (`return_id`,`return_date`,`material_id`,`material_name`,`unit`,`return_qty`,`return_price`,`part_no`,`project_id`,`warehouse_id`) VALUES ('$return_id','$return_date','$material_id','$material_name','$unit','$quantity','$unit_price','$part_no','$project_id','$warehouse_id')";
         $conn->query($query);
@@ -63,7 +63,7 @@ if (isset($_POST['return_submit']) && !empty($_POST['return_submit'])) {
         $jvno           = $return_id;
         $part_no        = $part_no;              
         
-        $query_inmb = "INSERT INTO `inv_materialbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbin_val`,`mbout_qty`,`mbout_val`,`mbprice`,`mbtype`,`mbserial`,`mbserial_id`,`mbunit_id`,`jvno`,`part_no`,`project_id`,`warehouse_id`,`package_id`,`building_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbin_val','$mbout_qty','$mbout_val','$mbprice','$mbtype','$mbserial','$mbunit_id','$mbserial_id','$jvno','$part_no','$project_id','$warehouse_id','$package_id','$building_id','$mb_date')";
+        $query_inmb = "INSERT INTO `inv_materialbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbin_val`,`mbout_qty`,`mbout_val`,`mbprice`,`mbtype`,`mbserial`,`mbserial_id`,`mbunit_id`,`jvno`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbin_val','$mbout_qty','$mbout_val','$mbprice','$mbtype','$mbserial','$mbunit_id','$mbserial_id','$jvno','$part_no','$project_id','$warehouse_id','$partner_id','$party_id','$mb_date')";
         $conn->query($query_inmb);
     }
     /*
@@ -82,7 +82,7 @@ if (isset($_POST['return_submit']) && !empty($_POST['return_submit'])) {
     $indent_no      = '1';
     $receiver_name  = $_POST['receiver_name'];
     
-    $query2 		= "INSERT INTO `inv_return` (`return_id`,`return_date`,`remarks`,`project_id`,`warehouse_id`,`package_id`,`building_id`) VALUES ('$return_id','$return_date','$remarks','$project_id','$warehouse_id','$package_id','$building_id')";
+    $query2 		= "INSERT INTO `inv_return` (`return_id`,`return_date`,`remarks`,`project_id`,`warehouse_id`,`partner_id`,`party_id`) VALUES ('$return_id','$return_date','$remarks','$project_id','$warehouse_id','$partner_id','$party_id')";
     $result2 = $conn->query($query2);
     
     $_SESSION['success']    =   "return process have been successfully completed.";

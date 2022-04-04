@@ -5,7 +5,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="return_report.php">Report</a>
         </li>
         <li class="breadcrumb-item active">Return from party Entry</li>
     </ol>
@@ -48,24 +48,55 @@
 						
 						
 						
-						  <div class="col-xs-3">
+						
+						
+							<div class="col-xs-2">
+							<div class="form-group">
+								<label for="id">Partner</label><span class="reqfield"> ***required</span>
+		
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
+	
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('partner', '', 'name');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+						
+						
+						
+						 <div class="col-xs-3">
+							<div class="form-group">
+								<label for="id">Party</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('party','','partyname');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+						
+						<div class="col-xs-1">
                             <div class="form-group">
-                                <label>Party Name</label>
-                                <select class="form-control" id="party_id" name="party_id" readonly >
-                                    <?php
-                                    $projectsData = getTableDataByTableName('party');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['party_id']; ?>"><?php echo $data['partyname']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                                <label for="id">party ID</label>
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
                             </div>
                         </div>
+						
 						
 						
 						
@@ -80,6 +111,15 @@
 								<input type="text" autocomplete="off" name="warehouse_id" id="warehouse_id" class="form-control datepicker" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>" readonly >
                             </div>
                         </div>
+						
+						
+						
+						
+						
+						
+						<!--
+						
+						
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Project</label><span class="reqfield"> ***required</span>
@@ -98,47 +138,17 @@
                                 </select>
                             </div>
                         </div>
-					<!--	<div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Package</label><span class="reqfield"> ***required</span>
-                                <select class="form-control" id="package_id" name="package_id" required>
-                                    <option value="">Select</option>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('packages');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div> 
+						
+						-->
+						
+			
 						
 						
-						<div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Buildings</label><span class="reqfield"> ***required</span>
-                                <select class="form-control" id="building_id" name="building_id" required>
-                                    <option value="">Select</option>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('buildings');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['building_id']; ?>"><?php echo $data['building_id']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div> -->
+						
                     </div>
+					
+					
+					
                     <div class="row" id="div1"  style="">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dynamic_field">

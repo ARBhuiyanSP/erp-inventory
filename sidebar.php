@@ -93,7 +93,7 @@
 			
 			 <a class="dropdown-item" href="opening_balance.php">
                 <i class="fa fa-bullseye" aria-hidden="true" style="color: #007BFF;"></i>
-                <span class="sub_menu_text_design"> Opening Stock Entry</span>
+                <span class="sub_menu_text_design"> Opening Stock</span>
             </a>
 			
 			
@@ -124,7 +124,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-truck" aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Material Receive(MRR)</span>
+            <span>Material Receive</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="receive_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Receive Entry</span></a>
@@ -176,15 +176,38 @@
     </li>
 	
 	
+	
+	
+	
+	
+	
+	
+	
+		  <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-text-width " aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Damarage Sale</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="damarage_sale.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Damarage Sale</span></a>
+            <a class="dropdown-item" href="damarage-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Damarage Sale List</span></a>
+        </div>
+    </li>
+	
+	
+	
+	
+	
+	
 
 <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-text-width " aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Damage Receive(Warr)</span>
+            <span>Replace Receive</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="damage_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Damage Receive</span></a>
-            <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Damage Receive List</span></a>
+            <a class="dropdown-item" href="damage_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive</span></a>
+            <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive List</span></a>
         </div>
 </li>
 
@@ -194,11 +217,11 @@
 <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-text-width " aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Damage Out(Warr)</span>
+            <span>Replace Out</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="damageout_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Damage Out</span></a>
-            <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Damage Out List</span></a>
+            <a class="dropdown-item" href="damageout_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out</span></a>
+            <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out List</span></a>
         </div>
 </li>
 
@@ -218,14 +241,14 @@
 	 <li class="nav-item">
         <a class="nav-link" href="payment_entry.php">
             <i class="fa fa-money-bill" aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Supplier Payment Entry</span></a>
+            <span>Supplier Payment</span></a>
 </li>
 	
 	
 	 <li class="nav-item">
         <a class="nav-link" href="party_payment.php">
             <i class="fa fa-money-bill" aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Party Payment Entry</span></a>
+            <span>Party Payment</span></a>
     </li>
 	
 
@@ -308,10 +331,14 @@
 	<li class="nav-item">
         <a class="nav-link" href="movementdamage_report.php"> 
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Damage Battery Stock</span></a>
+            <span>Replace Battery Report</span></a>
     </li>
 	
 	
-	
+	<li class="nav-item">
+        <a class="nav-link" href="scrap_report.php"> 
+            <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Scrap Sales report</span></a>
+    </li>
 	
 </ul>

@@ -32,6 +32,7 @@ include 'includes/party_payment_process.php';
 include 'includes/scrap_process.php';
 include 'includes/damage_process.php';
 include 'includes/damageout_process.php';
+include 'includes/damaragesale_process.php';
 
 ?>
 <!DOCTYPE html>

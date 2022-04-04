@@ -27,7 +27,9 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
         $no_of_material     = $no_of_material+$quantity;
         $unit_price         = $_POST['unit_price'][$count];
         $totalamount        = $_POST['totalamount'][$count];
+		
         $receive_total      = $receive_total+$totalamount;
+		
         $project_id         = $_POST['project_id'];
         $remarks            = $_POST['remarks'];     
         $expense_acct_id    =   '0';
@@ -39,8 +41,14 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
         $sales_margin       =   '0';
         $id_serial_id       =   '0';  
         $warehouse_id		=	$_SESSION['logged']['warehouse_id'];
-        $package_id   		= $_POST['package_id'];
-        $building_id   		= $_POST['building_id'];
+		
+		/* code 29-3-22 */
+		
+        $partner_id 		= $_POST['partner_id'];
+        $party_id   		= $_POST['party_id'];
+		
+		
+		
         
         $query = "INSERT INTO `inv_damagedetail` (`damage_id`,`damage_date`,`material_id`,`material_name`,`unit`,`return_qty`,`return_price`,`part_no`,`project_id`,`warehouse_id`) VALUES ('$damage_id','$damage_date','$material_id','$material_name','$unit','$quantity','$unit_price','$part_no','$project_id','$warehouse_id')";
         $conn->query($query);
@@ -56,11 +64,11 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
         $mbout_qty      = 0;
         $mbout_val      = 0;
         $mbprice        = 0;
-        $mbtype         = 'Damage Return';
+        $mbtype         = 'REPLACE RECEIVE';
         $mbunit_id      = $project_id;
                     
         
-        $query_inmb = "INSERT INTO `inv_damagebalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$mb_date')";
+        $query_inmb = "INSERT INTO `inv_damagebalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`partner_id`,`party_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$partner_id','$party_id','$mb_date')";
         $conn->query($query_inmb);
     }
     /*
@@ -79,7 +87,7 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
     $indent_no      = '1';
     $receiver_name  = $_POST['receiver_name'];
     
-    $query2 		= "INSERT INTO `inv_damage` (`damage_id`,`damage_date`,`remarks`,`project_id`,`warehouse_id`,`package_id`,`building_id`) VALUES ('$damage_id','$damage_date','$remarks','$project_id','$warehouse_id','$package_id','$building_id')";
+    $query2 		= "INSERT INTO `inv_damage` (`damage_id`,`damage_date`,`remarks`,`project_id`,`warehouse_id`,`partner_id`,`party_id`) VALUES ('$damage_id','$damage_date','$remarks','$project_id','$warehouse_id','$partner_id','$party_id')";
     $result2 = $conn->query($query2);
     
     $_SESSION['success']    =   "Damage Data process have been successfully completed.";

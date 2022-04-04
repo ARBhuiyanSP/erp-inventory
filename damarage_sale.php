@@ -5,29 +5,29 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="scrap_report.php">Report</a>
+            <a href="#">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Scrap Entry</li>
+        <li class="breadcrumb-item active">Damarage Entry</li>
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Scrap Entry Form</div>
+            Damarage Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
-                <form action="" method="post" name="add_scrap" id="scrap_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('scrap_entry_form');">
+                <form action="" method="post" name="add_damarage" id="damarage_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('damarage_entry_form');">
                     <div class="row" id="div1" style="">
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Date</label>
-                                <input type="text" autocomplete="off" name="ss_date" id="ss_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <input type="text" autocomplete="off" name="ds_date" id="ds_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>SS No</label>
+                                <label>DS No</label>
                                 <?php
                                 if ($_SESSION['logged']['user_type'] == 'whm') {
                                     $warehouse_id = $_SESSION['logged']['warehouse_id'];
@@ -35,61 +35,74 @@
                                     $result = mysqli_query($conn, $sql);
                                     $row = mysqli_fetch_array($result);
                                     $short_name = $row['short_name'];
-                                    $ssCode = 'SS-' . $short_name;
+                                    $ssCode = 'DS-' . $short_name;
                                 } else {
-                                    $ssCode = 'SS-CW';
+                                    $ssCode = 'DS-CW';
                                 }
                                 ?>
-                                <input type="text" name="ss_id" id="ss_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_scrap', 'ss_id', '03d', '001', $ssCode) ?>" readonly>
-                                <input type="hidden" name="ss_no" id="ss_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_scrap', 'ss_id', '03d', '001', $ssCode) ?>">
+            <input type="text" name="ds_id" id="ds_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $ssCode) ?>" readonly>
+			
+            <input type="hidden" name="ds_no" id="ds_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $ssCode) ?>">
                             </div>
                         </div>
 						
 						
 						
 						
-						   <div class="col-xs-3">
+						
+						
+						
+						<div class="col-xs-2">
+							<div class="form-group">
+								<label for="id">Partner</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('partner', '', 'name');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+						
+						
+                        <div class="col-xs-3">
+							<div class="form-group">
+								<label for="id">Party</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('party','','partyname');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+                        <div class="col-xs-1">
                             <div class="form-group">
-                                <label>Partner Name</label>
-                                <select class="form-control" id="partner_id" name="partner_id" readonly >
-                                    <?php
-                                    $projectsData = getTableDataByTableName('partner');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['partner_id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                                <label for="id">party ID</label>
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
                             </div>
                         </div>
 						
 						
+						<input type="hidden" value="2" name="project_id" />
 						
+						
+                       
 						
 						
                         <div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Project</label>
-                                <select class="form-control" id="project_id" name="project_id" readonly >
-                                    <?php
-                                    $projectsData = getTableDataByTableName('projects');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Warehouse</label>
 
@@ -328,7 +341,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="modal-footer">
-                                    <input type="submit" name="scrap_submit" id="scrap_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
+                                    <input type="submit" name="damarage_submit" id="damarage_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
                                 </div>    
                             </div>
                         </div>
