@@ -181,14 +181,14 @@
                             <table class="table table-bordered" id="dynamic_field">
                                 <thead>
                                 <th width="25%">Material Name<span class="reqfield"> ***required</span></th>
-                                <th width="10%">Material ID</th>
                                 <th width="10%">Unit</th>
-                                <th width="10%">Brand</th>
                                 <th width="10%">In Stock</th>
 								
 								
                                 <th width="10%">Qty<span class="reqfield"> ***required</span></th>
-								<th width="15%">Sale Price</th>
+								<th width="10%">Buy Price</th>
+								<th width="10%">Buy Amount</th>
+								<th width="10%">Sale Price</th>
                                 <th width="15%">Sale Amount</th>
 								
 								
@@ -211,7 +211,7 @@
                                                 ?>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="material_id[]" id="material_id0" class="form-control" required readonly></td>
+                                        <input type="hidden" name="material_id[]" id="material_id0" class="form-control" required readonly>
                                         <td>
                                             <select class="form-control" id="unit0" name="unit[]" required readonly>
                                                 <option value="">Select Unit</option>
@@ -227,27 +227,16 @@
                                                 ?>
                                             </select>
                                         </td>
-                                        <td>
-                                            <select class="form-control" id="brand0" name="brand[]" readonly>
-                                                <option value="">Select Brand</option>
-                                                <?php
-                                                $brandData = getmaterialbrand();
-                                                if (isset($brandData) && !empty($brandData)) {
-                                                    foreach ($brandData as $data) {
-                                                        ?>
-                                                        <option value="<?php echo $data['brand_name']; ?>"><?php echo $data['brand_name']; ?></option>
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </select>
-                                        </td>
                                         <td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly ></td>
 										
 										
 										<!-- Comments: text QTY and Unit Price and Total amount -->
 										
                       <td><input type="text" name="quantity[]" id="quantity0" onkeyup="check_stock_quantity_validation(0)" class="form-control common_issue_quantity" required></td>
+					  
+                                        <td><input type="text" name="cur_price[]" id="cur_price" onchange="" class="form-control" required></td>
+                                        <td><input type="text" name="cur_amount[]" id="cur_amount" onchange="" class="form-control" required></td>
+                                       
 					  <td><input type="text" name="unit_price[]" id="unit_price0" onchange="sum(0)" class="form-control" required></td>
 					  <td><input type="text" name="amount[]" id="sum0" class="form-control"></td>
 									  
@@ -364,21 +353,14 @@
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['material_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><input type="text" name="material_id[]" id="material_id' + i + '" class="form-control" required readonly></td><td><select class="form-control select2" id="unit' + i + '" name="unit[]' + i + '" required onchange="getAppendItemCodeByParam(' + i + ",'inv_material'" + ",'material_id_code'" + ",'material_id''" + ",'qty_unit'" + ')"><option value="">Select</option><?php
+                                    ?></select></td><input type="hidden" name="material_id[]" id="material_id' + i + '" class="form-control" required readonly><td><select class="form-control select2" id="unit' + i + '" name="unit[]' + i + '" required onchange="getAppendItemCodeByParam(' + i + ",'inv_material'" + ",'material_id_code'" + ",'material_id''" + ",'qty_unit'" + ')"><option value="">Select</option><?php
                                     $projectsData = getTableDataByTableName('inv_item_unit', '', 'unit_name');
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['unit_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><select class="form-control select2" id="brand' + i + '" name="brand[]' + i + '"><option value="">Select</option><?php
-                                    $projectsData = getmaterialbrand();
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?><option value="<?php echo $data['brand_name']; ?>"><?php echo $data['brand_name']; ?></option><?php
-                                        }
-                                    }
-                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onkeyup="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity" required></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onchange="sum(0)" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
+                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onkeyup="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity" required></td><td><input type="text" name="cur_price[]" id="cur_price' + i + '" onchange="" class="form-control" required></td><td><input type="text" name="cur_amount[]" id="cur_amount' + i + '" onchange="" class="form-control" required></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onchange="sum(0)" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
 									$(".material_select_2").select2();
 									
 									<!-- COMMENTS: QTY AND UNIT PRICE AND TOTAL AMOUNT -->

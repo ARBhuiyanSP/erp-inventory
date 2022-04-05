@@ -174,7 +174,7 @@ function getDataRowIdAndTable($table){
 
 
 
-                      // numeric type value
+                      // numeric type value  where id=".$id;
 
 function getDataRowByTableAndId($table, $id){
     global $conn;
@@ -188,7 +188,7 @@ function getDataRowByTableAndId($table, $id){
     }
 }
 
-                      // varchar type value
+                      // varchar type value    WHERE party_id='$id1'";
 
 function getDataRowByTableAndId1($table, $id1){
     global $conn;
