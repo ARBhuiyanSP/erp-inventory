@@ -39,6 +39,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 		$_SESSION['warning']    =   "Operation faild. Duplicate data found..!";
     }else{
 		    
+			$totalcur = 0;
 			for ($count = 0; $count < count($_POST['quantity']); $count++) {
 				
 				/*
@@ -76,9 +77,17 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 				$package_id   		= $_POST['package_id'][$count];
 				$building_id   		= $_POST['building_id'][$count];
 				*/
+					$sqlcur	=	"SELECT * FROM `inv_material` WHERE `material_id_code` = '$material_id' ";
+					$resultcur = mysqli_query($conn, $sqlcur);
+					$rowcur=mysqli_fetch_array($resultcur);
 				
-				                   $partner_id 		= $_POST['partner_id'];
-                                   $party_id   		= $_POST['party_id'];
+				$cur_price			= $rowcur['cur_price'];
+				
+				$cur_price_amount	= $cur_price * $quantity;
+				$totalcur +=$cur_price_amount;
+				
+				$partner_id 		= $_POST['partner_id'];
+                $party_id   		= $_POST['party_id'];
 		
 				
 				
@@ -121,7 +130,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 				
 				
 				
-				$query = "INSERT INTO `inv_issuedetail` (`issue_id`,`issue_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$issue_id','$issue_date','$material_id','$material_name','$unit','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
+				$query = "INSERT INTO `inv_issuedetail` (`issue_id`,`issue_date`,`material_id`,`material_name`,`unit`,`cur_price`,`cur_price_amount`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$issue_id','$issue_date','$material_id','$material_name','$unit','$cur_price','$cur_price_amount','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
 				$conn->query($query);
 				
 				/*
@@ -155,7 +164,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			/*
 			*  Insert Data Into inv_issue Table:
 			*/
-			$query2 = "INSERT INTO `inv_issue` (`issue_id`,`issue_date`,`party_id`,`partner_id`,`received_by`,`totalamount`,`paidamount`,`Dueamount`,`profitamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$issue_id','$issue_date','$party_id','$partner_id','$received_by','$total_amount','$paid_amount','$due_amount','$profitamount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
+			$query2 = "INSERT INTO `inv_issue` (`issue_id`,`issue_date`,`party_id`,`partner_id`,`received_by`,`totalcur`,`totalamount`,`paidamount`,`Dueamount`,`profitamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$issue_id','$issue_date','$party_id','$partner_id','$received_by','$totalcur','$total_amount','$paid_amount','$due_amount','$profitamount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
 			$result2 = $conn->query($query2);
 			
 		

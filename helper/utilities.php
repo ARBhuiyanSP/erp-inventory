@@ -283,6 +283,7 @@ function get_product_with_category() {
                                 'parent_item_id'        => $material->material_id,
                                 'sub_item_id'           => $material->material_sub_id,
                                 'item_code'             => $material->material_id_code,
+                                'cur_price'             => $material->cur_price,
                                 'material_name'         => $material->material_description.' ('.$parent_name.' - '.$sub_item_name.')',
                             ];
                         }
