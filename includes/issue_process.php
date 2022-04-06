@@ -164,6 +164,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			/*
 			*  Insert Data Into inv_issue Table:
 			*/
+			$profitamount = $total_amount - $totalcur;
 			$query2 = "INSERT INTO `inv_issue` (`issue_id`,`issue_date`,`party_id`,`partner_id`,`received_by`,`totalcur`,`totalamount`,`paidamount`,`Dueamount`,`profitamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$issue_id','$issue_date','$party_id','$partner_id','$received_by','$totalcur','$total_amount','$paid_amount','$due_amount','$profitamount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
 			$result2 = $conn->query($query2);
 			
