@@ -71,8 +71,8 @@ if(isset($_GET['submit'])){
 							<th>Material Name</th>
 							<th>Unit</th>
 							<th>Issue QTY</th>
-							<th>Package</th>
-							<th>Building</th>
+							<th>Partner</th>
+							<th>Party</th>
 
 						</tr>
 					</thead>
@@ -123,11 +123,18 @@ if(isset($_GET['submit'])){
 							</td>
 							<td><?php echo getDataRowByTableAndId('inv_item_unit', $rowall['unit'])->unit_name; ?></td>
 							<td><?php echo $rowall['issue_qty']; ?></td>
+							
+							
 							<td><?php 
-											$dataresult =   getDataRowByTableAndId('packages', $rowall['package_id']);
+											$dataresult =   getDataRowByTableAndId('partner', $rowall['partner_id']);
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 										?></td>
-									<td><?php echo $rowall['building_id'] ?></td>
+										
+									
+									<td><?php 
+											$dataresult =   getDataRowByTableAndId1('party', $rowall['party_id']);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+										?></td>
 							
 							
 						</tr>

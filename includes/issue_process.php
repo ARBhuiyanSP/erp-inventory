@@ -105,7 +105,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 				
 				$profitamount          = $_POST['profitamount'];
 				
-				$var_profit	= $profitamount  / 2;
+			
 				
 				$parent_item_id         = $_POST['parent_item_id'];
 				
@@ -165,6 +165,10 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			*  Insert Data Into inv_issue Table:
 			*/
 			$profitamount = $total_amount - $totalcur;
+			
+			$var_profit	= $profitamount  / 2;
+			
+			
 			$query2 = "INSERT INTO `inv_issue` (`issue_id`,`issue_date`,`party_id`,`partner_id`,`received_by`,`totalcur`,`totalamount`,`paidamount`,`Dueamount`,`profitamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$issue_id','$issue_date','$party_id','$partner_id','$received_by','$totalcur','$total_amount','$paid_amount','$due_amount','$profitamount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
 			$result2 = $conn->query($query2);
 			
@@ -188,7 +192,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			*/
 	
 	
-$query4 = "INSERT INTO `inv_profitshare` (`billno`,`billdate`,`partnerid`,`ownerid`,`partyid`,`totalamount`,`profitamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`) VALUES ('$issue_id','$issue_date','$parent_item_id','MM-1','$party_id','$total_amount','$profitamount','$var_profit','$var_profit','$warehouse_id')";
+$query4 = "INSERT INTO `inv_profitshare` (`billno`,`billdate`,`partnerid`,`ownerid`,`partyid`,`totalamount`,`profitamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`) VALUES ('$issue_id','$issue_date','$partner_id','MM-1','$party_id','$total_amount','$profitamount','$var_profit','$var_profit','$warehouse_id')";
 $result2 = $conn->query($query4);
 
 

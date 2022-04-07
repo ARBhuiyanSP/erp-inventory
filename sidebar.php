@@ -292,6 +292,13 @@
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
             <span>Sales Reports</span></a>
     </li>
+	
+	<li class="nav-item">
+        <a class="nav-link" href="issue_report.php">
+            <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Sales Details</span></a>
+    </li>
+	
 	<li class="nav-item">
         <a class="nav-link" href="supplier_ledger.php">
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
@@ -312,11 +319,7 @@
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
             <span>Receive details</span></a>
     </li>
-	<li class="nav-item">
-        <a class="nav-link" href="issue_report.php">
-            <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
-            <span>Issue details</span></a>
-    </li>
+	
 	<li class="nav-item">
         <a class="nav-link" href="warhousetransfer_report.php">
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
