@@ -1,6 +1,10 @@
 <?php include 'header.php' ?>
 <!-- Left Sidebar End -->
-
+<style>
+.table-bordered thead th, .table-bordered thead tr th{
+	font-size:12px !important;
+}
+</style>
 <div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
