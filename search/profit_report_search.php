@@ -38,8 +38,13 @@
                                     ;
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
+											if($_GET['id'] == $data['id']){
+													$selected	= 'selected';
+													}else{
+													$selected	= '';
+													}
                                             ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
+                                            <option value="<?php echo $data['id']; ?>"  <?php echo $selected; ?>><?php echo $data['name']; ?></option>
                                             <?php
                                         }
                                     }
@@ -132,6 +137,12 @@ if(isset($_GET['submit'])){
 						while($row=mysqli_fetch_array($result))
 						{
 							$totalshareamount += $row['profitpatneramount'];
+							
+							
+							
+							
+							
+										
 					?>
 					
 					
@@ -144,7 +155,14 @@ if(isset($_GET['submit'])){
 							
 							<td><?php echo $row['billdate']; ?></td>
 							
-							<td><?php echo $row['partnerid']; ?></td>
+							<td>
+							<?php 
+											$dataresult =   getDataRowByTableAndId('partner', $row['partnerid']);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
+							?></td>
+							
+							
+							
 							
 							
 							
