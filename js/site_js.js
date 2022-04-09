@@ -478,6 +478,9 @@ function getAppendItemCodeByParam(id, table, field, selector, qty_unit = '') {
                 if (response.brand_name) {
                     $('#brand' + id).val(response.brand_name);
                 }
+				if (response.cur_price) {
+                    $('#cur_price' + id).val(response.cur_price);
+                }
             }
         });
     } else {

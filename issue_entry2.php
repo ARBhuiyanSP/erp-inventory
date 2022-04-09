@@ -197,7 +197,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <select class="form-control" id="material_name" name="material_name[]" required onchange="getItemCodeByParam(this.value, 'inv_material', 'material_id_code', 'material_id0', 'qty_unit');">
+                                            <select class="form-control" id="material_name" name="material_name[]" required onchange="getItemCodeByParam(this.value, 'inv_material', 'material_id_code', 'material_id0', 'qty_unit', 'cur_price');">
                                                 <option value="">Select</option>
                                                 <?php
                                                 $projectsData = get_product_with_category();
@@ -227,20 +227,22 @@
                                                 ?>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly ></td>
+										<td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly ></td>
 										
 										
-										<!-- Comments: text QTY and Unit Price and Total amount -->
+										<!-- Start: text QTY and Unit Price and Total amount -->
 										
-                      <td><input type="text" name="quantity[]" id="quantity0" onkeyup="check_stock_quantity_validation(0)" class="form-control common_issue_quantity" required></td>
+										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" onkeyup="buy_amount(0)" class="form-control common_issue_quantity" required></td>
 					  
-                                        <td><input type="text" name="cur_price[]" id="cur_price0"  onchange="cur_amount(0)" class="form-control" required></td>
-                                        <td><input type="text" name="cur_amount[]" id="cur_amount0" onchange="" class="form-control" required></td>
+                                        <td><input type="text" value="6" name="cur_price[]" id="buy_price0" class="form-control" required></td>
+                                        <td><input type="text" name="cur_amounts[]" id="buy_amount0" class="form-control sub_buy_amount" required></td>
                                        
-					  <td><input type="text" name="unit_price[]" id="unit_price0" onchange="sum(0)" class="form-control" required></td>
-					  <td><input type="text" name="amount[]" id="sum0" class="form-control"></td>
-									  
-                          <td><button type="button" name="add" id="add" class="btn" style="background-color:#007BFF;color:#ffffff;">+</button></td>
+										<td><input type="text" name="unit_price[]" id="unit_price0" onkeyup="sum(0)" class="form-control" required></td>
+										<td><input type="text" name="amount[]" id="sum0" class="form-control sub_sell_amount"></td>
+										
+										<!-- End: text QTY and Unit Price and Total amount -->
+										
+										<td><button type="button" name="add" id="add" class="btn" style="background-color:#007BFF;color:#ffffff;">+</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -260,7 +262,7 @@
 									<td><input type="text" class="form-control" maxlength="10" name="total_cur" id="allcur" readonly /></td>
 								</tr>
 								<tr>
-									<td>Total Amount</td>
+									<td>Total Sale Amount</td>
 									<td><input type="text" class="form-control" maxlength="10" name="total_amount" id="allsum" readonly /></td>
 								</tr>
 								<tr>
@@ -364,13 +366,13 @@
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['unit_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onkeyup="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity" required></td><td><input type="text" name="cur_price[]" id="cur_price' + i + '"  onchange="cur_amount(0)" class="form-control" required></td><td><input type="text" name="cur_amount[]" id="cur_amount' + i + '" onchange="" class="form-control" required></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onchange="sum(0)" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
+                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" value="6" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
 									$(".material_select_2").select2();
 									
 									<!-- COMMENTS: QTY AND UNIT PRICE AND TOTAL AMOUNT -->
 			
 			$('#cur_price' + i + ', #unit_price' + i).change(function () {
-                 cur_amount(i)
+                buy_amount(i)
             });						
             $('#quantity' + i + ', #unit_price' + i).change(function () {
                  sum(i)
@@ -385,44 +387,38 @@
         });
     });
 
-	$(document).ready(function () {
-        //this calculates values automatically 
-        cur_amount(0);
-    });
-
     
-	function cur_amount(i) {
-        var cur_price1 = document.getElementById('cur_price' + i).value;
-        var unit_price1 = document.getElementById('unit_price' + i).value;
-        var result = parseFloat(cur_price1) * parseFloat(unit_price1);
-        if (!isNaN(result)) {
-            document.getElementById('cur_amount' + i).value = result;
+	function buy_amount(i) {
+        let myQty = document.getElementById('quantity' + i).value;
+        let myBuyPrice = document.getElementById('buy_price' + i).value;
+        let subBuyAmount = parseFloat(myQty * myBuyPrice);
+        if (!isNaN(subBuyAmount)) {
+            document.getElementById('buy_amount' + i).value = subBuyAmount.toFixed(2);
         }
-        cur_amount_total();
+        calculate_total_buy_amount();
     }
 	
-    $(document).ready(function () {
-        //this calculates values automatically 
-        sum(0);
-    });
+ 
 	function sum(i) {
-        var quantity1 = document.getElementById('quantity' + i).value;
-        var unit_price1 = document.getElementById('unit_price' + i).value;
-        var result = parseFloat(quantity1) * parseFloat(unit_price1);
+        let quantity1 = document.getElementById('quantity' + i).value;
+        let unit_price1 = document.getElementById('unit_price' + i).value;
+        let result = parseFloat(quantity1 * unit_price1);
         if (!isNaN(result)) {
             document.getElementById('sum' + i).value = result;
         }
         sum_total();
     }
-	function cur_amount_total() {
-        var newTot = 0;
-        for (var a = 0; a <= i; a++) {
-            aVal = $('#cur_amount' + a);
-            if (aVal && aVal.length) {
-                newTot += aVal[0].value ? parseFloat(aVal[0].value) : 0;
-            }
+	function calculate_total_buy_amount() {
+        let subBuyAmount     =   $(".sub_buy_amount");
+        let subBuyTotal     =   0;
+
+        for(let mySubValue = 0;  mySubValue < subBuyAmount.length; mySubValue++){
+            subBuyTotal+= parseFloat($("#" + subBuyAmount[mySubValue].id).val());
+            console.log('subBuyTotal' + subBuyTotal);
         }
-        document.getElementById('allcur').value = newTot.toFixed(2);
+        
+        document.getElementById('allcur').value = subBuyTotal.toFixed(2);
+                
     }
     function sum_total() {
         var newTot = 0;
@@ -433,7 +429,20 @@
             }
         }
         document.getElementById('allsum').value = newTot.toFixed(2);
+        calculate_profit_amount();
     }
+
+    function calculate_profit_amount() {
+        let subBuyAmount     =   $("#allcur").val();
+        let subSellTotal     =   $("#allsum").val();
+        let profitTotal     =   parseFloat((subSellTotal - subBuyAmount));
+
+        
+        
+        document.getElementById('profitamount').value = profitTotal.toFixed(2);
+    }
+
+
 	$(function () {
 	  $("#allsum, #paid").keyup(function () {
 		$("#due").val(+$("#allsum").val() - +$("#paid").val());
