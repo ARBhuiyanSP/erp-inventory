@@ -234,7 +234,7 @@
 										
 										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" onkeyup="buy_amount(0)" class="form-control common_issue_quantity" required></td>
 					  
-                                        <td><input type="text" value="6" name="cur_price[]" id="buy_price0" class="form-control" required></td>
+                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required></td>
                                         <td><input type="text" name="cur_amounts[]" id="buy_amount0" class="form-control sub_buy_amount" required></td>
                                        
 										<td><input type="text" name="unit_price[]" id="unit_price0" onkeyup="sum(0)" class="form-control" required></td>
