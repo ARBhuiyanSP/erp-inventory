@@ -1,6 +1,10 @@
 <?php include 'header.php' ?>
 <!-- Left Sidebar End -->
-
+<style>
+.table-bordered thead th, .table-bordered thead tr th{
+	font-size:12px !important;
+}
+</style>
 <div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
@@ -180,12 +184,12 @@
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dynamic_field">
                                 <thead>
-                                <th width="25%">Material Name<span class="reqfield"> ***required</span></th>
+                                <th width="25%">Material Name </th>
                                 <th width="10%">Unit</th>
                                 <th width="10%">In Stock</th>
 								
 								
-                                <th width="10%">Qty<span class="reqfield"> ***required</span></th>
+                                <th width="10%">Qty </th>
 								<th width="10%">Buy Price</th>
 								<th width="10%">Buy Amount</th>
 								<th width="10%">Sale Price</th>
@@ -234,11 +238,13 @@
 										
 										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" onkeyup="buy_amount(0)" class="form-control common_issue_quantity" required></td>
 					  
-                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required></td>
-                                        <td><input type="text" name="cur_amounts[]" id="buy_amount0" class="form-control sub_buy_amount" required></td>
+
+                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required readonly ></td>
+                                        <td><input type="text" name="cur_amounts[]" id="buy_amount0" class="form-control sub_buy_amount" required readonly ></td>
+
                                        
 										<td><input type="text" name="unit_price[]" id="unit_price0" onkeyup="sum(0)" class="form-control" required></td>
-										<td><input type="text" name="amount[]" id="sum0" class="form-control sub_sell_amount"></td>
+										<td><input type="text" name="amount[]" id="sum0" class="form-control sub_sell_amount" readonly ></td>
 										
 										<!-- End: text QTY and Unit Price and Total amount -->
 										
@@ -271,13 +277,13 @@
 								</tr>
 								<tr>
 									<td>Due Amount</td>
-									<td><input type="text" class="form-control" name="due_amount" id="due" class="form-control"></td>
+									<td><input type="text" class="form-control" name="due_amount" id="due" class="form-control" readonly ></td>
 								</tr>
 								
 								
 								<tr>
 									<td>Profit</td>
-									<td><input type="text" class="form-control" name="profitamount" id="profitamount" class="form-control"></td>
+									<td><input type="text" class="form-control" name="profitamount" id="profitamount" class="form-control" readonly ></td>
 								</tr>
 								
 								
@@ -366,7 +372,7 @@
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['unit_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" value="6" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
+                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required readonly ></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required readonly ></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control" readonly ></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
 									$(".material_select_2").select2();
 									
 									<!-- COMMENTS: QTY AND UNIT PRICE AND TOTAL AMOUNT -->

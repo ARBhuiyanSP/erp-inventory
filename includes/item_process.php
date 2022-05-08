@@ -525,6 +525,7 @@ if(isset($_GET['process_type']) && $_GET['process_type'] == 'getItemCodeByParam'
         'qty_unit'  =>  $qty_unit,
         'totalStock'  =>  $totalStock,
         'brand_name'  =>  (isset($materialData->brand_name) && !empty($materialData->brand_name) ? $materialData->brand_name : ''),
+        'cur_price'  =>  (isset($materialData->cur_price) && !empty($materialData->cur_price) ? $materialData->cur_price : ''),
     ];    
     echo json_encode($feedback);
 }
