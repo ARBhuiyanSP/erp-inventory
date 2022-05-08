@@ -41,6 +41,16 @@ function getTableDataByTableName($table, $order = 'asc', $column='id', $dataType
     }
     return $dataContainer;
 }
+
+
+
+
+
+
+	
+	
+	
+	
 function getwarehouseinfo($table, $order = 'asc', $column='id', $dataType = '') {
     global $conn;
     $dataContainer  =   [];
@@ -201,6 +211,37 @@ function getDataRowByTableAndId1($table, $id1){
         return false;
     }
 }
+
+
+
+
+
+
+
+
+                      // varchar type value    WHERE party_id='$id1'";
+
+function getDataRowByTableAndIdPartner($table, $id1){
+    global $conn;
+    $sql    = "SELECT * FROM $table WHERE partner_id='$id1'";
+    $result = $conn->query($sql);
+    $name   =   '';
+    if ($result->num_rows > 0) {
+        return $result->fetch_object();
+    }else{
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

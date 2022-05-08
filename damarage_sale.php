@@ -1,23 +1,41 @@
 <?php include 'header.php' ?>
 <!-- Left Sidebar End -->
-
+<style>
+.table-bordered thead th, .table-bordered thead tr th{
+	font-size:12px !important;
+}
+</style>
 <div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="damage_report.php">Damarage Sales Report</a>
         </li>
-        <li class="breadcrumb-item active">Damarage Entry</li>
+       
+		
+		
+		        <li class="breadcrumb-item" style="text-align:right;">
+								
+								<?php  
+									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
+									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
+								
+								echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
+		</li>
+		
+		
+		
+		
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Damarage Entry Form</div>
+            Damarage sale Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
-                <form action="" method="post" name="add_damarage" id="damarage_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('damarage_entry_form');">
+                <form action="" method="post" name="add_damarage" id="damaaragesale_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('damaaragesale_entry_form');">
                     <div class="row" id="div1" style="">
                         <div class="col-xs-2">
                             <div class="form-group">
@@ -25,6 +43,7 @@
                                 <input type="text" autocomplete="off" name="ds_date" id="ds_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
+						
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>DS No</label>
@@ -35,14 +54,13 @@
                                     $result = mysqli_query($conn, $sql);
                                     $row = mysqli_fetch_array($result);
                                     $short_name = $row['short_name'];
-                                    $ssCode = 'DS-' . $short_name;
+                                    $dsCode = 'DS-' . $short_name;
                                 } else {
-                                    $ssCode = 'DS-CW';
+                                    $dsCode = 'DS-CW';
                                 }
                                 ?>
-            <input type="text" name="ds_id" id="ds_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $ssCode) ?>" readonly>
-			
-            <input type="hidden" name="ds_no" id="ds_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $ssCode) ?>">
+                                <input type="text" name="ds_id" id="ds_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $dsCode) ?>" readonly>
+                                <input type="hidden" name="ds_no" id="ds_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $dsCode) ?>">
                             </div>
                         </div>
 						
@@ -51,11 +69,20 @@
 						
 						
 						
+						<div class="col-xs-2">
+                            <div class="form-group">
+                                <label for="id">Manual DS No</label>
+                                <input type="text" name="memono" id="memono" class="form-control">
+                            </div>
+                        </div>
+						
+						
+						
 						
 						<div class="col-xs-2">
 							<div class="form-group">
 								<label for="id">Partner</label><span class="reqfield"> ***required</span>
-								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);" required >
 									<option value="">Select</option>
 									<?php
 									$parentCats = getTableDataByTableName('partner', '', 'name');
@@ -96,25 +123,20 @@
                         </div>
 						
 						
-						<input type="hidden" value="2" name="project_id" />
-						
-						
-                       
-						
-						
+                       <input type="hidden" value="2" name="project_id" />
                         <div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Warehouse</label>
+                            
+                                
 
                                 <?php
                                 $warehouse_id = $_SESSION['logged']['warehouse_id'];
                                 $dataresult = getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
                                 ?>
-                                <input type="text" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
+                                <input type="hidden" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
 
                                 <input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control" readonly="readonly" value="<?php echo $_SESSION['logged']['warehouse_id']; ?>">
 
-                            </div>
+                           
 
                             <!-- <div class="form-group">
     <label>Warehouse</label>
@@ -191,16 +213,16 @@
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dynamic_field">
                                 <thead>
-                                <th width="25%">Material Name<span class="reqfield"> ***required</span></th>
-                                <th width="10%">Material ID</th>
+                                <th width="25%">Material Name </th>
                                 <th width="10%">Unit</th>
-                                <th width="10%">Brand</th>
-                              
+                            
 								
 								
-                                <th width="10%">Qty<span class="reqfield"> ***required</span></th>
-								<th width="15%">Unit Price</th>
-                                <th width="15%">Amount</th>
+                                <th width="10%">Qty </th>
+								<th width="10%">Buy Price</th>
+								<th width="10%">Buy Amount</th>
+								<th width="10%">Sale Price</th>
+                                <th width="15%">Sale Amount</th>
 								
 								
                                 <th width="5%"></th>
@@ -208,7 +230,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <select class="form-control" id="material_name" name="material_name[]" required onchange="getItemCodeByParam(this.value, 'inv_material', 'material_id_code', 'material_id0', 'qty_unit');">
+                                            <select class="form-control" id="material_name" name="material_name[]" required onchange="getItemCodeByParam(this.value, 'inv_material', 'material_id_code', 'material_id0', 'qty_unit', 'cur_price');">
                                                 <option value="">Select</option>
                                                 <?php
                                                 $projectsData = get_product_with_category();
@@ -222,10 +244,10 @@
                                                 ?>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="material_id[]" id="material_id0" class="form-control" required readonly></td>
+                                        <input type="hidden" name="material_id[]" id="material_id0" class="form-control" required readonly>
                                         <td>
                                             <select class="form-control" id="unit0" name="unit[]" required readonly>
-                                                <option value="">Select Unit</option>
+                                                <option value="">Unit</option>
                                                 <?php
                                                 $projectsData = getTableDataByTableName('inv_item_unit', '', 'unit_name');
                                                 if (isset($projectsData) && !empty($projectsData)) {
@@ -238,39 +260,22 @@
                                                 ?>
                                             </select>
                                         </td>
-                                        <td>
-                                            <select class="form-control" id="brand0" name="brand[]" readonly>
-                                                <option value="">Select Brand</option>
-                                                <?php
-                                                $brandData = getmaterialbrand();
-                                                if (isset($brandData) && !empty($brandData)) {
-                                                    foreach ($brandData as $data) {
-                                                        ?>
-                                                        <option value="<?php echo $data['brand_name']; ?>"><?php echo $data['brand_name']; ?></option>
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </select>
-                                        </td>
 										
 										
 										
+										<!-- Start: text QTY and Unit Price and Total amount -->
 										
+										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" onkeyup="buy_amount(0)" class="form-control common_issue_quantity" required></td>
+					  
+                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required></td>
+                                        <td><input type="text" name="cur_amount[]" id="buy_amount0" class="form-control sub_buy_amount" required readonly ></td>
+                                       
+										<td><input type="text" name="unit_price[]" id="unit_price0" onkeyup="sum(0)" class="form-control" required></td>
+										<td><input type="text" name="amount[]" id="sum0" class="form-control sub_sell_amount" readonly ></td>
 										
-                                      
+										<!-- End: text QTY and Unit Price and Total amount -->
 										
-										
-										
-										
-										
-										<!-- Comments: text QTY and Unit Price and Total amount -->
-										
-                      <td><input type="text" name="quantity[]" id="quantity0" onkeyup="check_stock_quantity_validation(0)" class="form-control common_issue_quantity" required></td>
-					  <td><input type="text" name="unit_price[]" id="unit_price0" onchange="sum(0)" class="form-control" required></td>
-					  <td><input type="text" name="amount[]" id="sum0" class="form-control"></td>
-									  
-                          <td><button type="button" name="add" id="add" class="btn" style="background-color:#007BFF;color:#ffffff;">+</button></td>
+										<td><button type="button" name="add" id="add" class="btn" style="background-color:#007BFF;color:#ffffff;">+</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -286,7 +291,11 @@
 						<div class="col-sm-4">
 							<table class="table table-bordered">
 								<tr>
-									<td>Total Amount</td>
+									<td>Total Buy Amount</td>
+									<td><input type="text" class="form-control" maxlength="10" name="total_cur" id="allcur" readonly /></td>
+								</tr>
+								<tr>
+									<td>Total Sale Amount</td>
 									<td><input type="text" class="form-control" maxlength="10" name="total_amount" id="allsum" readonly /></td>
 								</tr>
 								<tr>
@@ -295,8 +304,17 @@
 								</tr>
 								<tr>
 									<td>Due Amount</td>
-									<td><input type="text" class="form-control" name="due_amount" id="due" class="form-control"></td>
+									<td><input type="text" class="form-control" name="due_amount" id="due" class="form-control" readonly ></td>
 								</tr>
+								
+								
+								<tr>
+									<td>Loss</td>
+									<td><input type="text" class="form-control" name="profitamount" id="profitamount" class="form-control" readonly ></td>
+								</tr>
+								
+								
+								
 							</table>
 						</div>
                     </div>
@@ -341,7 +359,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="modal-footer">
-                                    <input type="submit" name="damarage_submit" id="damarage_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
+                                    <input type="submit" name="damaragesale_submit" id="damaragesale_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
                                 </div>    
                             </div>
                         </div>
@@ -374,25 +392,21 @@
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['material_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><input type="text" name="material_id[]" id="material_id' + i + '" class="form-control" required readonly></td><td><select class="form-control select2" id="unit' + i + '" name="unit[]' + i + '" required onchange="getAppendItemCodeByParam(' + i + ",'inv_material'" + ",'material_id_code'" + ",'material_id''" + ",'qty_unit'" + ')"><option value="">Select</option><?php
+                                    ?></select></td><input type="hidden" name="material_id[]" id="material_id' + i + '" class="form-control" required readonly><td><select class="form-control select2" id="unit' + i + '" name="unit[]' + i + '" required onchange="getAppendItemCodeByParam(' + i + ",'inv_material'" + ",'material_id_code'" + ",'material_id''" + ",'qty_unit'" + ')"><option value="">Select</option><?php
                                     $projectsData = getTableDataByTableName('inv_item_unit', '', 'unit_name');
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['unit_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><select class="form-control select2" id="brand' + i + '" name="brand[]' + i + '"><option value="">Select</option><?php
-                                    $projectsData = getmaterialbrand();
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?><option value="<?php echo $data['brand_name']; ?>"><?php echo $data['brand_name']; ?></option><?php
-                                        }
-                                    }
-                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onkeyup="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity" required></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onchange="sum(0)" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
+                                    ?></select></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required  ></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required readonly ></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control" readonly ></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
 									$(".material_select_2").select2();
 									
 									<!-- COMMENTS: QTY AND UNIT PRICE AND TOTAL AMOUNT -->
-									
+			
+			$('#cur_price' + i + ', #unit_price' + i).change(function () {
+                buy_amount(i)
+            });						
             $('#quantity' + i + ', #unit_price' + i).change(function () {
                  sum(i)
             });
@@ -401,23 +415,43 @@
         $(document).on('click', '.btn_remove', function () {
             var button_id = $(this).attr("id");
             $('#row' + button_id + '').remove();
+            cur_amount_total();
             sum_total();
         });
     });
 
-    $(document).ready(function () {
-        //this calculates values automatically 
-        sum(0);
-    });
-
-    function sum(i) {
-        var quantity1 = document.getElementById('quantity' + i).value;
-        var unit_price1 = document.getElementById('unit_price' + i).value;
-        var result = parseFloat(quantity1) * parseFloat(unit_price1);
+    
+	function buy_amount(i) {
+        let myQty = document.getElementById('quantity' + i).value;
+        let myBuyPrice = document.getElementById('buy_price' + i).value;
+        let subBuyAmount = parseFloat(myQty * myBuyPrice);
+        if (!isNaN(subBuyAmount)) {
+            document.getElementById('buy_amount' + i).value = subBuyAmount.toFixed(2);
+        }
+        calculate_total_buy_amount();
+    }
+	
+ 
+	function sum(i) {
+        let quantity1 = document.getElementById('quantity' + i).value;
+        let unit_price1 = document.getElementById('unit_price' + i).value;
+        let result = parseFloat(quantity1 * unit_price1);
         if (!isNaN(result)) {
             document.getElementById('sum' + i).value = result;
         }
         sum_total();
+    }
+	function calculate_total_buy_amount() {
+        let subBuyAmount     =   $(".sub_buy_amount");
+        let subBuyTotal     =   0;
+
+        for(let mySubValue = 0;  mySubValue < subBuyAmount.length; mySubValue++){
+            subBuyTotal+= parseFloat($("#" + subBuyAmount[mySubValue].id).val());
+            console.log('subBuyTotal' + subBuyTotal);
+        }
+        
+        document.getElementById('allcur').value = subBuyTotal.toFixed(2);
+                
     }
     function sum_total() {
         var newTot = 0;
@@ -428,8 +462,22 @@
             }
         }
         document.getElementById('allsum').value = newTot.toFixed(2);
+        calculate_profit_amount();
     }
-	
+
+    function calculate_profit_amount() {
+        let subBuyAmount     =   $("#allcur").val();
+        let subSellTotal     =   $("#allsum").val();
+        let profitTotal     =   parseFloat((subSellTotal - subBuyAmount));
+		
+		let profitTotalabs    =   Math.abs((profitTotal));
+
+        
+        
+        document.getElementById('profitamount').value = profitTotalabs.toFixed(2);
+    }
+
+
 	$(function () {
 	  $("#allsum, #paid").keyup(function () {
 		$("#due").val(+$("#allsum").val() - +$("#paid").val());

@@ -275,10 +275,12 @@ if(isset($_GET['submit'])){
 	$to_date		=	$_GET['to_date'];
 	//$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
 	
-									    $sqlunit	=	"SELECT * FROM `party` WHERE `party_id` = '$party_id	' ";
+									    $sqlunit	=	"SELECT * FROM `party` WHERE `party_id` = '$party_id' ";
 										$resultunit = mysqli_query($conn, $sqlunit);
 										$rowunit=mysqli_fetch_array($resultunit);
 										$Party	= $rowunit['partyname'];
+										
+										
 	?>
 	
 <center>
@@ -304,8 +306,8 @@ if(isset($_GET['submit'])){
 							<th>Date</th>
 							<th>Ref no</th>
 							<th>Perticulars</th>
-							<th>Debit</th>
-							<th>Credit</th>
+							<th>Bill Amount</th>
+							<th>Paid Amount</th>
 							<th>Balance</th>
 						</tr>
 					</thead>

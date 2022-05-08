@@ -2,44 +2,22 @@
 .dtext{
 	text-decoration:underline;
 }
-.linktext{
-	font-size:12px;
+.table th, .table td{
+	padding:5px;
 }
+
 </style>
-
-
-
-
-
-
-
-
-
+<script src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569818907/jquery.table2excel.min.js"></script>
 <div class="card mb-3">
     <div class="card-header">
-	
-	
-	
-	
-	
-	
-	
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_report.php';"> Individual Material sales Report</button>
-		
-       
-		
-		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit  Report</button>
-		
-		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
-		
-		</div>
+        <i class="fas fa-search"></i>
+        All Party Accounts Staus report</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
                         <tr>  
-							
 							<td>
                                 <div class="form-group">
                                     <label for="todate">From Date</label>
@@ -80,103 +58,148 @@ if(isset($_GET['submit'])){
 	
 	
 ?>
-
-
-
-
-
-
 <center>
 	
 	<div class="row">
-		<div class="col-md-1"></div>
-		<div class="col-md-10" id="printableArea">
-			<div class="row">
-				<div class="col-sm-12">	
-					<center>
-						<p>
-							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>Material Groupwise Consumption Report</span><br>
-							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
-						</p>
-					</center>
-				</div>
-			</div>
-				<table id="" class="table table-bordered table-striped ">
+		<div class="col-md-12" id="printableArea">
+				<table id="htmltable" class="table table-bordered table-striped ">
 					<thead>
 						<tr>
-							<th>Material ID</th>
-							<th>Material Name</th>
-							<th>Unit</th>
+							<th colspan="9">
+								<center>
+										<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
+										<span>All Supplier Account Status Report</span><br>
+										From  <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?> </span>To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span>
+								</center>
+							</th>
+						</tr>
+						<tr>
+							<th width="15%">Party ID</th>
+							<th width="30%">Party Name</th>
 							
-							<th>Quantity</th>
+							
+							<th>Bill Amount</th>
+							<th>Paid Amount</th>
+							
+							<th width="15%">Due Balance</th>
 							
 						</tr>
 					</thead>
 					<tbody>
-					<?php
+					
+					
+					
+					
+					
+    <?php
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM qry_inv_issue WHERE issue_date BETWEEN '$from_date' AND '$to_date'  GROUP BY `material_id`";
+							$sql	=	"SELECT * FROM `inv_partybalance` GROUP BY `pb_party_id`";
 						}else{
-					$sql	=	"SELECT * FROM qry_inv_issue WHERE warehouse_id = $warehouse_id AND issue_date BETWEEN '$from_date' AND '$to_date'  GROUP BY `material_id`";
+							$sql	=	"SELECT * FROM `inv_partybalance` WHERE `warehouse_id` = $warehouse_id GROUP BY `pb_party_id`";
 						}
-						
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
 						{
 					?>
-						<tr>
-							<td><?php echo $row['material_id']; ?></td>
+					
+					
+					
+					
+					
+					
+<tr>
+						
+						    <!-- PARTY ID -->
+						
+							<td><?php echo $row['pb_party_id']; ?></td>
+							
+							
+							<!-- PARTY NAME -->
+							
 							<td>
 								<?php 
-								$material_id = $row['material_id'];
-								$sqlname	=	"SELECT * FROM `inv_material` WHERE `material_id_code` = '$material_id' ";
+								$pb_party_id = $row['pb_party_id'];
+								$sqlname	=	"SELECT * FROM `party` WHERE `party_id` = '$pb_party_id' ";
 								$resultname = mysqli_query($conn, $sqlname);
 								$rowname=mysqli_fetch_array($resultname);
-								echo $rowname['material_description'];
+								echo $rowname['partyname'];
 								?>
 							</td>
-							<td>
+							
+							
+							
+							
+							
+							<!-- Debit AMOUNT -->
+							<td style="text-align:right;">
 								<?php 
-								$qty_unit = $rowname['qty_unit'];
-								$sqlunit	=	"SELECT * FROM `inv_item_unit` WHERE `id` = '$qty_unit' ";
-								$resultunit = mysqli_query($conn, $sqlunit);
-								$rowunit=mysqli_fetch_array($resultunit);
-								echo $rowunit['unit_name'];
-								
+									if($_SESSION['logged']['user_type'] !== 'whm'){
+										$sqlinqty = "SELECT SUM(`pb_dr_amount`) AS totaldebit FROM `inv_partybalance` WHERE `pb_party_id` = '$pb_party_id'  and pb_date BETWEEN '$from_date' AND '$to_date'";
+									}else{
+										$sqlinqty = "SELECT SUM(`pb_dr_amount`) AS totaldebit FROM `inv_partybalance` WHERE warehouse_id = $warehouse_id  and `pb_party_id` = '$pb_party_id' AND pb_date BETWEEN '$from_date' AND '$to_date'";
+									}
+									
+									$resultinqty = mysqli_query($conn, $sqlinqty);
+									$rowinqty = mysqli_fetch_object($resultinqty) ;
+									$totdebit = $rowinqty->totaldebit;
+									echo number_format((float)$totdebit, 2, '.', '');
 								?>
-								
 							</td>
 							
 							
-						
 							
 							
-							<td style="text-align:right;"><?php
+							
+							<!-- Credit AMOUNT -->
+							
+							<td style="text-align:right;">
+							<?php 
 							if($_SESSION['logged']['user_type'] !== 'whm'){
-								$sqloutqty = "SELECT SUM(`issue_qty`) AS totalout FROM `qry_inv_issue` WHERE `material_id`='$material_id' AND `issue_date` BETWEEN '$from_date' AND '$to_date'  GROUP BY `material_id`";
+							$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE `pb_party_id` = '$pb_party_id' AND pb_date BETWEEN '$from_date' AND '$to_date'";
 							}else{
-								$sqloutqty = "SELECT SUM(`issue_qty`) AS totalout FROM `qry_inv_issue` WHERE `material_id`='$material_id' AND `warehouse_id` = '$warehouse_id' AND `issue_date` BETWEEN '$from_date' AND '$to_date'  GROUP BY `material_id`";
+							$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE warehouse_id = $warehouse_id  AND `pb_party_id` = '$pb_party_id'  AND pb_date BETWEEN '$from_date' AND '$to_date'";
 							}
 							
 							$resultoutqty = mysqli_query($conn, $sqloutqty);
 							$rowoutqty = mysqli_fetch_object($resultoutqty) ;
-							//echo $rowoutqty->totalout;
-							echo number_format((float)$rowoutqty->totalout, 2, '.', '');
+							$totcredit = $rowoutqty->totalcredit;
+							echo number_format((float)$totcredit, 2, '.', '');
+							?>
+							</td>
 							
 							
-							?></td>
+							
+							
+							
+								
 							
 							
 							
 							
-						</tr>
+							
+							
+							
+							<!-- BALANCE -->
+							<td style="text-align:right;">
+								<?php $balance =  $totdebit -$totcredit; echo number_format((float)$balance, 2, '.', '');?>
+							</td>
+							
+						
+							
+</tr>
+						
+						
+						
+						
+						
+						
+						
 						<?php
 							}
 							$rowcount=mysqli_num_rows($result);
 							if($rowcount < 1) { ?>
 								<tr><td colspan="6"><center>No Data Found</center></td></tr>
-							<?php } ?>
+	<?php } ?>
 					</tbody>
 				</table>
 				<center><div class="row">
@@ -191,10 +214,19 @@ if(isset($_GET['submit'])){
 				</div>
 			</div>			
 		</div>
-		<center><button class="btn btn-default" onclick="printDiv('printableArea')"><i class="fa fa-print" aria-hidden="true" style="    font-size: 17px;"> Print</i></button></center>
-		<div class="col-md-1"></div>
+		<center><button class="btn btn-default" onclick="printDiv('printableArea')"><i class="fa fa-print" aria-hidden="true" style="font-size: 17px;"> Print</i></button><button id="exporttable" class="btn btn-default"><i class="fas fa-file-excel" aria-hidden="true" style="font-size: 17px;"> Export xls</i></button></center>
+		
 </center>
+
+
+
+
+
 <?php }?>
+
+
+
+
 <script>
 function printDiv(divName) {
 	 var printContents = document.getElementById(divName).innerHTML;
@@ -228,6 +260,26 @@ function printDiv(divName) {
             changeMonth: true
         });
     });
+</script>
+<script>
+$(function() {
+$("#exporttable").click(function(e){
+var table = $("#htmltable");
+if(table && table.length){
+$(table).table2excel({
+exclude: ".noExl",
+name: "Excel Document Name",
+filename: "BBBootstrap" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
+fileext: ".xls",
+exclude_img: true,
+exclude_links: true,
+exclude_inputs: true,
+preserveColors: false
+});
+}
+});
+
+});
 </script>
 
 

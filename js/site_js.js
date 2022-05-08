@@ -440,6 +440,10 @@ function getItemCodeByParam(id, table, field, selector, qty_unit = '') {
                 if (response.brand_name) {
                     $('#brand0').val(response.brand_name);
                 }
+				
+                if (response.cur_price) {
+                    $('#buy_price0').val(response.cur_price);
+                }
             }
         });
     } else {
@@ -477,6 +481,9 @@ function getAppendItemCodeByParam(id, table, field, selector, qty_unit = '') {
                 }
                 if (response.brand_name) {
                     $('#brand' + id).val(response.brand_name);
+                }
+				if (response.cur_price) {
+                    $('#buy_price' + id).val(response.cur_price);
                 }
             }
         });

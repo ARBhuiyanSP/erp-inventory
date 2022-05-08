@@ -67,7 +67,9 @@ include 'header.php';
                                 <label>Payment Type</label>
                                 <select name="paymenttype" id="paymenttype" class="form-control">
 									<option value="cash">Cash</option>
-									<option value="credit">Credit</option>
+									<option value="Bank">Bank</option>
+									<option value="Bkash">Bkash</option>
+									<option value="Nagod">Nagod</option>
 								</select>
                             </div>
                         </div>
@@ -80,13 +82,22 @@ include 'header.php';
                                 <input type="text" name="amount" id="amount" class="form-control">
                             </div>
                         </div>
-						<div class="col-xs-6">
+						
+						<div class="col-xs-4">
                             <div class="form-group">
-                                <label>Remarks</label>
-								<textarea rows="5" name="remarks" id="remarks" class="form-control"></textarea>
+                                <label>Receiver Mode</label>
+                                <input type="text" name="receivermode" id="receivermode" class="form-control">
                             </div>
                         </div>
+						
+						
 						<div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Remarks</label>
+								<textarea rows="4" name="remarks" id="remarks" class="form-control"></textarea>
+                            </div>
+                        </div>
+						<div class="col-xs-2">
                             <div class="form-group">
                                 <label>File Upload</label>
 								<input type="file" accept="image/*" name="sn_prt_image" onchange="loadFile(event)">
@@ -103,7 +114,7 @@ include 'header.php';
 								</script>
                             </div>
                         </div>
-						<div class="col-xs-3">
+						<div class="col-xs-2">
                             
 							<div style="border:1px solid gray;border-radius:5px;height:150px;width:150px;">
 								<img id="output" height="150px" width="150px"/>
@@ -173,4 +184,18 @@ include 'header.php';
 
 </div>
 <!-- /.container-fluid -->
+
+<script>
+	$(function() {
+	$("#voucherdate").datepicker({
+			inline: true,
+			dateFormat:"yy-mm-dd",
+			yearRange:"-50:+10",
+			changeYear: true,
+			changeMonth: true
+	});
+});
+</script>
+
+
 <?php include 'footer.php' ?>

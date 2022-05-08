@@ -5,7 +5,7 @@
  */
 if (isset($_POST['payment_submit']) && !empty($_POST['payment_submit'])) {
 
-        
+        $sp_photo= '';
         /*
          *  Insert Data Into inv_receivedetail Table:
         */ 
@@ -14,6 +14,8 @@ if (isset($_POST['payment_submit']) && !empty($_POST['payment_submit'])) {
 		$supplierid		    = $_POST['supplierid'];
 		$paymenttype		= $_POST['paymenttype'];
 		$amount		        = $_POST['amount'];
+		$receivermode		= $_POST['receivermode'];
+		
 	    $remarks		    = $_POST['remarks'];
 
 		if (is_uploaded_file($_FILES['sn_prt_image']['tmp_name'])) 
@@ -25,13 +27,13 @@ if (isset($_POST['payment_submit']) && !empty($_POST['payment_submit'])) {
 
 		
                
-        $query = "INSERT INTO `supplier_payment` (`voucherid`,`voucherdate`,`supplierid`,`paymenttype`,`amount`,`remarks`,`sp_photo`) VALUES ('$voucherid','$voucherdate','$supplierid','$paymenttype','$amount','$remarks','$sp_photo')";
+         $query = "INSERT INTO `supplier_payment` (`voucherid`,`voucherdate`,`supplierid`,`paymenttype`,`amount`,`receivermode`,`remarks`,`sp_photo`) VALUES ('$voucherid','$voucherdate','$supplierid','$paymenttype','$amount','$receivermode','$remarks','$sp_photo')";
         $conn->query($query);
 		
 		
 		
 		
-		  $query3 = "INSERT INTO `inv_supplierbalance` (`sb_ref_id`,`sb_date`,`sb_supplier_id`,`sb_dr_amount`,`sb_cr_amount`,`sb_remark`,`sb_partac_id`) VALUES ('$voucherid','$voucherdate','$supplierid','$amount','0','$remarks','$voucherid')";
+		  $query3 = "INSERT INTO `inv_supplierbalance` (`sb_ref_id`,`sb_date`,`sb_supplier_id`,`sb_dr_amount`,`sb_cr_amount`,`receivermode`,`paymenttype`,`sb_remark`,`sb_partac_id`) VALUES ('$voucherid','$voucherdate','$supplierid','$amount','0','$receivermode','$paymenttype','$remarks','$voucherid')";
           $result2 = $conn->query($query3);
 	
 	

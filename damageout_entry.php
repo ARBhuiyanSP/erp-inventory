@@ -294,7 +294,7 @@
 </script>
 <script>
     $(function () {
-        $("#issue_date").datepicker({
+        $("#damageout_date").datepicker({
             inline: true,
             dateFormat: "yy-mm-dd",
             yearRange: "-50:+10",

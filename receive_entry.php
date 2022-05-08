@@ -269,7 +269,9 @@
 							<table class="table table-bordered">
 								<tr>
 									<td width="" style="">VAT Challan No<span class="reqfield"> ***required</span></td>
-									<td><input type="text" class="form-control" maxlength="30" name="vat_challan_no" required /></td>
+									<td><input type="text" class="form-control" maxlength="30" value="NAV" name="vat_challan_no" required /></td>
+									
+									
 									<td width="" style="text-align:right;">Total Amount</td>
 									<td><input type="text" class="form-control" maxlength="30" name="sub_total_amount" id="allsum" readonly /></td>
 								</tr>
@@ -309,7 +311,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <label>Remarks</label>
-                                <textarea id="remarks" name="remarks" class="form-control" required></textarea>
+                                <textarea id="remarks"  name="remarks" class="form-control" required> NAR</textarea>
                             </div>
                         </div>
                         <div class="col-xs-12">

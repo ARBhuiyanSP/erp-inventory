@@ -1,16 +1,11 @@
-
-							
 <style>
 .dtext{
 	text-decoration:underline;
 }
-.linktext{
-	font-size:12px;
-}
 </style>
 <div class="card mb-3">
-    <div class="card-header">
-		<button class="btn btn-success linktext"> Individual Material sales Report</button>
+   <div class="card-header">
+			<button class="btn btn-success linktext"onclick="window.location.href='consumption_report.php';"> Individual Material sales Report</button>
 		
 		
 		
@@ -18,25 +13,21 @@
 		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit Report</button>
 		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
 		
-		
 		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>
 		
-		
-		
+		<button class="btn btn-info linktext" onclick="window.location.href='salesdetailmemo_report.php';"> Memo wise Sales Detail Report</button>
 		
 	</div>
-		
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
-                        <tr> 
-							
+                        <tr>  
 							<td>
                                 <div class="form-group">
                                     <label for="todate">From Date</label>
-                                    <input type="text" class="form-control" id="from_date" value="<?php if(isset($_GET['from_date'])){ echo $_GET['from_date']; } ?>" name="from_date" autocomplete="off" required >
+                                    <input type="text" class="form-control" id="from_date" name="from_date" value="<?php if(isset($_GET['from_date'])){ echo $_GET['from_date']; } ?>" autocomplete="off" required >
                                 </div>
                             </td>
 							<td>
@@ -65,7 +56,6 @@ if(isset($_GET['submit'])){
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
-
 	
 	
 ?>
@@ -79,160 +69,134 @@ if(isset($_GET['submit'])){
 					<center>
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>Date Wise Sales  Report</span><br>
+							<span>Material Receive Report</span><br>
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
 				</div>
 			</div>
-				<table id="" class="table table-bordered table-striped ">
+				<table id="" class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Memo No</th>
-							<th>Memo Date</th>
-							<th>Partner Name</th>
-							<th>Party Name</th>
 							
-							<th>Buy amount</th>
+							<th>Material Name</th>
+							<th>Issue Qty</th>
+							<th>Buy Price</th>
+							<th>Buy Amount</th>
+							<th>Sale Price</th>
 							<th>Sale amount</th>
-							
-							<th>Discount</th>
-							<th>Net Sale</th>
-
-							
-							<th>Paid amount</th>
-							<th>Due amount</th>
 							<th>Profit amount</th>
 						</tr>
 					</thead>
 					<tbody>
-					
-					
-					
-					
-					
-					<?php
-					
-						$totalsumamount = 0;
-						$totalpaidamount=0;
-						$totaldueamount=0;
-						$totalprofitamount=0;
-						$totaldiscount_amount=0;
-						$totalnetsale_amount=0;
-						
-						
-						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_issue` WHERE  `issue_date` BETWEEN '$from_date' AND '$to_date'";
-						}else{
-							$sql	=	"SELECT * FROM `inv_issue` WHERE `warehouse_id` = '$warehouse_id'  `issue_date` BETWEEN '$from_date' AND '$to_date'";
-						}
-						$result = mysqli_query($conn, $sql);
-
-						while($row=mysqli_fetch_array($result))
-						{
-							$totalsumamount += $row['totalamount'];
-							
-							$totaldiscount_amount += $row['discount_amount'];
-							$totalnetsale_amount  += $row['netsale_amount'];
-							
-							$totalpaidamount += $row['paidamount'];
-							$totaldueamount += $row['Dueamount'];
-							$totalprofitamount += $row['profitamount'];
-							
-							
-					?>
-					
-					
-					
-					
-				<tr>
-							<td><?php echo $row['issue_id']; ?></td>
-							
-							<td><?php echo $row['issue_date']; ?></td>
-							
-							
-							<td>
-							<?php 
-											$dataresult =   getDataRowByTableAndId('partner', $row['partner_id']);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
-							?></td>
-							
-							
-								<td><?php 
-											$dataresult =   getDataRowByTableAndId1('party', $row['party_id']);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
-										?></td>
-							
-							
-							
-							
-							
-							
-						
-
-							<td style="text-align:right;"><?php echo number_format((float)$row['totalcur'], 2, '.', ''); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$row['totalamount'], 2, '.', ''); ?></td>
-							
-							<td style="text-align:right;"><?php echo number_format((float)$row['discount_amount'], 2, '.', ''); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$row['netsale_amount'], 2, '.', ''); ?></td>							
-							
-							
-							<td style="text-align:right;"><?php echo number_format((float)$row['paidamount'], 2, '.', ''); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$row['Dueamount'], 2, '.', ''); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$row['profitamount'], 2, '.', ''); ?></td>
-				</tr>
 						<?php
-							}?>
+						
+						
+						 
+						 
+							if($_SESSION['logged']['user_type'] !== 'whm'){
+								$sql	=	"SELECT * FROM `inv_issuedetail` where `issue_date` BETWEEN '$from_date' AND '$to_date' group by memono;";
+							}else{
+								$sql	=	"SELECT * FROM `inv_issuedetail` where `warehouse_id` = '$warehouse_id' AND `issue_date` BETWEEN '$from_date' AND '$to_date' group by memono;";
+							}
 							
+							$result = mysqli_query($conn, $sql);
+							while($row=mysqli_fetch_array($result))
+							{
+								
 							
+								
+						?>
+						
+				
+						
+						
+						<tr style="background-color:#E9ECEF;">
+							<td>Issue No : <?php echo $row['issue_id']; ?></td>
+							<td>Date : <?php echo date("jS F Y", strtotime($row['issue_date']));?></td>
+							<td>Memo No : <b><?php echo $row['memono']; ?></b></td>
+							<td colspan="3">Partner : <?php 
+								$partner_id = $row['partner_id'];
+								$sqlunit	=	"SELECT * FROM `partner` WHERE `id` = '$partner_id' ";
+								$resultunit = mysqli_query($conn, $sqlunit);
+								$rowunit=mysqli_fetch_array($resultunit);
+								echo $rowunit['name'];
+								?>
+							</td>
 							
+								<td colspan="4">Party : <?php 
+								$party_id = $row['party_id'];
+								$sqlunit	=	"SELECT * FROM `party` WHERE `party_id` = '$party_id' ";
+								$resultunit = mysqli_query($conn, $sqlunit);
+								$rowunit=mysqli_fetch_array($resultunit);
+								echo $rowunit['partyname'];
+								?>
+							</td>
+							
+						</tr>
+						
+						
+						
+						<?php
+                         $dissue_qty=0;
+						 $dcur_price=0;
+						 $dcur_price_amount = 0;
+						
+						 $dissue_price=0;
+						 $damount=0;
+						
+						 $profitsumamount=0;
+							$memono = $row['memono'];
+							$sqlall	=	"SELECT * FROM `inv_issuedetail` WHERE `memono` = '$memono';";
+							$resultall = mysqli_query($conn, $sqlall);
+							while($rowall=mysqli_fetch_array($resultall))
+							{
+								$dissue_qty += $rowall['issue_qty'];
+								$dcur_price_amount += $rowall['cur_price_amount'];
+								$damount += $rowall['amount'];
+								$profitsumamount +=  $rowall['amount']-$rowall['cur_price_amount'];
+						?>
 						<tr>
-							<td colspan="5" class="grand_total" style="text-align:right;">Grand Total:</td>
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totalsumamount, 2, '.', '');
-								?>
+							
+							<td><?php 
+								$mb_materialid = $rowall['material_id'];
+								$sqlname	=	"SELECT * FROM `inv_material` WHERE `material_id_code` = '$mb_materialid' ";
+								$resultname = mysqli_query($conn, $sqlname);
+								$rowname=mysqli_fetch_array($resultname);
+								echo $rowname['material_description'];
+							?>
 							</td>
 							
 							
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totaldiscount_amount, 2, '.', '');
-								?>
-							</td>
-							
-							
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totalnetsale_amount, 2, '.', '');
-								?>
-							</td>
-							
-							
+							<td style="text-align:center;"><?php echo number_format((float)$rowall['issue_qty']); ?></td>
+							<td style="text-align:right;"><?php echo number_format((float)$rowall['cur_price']); ?></td>
+							<td style="text-align:center;"><?php echo number_format((float)$rowall['cur_price_amount'], 2, '.', ''); ?></td>
+							<td style="text-align:right;"><?php echo number_format((float)$rowall['issue_price'], 2, '.', ''); ?></td>
+							<td style="text-align:center;"><?php echo number_format((float)$rowall['amount'], 2, '.', ''); ?></td>
 							
 							<td style="text-align:right;">
-								<?php echo number_format((float)$totalpaidamount, 2, '.', '');
-								?>
+								<?php $profitamount =  $rowall['amount']-$rowall['cur_price_amount']; echo number_format((float)$profitamount, 2, '.', '');?>
 							</td>
+						</tr>
+						<?php } ?>
+						<tr>
+							<td colspan="1" class="sub_total">Total Qty:</td>
+							<td style="text-align:center;"><b><?php echo $dissue_qty; ?></b></td>
+							<td></td>
+						
+							<td style="text-align:center;"><b><?php echo $dcur_price_amount; ?></b></td>
+							<td></td>
+							<td style="text-align:center;"><b><?php echo $damount; ?></b></td>
 							
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totaldueamount, 2, '.', '');
-								?>
-							</td>
 							
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totalprofitamount, 2, '.', '');
-								?>
-							</td>
-							
+							<td style="text-align:center;"><b><?php echo $profitsumamount; ?></b></td>
 							
 						</tr>
 						
 						
 						
 						
-						<?php 
-							$rowcount=mysqli_num_rows($result);
-							if($rowcount < 1) { ?>
-								<tr><td colspan="6"><center>No Data Found</center></td></tr>
-							<?php } ?>
+						<?php } ?>
 					</tbody>
 				</table>
 				<center><div class="row">
@@ -251,9 +215,6 @@ if(isset($_GET['submit'])){
 		<div class="col-md-1"></div>
 </center>
 <?php }?>
-
-
-
 <script>
 function printDiv(divName) {
 	 var printContents = document.getElementById(divName).innerHTML;

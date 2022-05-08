@@ -3,7 +3,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Receive Report Filters</a>
+            <a href="allsupplierbalance_report.php">All supplier Balance Report</a>
         </li>
         <li class="breadcrumb-item active">List</li>
     </ol>

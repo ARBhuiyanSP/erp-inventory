@@ -10,26 +10,24 @@
 <script src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569818907/jquery.table2excel.min.js"></script>
 <div class="card mb-3">
     <div class="card-header">
-	
-	
-	
-   
-		
-	 <!--	<button class="btn btn-info linktext" onclick="window.location.href='movementdamage_report.php';"> Replace Stock Report</button> -->
-		
-	<button class="btn btn-info linktext" onclick="window.location.href='replacepartnerpartymovement_report.php';"> Partner and Part wise movement Report</button>
-		
-		
-		
-		</div>
-		
-		
+        <i class="fas fa-search"></i>
+        All Supplier  Balance Status report</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
-                        <tr>  
+                        <tr> 
+
+
+
+	
+						
+						
+						
+						
+
+						
 							<td>
                                 <div class="form-group">
                                     <label for="todate">From Date</label>
@@ -69,6 +67,7 @@ if(isset($_GET['submit'])){
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
 	
 	
+	
 ?>
 <center>
 	
@@ -80,20 +79,20 @@ if(isset($_GET['submit'])){
 							<th colspan="9">
 								<center>
 										<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-										<span>Replace Material Movement Report</span><br>
+										<span>All Supplier Account Status Report</span><br>
 										From  <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?> </span>To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span>
 								</center>
 							</th>
 						</tr>
 						<tr>
-							<th width="15%">Material ID</th>
-							<th width="30%">Material Name</th>
-							<th>Unit</th>
-							<th width="10%">Opening Stock</th>
-							<th>Replace Receive</th>
-							<th>Replace Issue</th>
+							<th width="15%">Party ID</th>
+							<th width="30%">Party Name</th>
 							
-							<th width="15%">Closing Stock</th>
+							
+							<th>Bill amount</th>
+							<th>Paid amount</th>
+							
+							<th width="15%">Due Balance</th>
 							
 						</tr>
 					</thead>
@@ -104,14 +103,21 @@ if(isset($_GET['submit'])){
 					
 					
     <?php
+	 
+
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_damagebalance` GROUP BY `mb_materialid`";
+							$sql	=	"SELECT * FROM `inv_supplierbalance`  GROUP BY `sb_supplier_id`";
 						}else{
-							$sql	=	"SELECT * FROM `inv_damagebalance` WHERE `warehouse_id` = $warehouse_id GROUP BY `mb_materialid`";
+							$sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `warehouse_id` = $warehouse_id' GROUP BY `sb_supplier_id`";
 						}
 						$result = mysqli_query($conn, $sql);
+						
+						$balance_sum 	=	0; //total sum balance amount variable declare
+						
 						while($row=mysqli_fetch_array($result))
 						{
+							
+							
 					?>
 					
 					
@@ -121,113 +127,59 @@ if(isset($_GET['submit'])){
 					
 <tr>
 						
-						    <!-- MATERIAL ID -->
+						    <!-- PARTY ID -->
 						
-							<td><?php echo $row['mb_materialid']; ?></td>
+							<td><?php echo $row['sb_supplier_id'];
+                            $sb_supplier_id=$row['sb_supplier_id'];
+
+							?></td>
 							
 							
-							<!-- MATERIAL NAME -->
+							<!-- PARTY NAME -->
 							
 							<td>
 								<?php 
-								$mb_materialid = $row['mb_materialid'];
-								$sqlname	=	"SELECT * FROM `inv_material` WHERE `material_id_code` = '$mb_materialid' ";
+								$sb_supplier_id = $row['sb_supplier_id'];
+								$sqlname	=	"SELECT * FROM `suppliers` WHERE `code` = '$sb_supplier_id' ";
 								$resultname = mysqli_query($conn, $sqlname);
 								$rowname=mysqli_fetch_array($resultname);
-								echo $rowname['material_description'];
-								?>
-							</td>
-							
-							
-							<!-- UNIT -->
-							<td>
-								<?php 
-								$qty_unit = $rowname['qty_unit'];
-								$sqlunit	=	"SELECT * FROM `inv_item_unit` WHERE `id` = '$qty_unit' ";
-								$resultunit = mysqli_query($conn, $sqlunit);
-								$rowunit=mysqli_fetch_array($resultunit);
-								echo $rowunit['unit_name'];
-								
-								?>
-								
-							</td>
-							
-							
-							<!-- OPENING STOCK -->
-							
-							
-							<td style="text-align:right;">
-								<?php 
-									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_damagebalance` WHERE `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
-									}else{
-										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_damagebalance` WHERE `warehouse_id` = '$warehouse_id' AND `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
-									}
-									
-									$resultpreinqty = mysqli_query($conn, $sqlpreinqty);
-									$rowpreinqty = mysqli_fetch_object($resultpreinqty);
-									
-									if($rowpreinqty->totalpre > 0){
-										$opening_stock = $rowpreinqty->totalpre;
-									}
-									else {
-											$opening_stock = 0;
-										}
-									//echo $opening_stock;
-									echo number_format((float)$opening_stock, 2, '.', '');
-								?>
-							</td>
-							
-							
-							<!-- Replace Receive -->
-							<td style="text-align:right;">
-								<?php 
-									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_damagebalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='REPLACE RECEIVE' and mb_date BETWEEN '$from_date' AND '$to_date'";
-									}else{
-										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_damagebalance` WHERE warehouse_id = $warehouse_id AND `mbtype`='REPLACE RECEIVE' and `mb_materialid` = '$mb_materialid' AND mb_date BETWEEN '$from_date' AND '$to_date'";
-									}
-									
-									$resultinqty = mysqli_query($conn, $sqlinqty);
-									$rowinqty = mysqli_fetch_object($resultinqty) ;
-									$stockin = $rowinqty->totalin;
-									echo number_format((float)$stockin);
+								echo $rowname['name'];
 								?>
 							</td>
 							
 							
 							
-							
-							
-							<!-- Replace Out -->
+								<!-- Credit AMOUNT -->
 							
 							<td style="text-align:right;">
 							<?php 
 							if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_damagebalance` WHERE `mb_materialid` = '$mb_materialid' AND `mbtype`='REPLACE OUT' AND mb_date BETWEEN '$from_date' AND '$to_date'";
+					$sqloutqty = "SELECT SUM(`sb_cr_amount`) AS totalcredit FROM `inv_supplierbalance` WHERE `sb_supplier_id` = '$sb_supplier_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date'";
 							}else{
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_damagebalance` WHERE warehouse_id = $warehouse_id  AND `mb_materialid` = '$mb_materialid' AND `mbtype`='REPLACE OUT' AND mb_date BETWEEN '$from_date' AND '$to_date'";
+					$sqloutqty = "SELECT SUM(`sb_cr_amount`) AS totalcredit FROM `inv_supplierbalance` WHERE warehouse_id = $warehouse_id  AND `sb_supplier_id` = '$sb_supplier_id'  AND `sb_date` BETWEEN '$from_date' AND '$to_date'";
 							}
 							
 							$resultoutqty = mysqli_query($conn, $sqloutqty);
 							$rowoutqty = mysqli_fetch_object($resultoutqty) ;
-							$stockout = $rowoutqty->totalout;
-							echo number_format((float)$stockout);
+							$totcredit = $rowoutqty->totalcredit;
+							echo number_format((float)$totcredit, 2, '.', '');
 							?>
 							</td>
 							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							<!-- RETURN -->
+							<!-- Debit AMOUNT -->
 							<td style="text-align:right;">
-								<?php $closingStock = $opening_stock + $stockin -$stockout; echo number_format((float)$closingStock);?>
+								<?php 
+									if($_SESSION['logged']['user_type'] !== 'whm'){
+					 $sqlinqty = "SELECT SUM(`sb_dr_amount`) AS totaldebit FROM `inv_supplierbalance` WHERE  `sb_supplier_id` = '$sb_supplier_id'  and `sb_date` BETWEEN '$from_date' AND '$to_date'";
+									}else{
+					$sqlinqty = "SELECT SUM(`sb_dr_amount`) AS totaldebit FROM `inv_supplierbalance` WHERE warehouse_id = $warehouse_id  and  `sb_supplier_id` = '$sb_supplier_id' AND sb_date BETWEEN '$from_date' AND '$to_date'";
+									}
+									
+									$resultinqty = mysqli_query($conn, $sqlinqty);
+									$rowinqty = mysqli_fetch_object($resultinqty) ;
+									$totdebit = $rowinqty->totaldebit;
+									echo number_format((float)$totdebit, 2, '.', '');
+								?>
 							</td>
 							
 							
@@ -237,27 +189,50 @@ if(isset($_GET['submit'])){
 						
 							
 							
+						
 							
 							
+							<!-- BALANCE -->
 							
+							<td style="text-align:right;">
+								<?php
+
+							$balance =  $totcredit - $totdebit; echo number_format((float)$balance, 2, '.', ''); //row balance amount debit - credit
+								
+							$balance_sum+=$balance; //total sum balance amount 
+									
+								?>
+							</td>
 							
-							
-							
+						
 							
 </tr>
+
+
 						
-						
-						
-						
-						
-						
+
 						
 						<?php
-							}
+							} // end of for loop;
+						?>
+						
+						
+						
+						<tr>
+						
+							<td colspan="4" style="text-align:right">Total Due Balance</td>
+							<td style="text-align:right"><?php echo number_format((float)$balance_sum, 2, '.', ''); ?></td>
+						
+						</tr>
+						
+						<?php 
+						
 							$rowcount=mysqli_num_rows($result);
 							if($rowcount < 1) { ?>
 								<tr><td colspan="6"><center>No Data Found</center></td></tr>
-	<?php } ?>
+	<?php 
+	} // end of for loop;
+	?>
 					</tbody>
 				</table>
 				<center><div class="row">

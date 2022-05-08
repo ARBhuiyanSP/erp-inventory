@@ -12,12 +12,13 @@
     <div class="card-header">
 		<button class="btn btn-success linktext"> Individual Material sales Report</button>
 		
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_group_report.php';"> Material Groupwise Sales Report</button>
+	
 		
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit Report</button>
-		
 		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
+		
+		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>
 		
 		
 	</div>
@@ -112,7 +113,7 @@ if(isset($_GET['submit'])){
 						<tr>
 							<th>Bill No</th>
 							<th>Bill date</th>
-							<th>Party ID</th>
+							<th>Partner ID</th>
 							<th>total amount</th>
 							<th>Profit amount</th>
 							<th>Profit Share amount</th>

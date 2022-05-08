@@ -10,13 +10,17 @@
 </style>
 <div class="card mb-3">
     <div class="card-header">
+			<button class="btn btn-success linktext"onclick="window.location.href='consumption_report.php';"> Individual Material sales Report</button>
 		
 		
 		
-		<button class="btn btn-info linktext">  Date wise Scrap Sales Report</button>
-		<button class="btn btn-info linktext" onclick="window.location.href='scrapprofit_report.php';"> Partner wise Scrap Sales  Report</button>
 		
+		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit Report</button>
+		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
 		
+		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>
+			<button class="btn btn-info linktext" onclick="window.location.href='salesdetailmemo_report.php';"> Memo wise Sales Detail Report</button>
+			
 	</div>
 		
     <div class="card-body">
@@ -72,69 +76,99 @@ if(isset($_GET['submit'])){
 					<center>
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>Date Wise scrap Sales  Report</span><br>
+							<span>Date Wise Sales  Report</span><br>
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
 				</div>
 			</div>
 				<table id="" class="table table-bordered table-striped ">
+					
+					
+					
 					<thead>
 						<tr>
-							<th>SS No</th>
-							<th>Date</th>
-							
+							<th>Issue No</th>
+							<th>Issue Date</th>
+							<th>Memo No</th>
 							<th>Partner Name</th>
+							<th>Party Name</th>
 							<th>Material Name</th>
-							<th>Qty</th>
-							<th>Unit Price</th>
+							
+							<th>Quantity</th>
+							<th>Buy Price</th>
+                            <th>Buy amount</th>
+							<th>Sale Price</th>
+							<th>Sale amount</th>
 							
 							
-							<th>Scrap Sale amount</th>
-							
-							<th>Loss Share</th>
+							<th>Profit amount</th>
 						</tr>
 					</thead>
-					<tbody>
+					
+					
+					
+<tbody>
 					
 					
 					
 					
 					
 					<?php
-					
-						$totalsumamount = 0;
+					     $dissue_qty=0;
+						 $dcur_price=0;
+						 $dcur_price_amount = 0;
 						
+						 $dissue_price=0;
+						 $damount=0;
 						$profitsumamount=0;
 						
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_scrapdetail` WHERE  `ss_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_issuedetail` WHERE  `issue_date` BETWEEN '$from_date' AND '$to_date'";
 						}else{
-							$sql	=	"SELECT * FROM `inv_scrapdetail` WHERE `warehouse_id` = '$warehouse_id'  `ss_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_issuedetail` WHERE `warehouse_id` = '$warehouse_id'  `issue_date` BETWEEN '$from_date' AND '$to_date'";
 						}
 						$result = mysqli_query($conn, $sql);
 
 						while($row=mysqli_fetch_array($result))
 						{
-							$totalsumamount += $row['amount'];
-						
-						$profitsumamount += $row['amount']/2;	
 							
+							
+							    $dissue_qty += $row['issue_qty'];
+								$dcur_price += $row['cur_price'];
+								
+								$dcur_price_amount += $row['cur_price_amount'];
+						        
+							    $dissue_price =0;
+								$damount += $row['amount'];
+								
+								$profitsumamount += $row['amount'] - $row['cur_price_amount'];
 					?>
 					
 					
 					
 					
 				<tr>
-							<td><?php echo $row['ss_id']; ?></td>
+							<td><?php echo $row['issue_id']; ?></td>
 							
-							<td><?php echo $row['ss_date']; ?></td>
+							<td><?php echo $row['issue_date']; ?></td>
+							
+							<td><?php echo $row['memono']; ?></td>
+							
 							
 							<td>
 							<?php 
-											$dataresult =   getDataRowByTableAndIdPartner('partner', $row['partner_id']);
+											$dataresult =   getDataRowByTableAndId('partner', $row['partner_id']);
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 							?></td>
+							
+							
+							<td><?php 
+											$dataresult =   getDataRowByTableAndId1('party', $row['party_id']);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+							?></td>
+							
+						
 							
 							
 							<td><?php 
@@ -145,32 +179,50 @@ if(isset($_GET['submit'])){
 								echo $rowname['material_description'];
 							?>
 							</td>
-							
-							
+						
+
 							<td style="text-align:right;"><?php echo number_format((float)$row['issue_qty']); ?></td>
+							<td style="text-align:right;"><?php echo number_format((float)$row['cur_price']); ?></td>
+							<td style="text-align:right;"><?php echo number_format((float)$row['cur_price_amount'], 2, '.', ''); ?></td>
 							<td style="text-align:right;"><?php echo number_format((float)$row['issue_price'], 2, '.', ''); ?></td>
 							<td style="text-align:right;"><?php echo number_format((float)$row['amount'], 2, '.', ''); ?></td>
 							
 							
 							
+							
 							<td style="text-align:right;">
-								<?php $profitamount =  $row['amount']/2; echo number_format((float)$profitamount, 2, '.', '');?>
+								<?php $profitamount =  $row['amount']-$row['cur_price_amount']; echo number_format((float)$profitamount, 2, '.', '');?>
 							</td>
 							
 				</tr>
+				
+				
+				
+				
+				
 						<?php
 							}?>
 							
 							
 							
 						<tr>
-							<td colspan="6" class="grand_total" style="text-align:right;">Grand Total:</td>
+							<td colspan="8" class="grand_total" style="text-align:right;">Grand Total:</td>
 							<td style="text-align:right;">
-								<?php echo number_format((float)$totalsumamount, 2, '.', '');
+								<?php echo number_format((float)$dcur_price_amount, 2, '.', '');
 								?>
 							</td>
 							
-						<td style="text-align:right;">
+							<td style="text-align:right;">
+								<?php echo number_format((float)$dissue_price, 2, '.', '');
+								?>
+							</td>
+							
+							<td style="text-align:right;">
+								<?php echo number_format((float)$damount, 2, '.', '');
+								?>
+							</td>
+							
+							<td style="text-align:right;">
 								<?php echo number_format((float)$profitsumamount, 2, '.', '');
 								?>
 							</td>
@@ -186,7 +238,13 @@ if(isset($_GET['submit'])){
 							if($rowcount < 1) { ?>
 								<tr><td colspan="6"><center>No Data Found</center></td></tr>
 							<?php } ?>
-					</tbody>
+</tbody>
+					
+					
+					
+					
+					
+					
 				</table>
 				<center><div class="row">
 					<div class="col-sm-6"></br></br>--------------------</br>Receiver Signature</div>

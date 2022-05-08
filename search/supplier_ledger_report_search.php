@@ -8,6 +8,9 @@
     <div class="card-header">
         <i class="fas fa-search"></i>
         Receive Report Search</div>
+		
+		<button class="btn btn-info linktext" onclick="window.location.href='allsupplierbalance_report.php';"> All Supplier Balance</button>
+		
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
@@ -229,7 +232,7 @@ if(isset($_GET['submit'])){
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
 							<span>Supplier Ledger Report</span><br>
-							<span><?php echo $supplier; ?></span><br>
+							<span><b>Supplier Name:<?php echo $supplier; ?></span></b><br>
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
@@ -240,10 +243,14 @@ if(isset($_GET['submit'])){
 						<tr>
 							<th>Date</th>
 							<th>Ref no</th>
-							<th>Perticulars</th>
-							<th>Debit</th>
-							<th>Credit</th>
-							<th>Balance</th>
+							  <th>Payment Type</th>
+							<th>Payment Amount</th>
+							<th>Bill Amount</th>
+							<th>Due Balance</th>
+						  
+							<th>Receiver Mode</th>
+							<th>Remarks</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -280,6 +287,19 @@ if(isset($_GET['submit'])){
 							$totalcredit = 0;
 							while($row=mysqli_fetch_array($result))
 							{
+								
+								//colour row code start
+								$ref_letter 	=	substr($row['sb_ref_id'], 0, 1);
+								
+								if($ref_letter == "M"){
+									$bg_color 	= "#F0FFFF";
+								}else if($ref_letter == "V"){
+									$bg_color 	= "#FFE4C4";
+								}else{
+									$bg_color 	= "#E9ECEF";
+								}
+								//colour row code end
+								
 								$debit = $row['sb_dr_amount'];
 								$totaldebit += $row['sb_dr_amount'];
 								
@@ -288,10 +308,11 @@ if(isset($_GET['submit'])){
 									
 								$balance = $opening_stock + $totalcredit - $totaldebit;
 						?>
-						<tr style="background-color:#E9ECEF;">
+						<tr style="background-color:<?php echo $bg_color; ?>">
 							<td><?php echo date("jS F Y", strtotime($row['sb_date']));?></td>
 							<td><?php echo $row['sb_ref_id']; ?></td>
-							<td><?php echo $row['sb_remark']; ?></td>
+								<td><?php echo $row['paymenttype']; ?></td>
+							
 							<td><?php echo $row['sb_dr_amount']; ?></td>
 							<td><?php echo $row['sb_cr_amount']; ?></td>
 							
@@ -306,6 +327,10 @@ if(isset($_GET['submit'])){
 							$creditamount	=	$rowcredit->tcredit;
 							?>
 							<td><?php echo $balance; ?></td>
+						
+							<td><?php echo $row['receivermode']; ?></td>
+						    <td><?php echo $row['sb_remark']; ?></td>
+							
 						</tr>
 						<?php } ?>
 					</tbody>

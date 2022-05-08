@@ -92,8 +92,8 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
 				
 				
 				
-				$package_id   		= $_POST['package_id'][$count];
-				$building_id   		= $_POST['building_id'][$count];
+				
+				$party_id   		= '1';
 				$received_by		= $_POST['received_by'];     
 				$receiver_phone		= $_POST['receiver_phone'];     
 				$remarks            = $_POST['remarks'];   
@@ -116,7 +116,7 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
 					$q = move_uploaded_file($temp_file,"images/".$issue_image);
 				} 
         
-				$query = "INSERT INTO `inv_scrapdetail` (`ss_id`,`ss_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`package_id`,`building_id`,`approval_status`) VALUES ('$ss_id','$ss_date','$material_id','$material_name','$unit','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$package_id','$building_id','0')";
+				$query = "INSERT INTO `inv_scrapdetail` (`ss_id`,`ss_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$ss_id','$ss_date','$material_id','$material_name','$unit','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
 				$conn->query($query);
 									   }
 				
