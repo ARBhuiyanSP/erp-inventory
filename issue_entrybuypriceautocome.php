@@ -9,44 +9,30 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="damage_report.php">Damarage Sales Report</a>
+            <a href="consumption_report.php">Report</a>
         </li>
-       
-		
-		
-		        <li class="breadcrumb-item" style="text-align:right;">
-								
-								<?php  
-									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
-									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
-								
-								echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
-		</li>
-		
-		
-		
-		
+        <li class="breadcrumb-item active">Issue Entry</li>
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Damarage sale Entry Form</div>
+            Issue Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
-                <form action="" method="post" name="add_damarage" id="damaaragesale_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('damaaragesale_entry_form');">
+                <form action="" method="post" name="add_issue" id="issue_entry_form" enctype="multipart/form-data" onsubmit="showFormIsProcessing('issue_entry_form');">
                     <div class="row" id="div1" style="">
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Date</label>
-                                <input type="text" autocomplete="off" name="ds_date" id="ds_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <label>Bill Date</label>
+                                <input type="text" autocomplete="off" name="issue_date" id="issue_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
 						
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>DS No</label>
+                                <label>Bill No</label>
                                 <?php
                                 if ($_SESSION['logged']['user_type'] == 'whm') {
                                     $warehouse_id = $_SESSION['logged']['warehouse_id'];
@@ -54,35 +40,20 @@
                                     $result = mysqli_query($conn, $sql);
                                     $row = mysqli_fetch_array($result);
                                     $short_name = $row['short_name'];
-                                    $dsCode = 'DS-' . $short_name;
+                                    $issueCode = 'IS-' . $short_name;
                                 } else {
-                                    $dsCode = 'DS-CW';
+                                    $issueCode = 'IS-CW';
                                 }
                                 ?>
-                                <input type="text" name="ds_id" id="ds_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $dsCode) ?>" readonly>
-                                <input type="hidden" name="ds_no" id="ds_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_damaragesale', 'ds_id', '03d', '001', $dsCode) ?>">
+                                <input type="text" name="issue_id" id="issue_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_issue', 'issue_id', '03d', '001', $issueCode) ?>" readonly>
+                                <input type="hidden" name="issue_no" id="issue_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_issue', 'issue_id', '03d', '001', $issueCode) ?>">
                             </div>
                         </div>
-						
-						
-						
-						
-						
-						
-						<div class="col-xs-2">
-                            <div class="form-group">
-                                <label for="id">Manual DS No</label>
-                                <input type="text" name="memono" id="memono" class="form-control">
-                            </div>
-                        </div>
-						
-						
-						
 						
 						<div class="col-xs-2">
 							<div class="form-group">
 								<label for="id">Partner</label><span class="reqfield"> ***required</span>
-								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);" required >
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
 									<option value="">Select</option>
 									<?php
 									$parentCats = getTableDataByTableName('partner', '', 'name');
@@ -125,18 +96,18 @@
 						
                        <input type="hidden" value="2" name="project_id" />
                         <div class="col-xs-2">
-                            
-                                
+                            <div class="form-group">
+                                <label>Warehouse</label>
 
                                 <?php
                                 $warehouse_id = $_SESSION['logged']['warehouse_id'];
                                 $dataresult = getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
                                 ?>
-                                <input type="hidden" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
+                                <input type="text" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
 
                                 <input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control" readonly="readonly" value="<?php echo $_SESSION['logged']['warehouse_id']; ?>">
 
-                           
+                            </div>
 
                             <!-- <div class="form-group">
     <label>Warehouse</label>
@@ -215,7 +186,7 @@
                                 <thead>
                                 <th width="25%">Material Name </th>
                                 <th width="10%">Unit</th>
-                            
+                                <th width="10%">In Stock</th>
 								
 								
                                 <th width="10%">Qty </th>
@@ -247,7 +218,7 @@
                                         <input type="hidden" name="material_id[]" id="material_id0" class="form-control" required readonly>
                                         <td>
                                             <select class="form-control" id="unit0" name="unit[]" required readonly>
-                                                <option value="">Unit</option>
+                                                <option value="">Select Unit</option>
                                                 <?php
                                                 $projectsData = getTableDataByTableName('inv_item_unit', '', 'unit_name');
                                                 if (isset($projectsData) && !empty($projectsData)) {
@@ -260,15 +231,15 @@
                                                 ?>
                                             </select>
                                         </td>
-										
+										<td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly ></td>
 										
 										
 										<!-- Start: text QTY and Unit Price and Total amount -->
 										
 										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" onkeyup="buy_amount(0)" class="form-control common_issue_quantity" required></td>
 					  
-                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required></td>
-                                        <td><input type="text" name="cur_amount[]" id="buy_amount0" class="form-control sub_buy_amount" required readonly ></td>
+                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required readonly ></td>
+                                        <td><input type="text" name="cur_amounts[]" id="buy_amount0" class="form-control sub_buy_amount" required readonly ></td>
                                        
 										<td><input type="text" name="unit_price[]" id="unit_price0" onkeyup="sum(0)" class="form-control" required></td>
 										<td><input type="text" name="amount[]" id="sum0" class="form-control sub_sell_amount" readonly ></td>
@@ -309,7 +280,7 @@
 								
 								
 								<tr>
-									<td>Loss</td>
+									<td>Profit</td>
 									<td><input type="text" class="form-control" name="profitamount" id="profitamount" class="form-control" readonly ></td>
 								</tr>
 								
@@ -359,7 +330,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="modal-footer">
-                                    <input type="submit" name="damaragesale_submit" id="damaragesale_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
+                                    <input type="submit" name="issue_submit" id="issue_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
                                 </div>    
                             </div>
                         </div>
@@ -399,7 +370,7 @@
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['unit_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required  ></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required readonly ></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control" readonly ></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
+                                    ?></select></td><td><input type="text" name="material_total_stock[]" id="material_total_stock' + i + '" class="form-control" readonly></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required readonly ></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required readonly ></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control" readonly ></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
 									$(".material_select_2").select2();
 									
 									<!-- COMMENTS: QTY AND UNIT PRICE AND TOTAL AMOUNT -->
@@ -469,12 +440,10 @@
         let subBuyAmount     =   $("#allcur").val();
         let subSellTotal     =   $("#allsum").val();
         let profitTotal     =   parseFloat((subSellTotal - subBuyAmount));
-		
-		let profitTotalabs    =   Math.abs((profitTotal));
 
         
         
-        document.getElementById('profitamount').value = profitTotalabs.toFixed(2);
+        document.getElementById('profitamount').value = profitTotal.toFixed(2);
     }
 
 

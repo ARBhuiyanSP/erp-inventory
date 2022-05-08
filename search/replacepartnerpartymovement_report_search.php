@@ -13,9 +13,9 @@
 	
 	
 	
-     
+
 		
-		<button class="btn btn-info linktext" onclick="window.location.href='movementdamage_report.php';"> Replace Stock Report</button>
+	 <!--	<button class="btn btn-info linktext" onclick="window.location.href='movementdamage_report.php';"> Replace Stock Report</button>-->
 		
 	<button class="btn btn-info linktext" onclick="window.location.href='replacepartnerpartymovement_report.php';"> Partner and Part wise movement Report</button>
 		
@@ -128,26 +128,50 @@ if(isset($_GET['submit'])){
 		<div class="col-md-12" id="printableArea">
 				<table id="htmltable" class="table table-bordered table-striped ">
 					<thead>
-						<tr>
-							<th colspan="9">
-								<center>
-										<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-										<span>Replace Material Movement Report</span><br>
+					
+					
+<tr>
+	<th colspan="9">
+					<center>
+										<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/>
+										
+										<br><span>Replace Material Movement Report</span><br>
+										
+										
+										<br><span>PARTNER:<?php 
+											$dataresult =   getDataRowByTableAndId('partner', $partner_id);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
+							                              ?></span>
+										
+										<br><span>PARTY:<?php 
+											$dataresult =   getDataRowByTableAndId1('party', $party_id);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+							                            ?></span><br>
+										
 										From  <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?> </span>To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span>
-								</center>
-							</th>
-						</tr>
+			
+								
+								
+								
+								
+		         </center>						
+	 </th>
+</tr>
+						
+						
+						
 						<tr>
-							<th width="15%">Material ID</th>
+							<th width="15%">Replace No</th>
+							<th width="15%">Date</th>
 							<th width="30%">Material Name</th>
-							<th>Unit</th>
-							<th width="10%">Opening Stock</th>
+							            <th>Unit</th>
+							
 							<th>Replace Receive</th>
 							<th>Replace Issue</th>
-							
-							<th width="15%">Closing Stock</th>
-							
+	
 						</tr>
+						
+						
 					</thead>
 					<tbody>
 					
@@ -156,14 +180,22 @@ if(isset($_GET['submit'])){
 					
 					
     <?php
+	$totalReceiveQty=0;
+	$totalOutQty=0;
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_damagebalance` GROUP BY `mb_materialid`";
+							$sql	=	"SELECT * FROM `inv_damagebalance`WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id'  and `mb_date` BETWEEN '$from_date' AND '$to_date'";
 						}else{
-							$sql	=	"SELECT * FROM `inv_damagebalance` WHERE `warehouse_id` = $warehouse_id GROUP BY `mb_materialid`";
+							$sql	=	"SELECT * FROM `inv_damagebalance` WHERE `warehouse_id` = $warehouse_id and `partner_id` = '$partner_id' and `party_id` = '$party_id' AND `mb_date` BETWEEN '$from_date' AND '$to_date'";
 						}
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
 						{
+							
+							
+						$totalReceiveQty += $row['mbin_qty'];
+						
+						$totalOutQty += $row['mbout_qty'];	
+						
 					?>
 					
 					
@@ -173,10 +205,11 @@ if(isset($_GET['submit'])){
 					
 <tr>
 						
-						    <!-- MATERIAL ID -->
+						  
 						
-							<td><?php echo $row['mb_materialid']; ?></td>
-							
+							<td><?php echo $row['mb_ref_id']; ?></td>
+							<td><?php echo $row['mb_date']; ?></td>
+						
 							
 							<!-- MATERIAL NAME -->
 							
@@ -204,116 +237,12 @@ if(isset($_GET['submit'])){
 								
 							</td>
 							
-							
-							<!-- OPENING STOCK -->
-							
-							
-							<td style="text-align:right;">
-								<?php 
-									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_damagebalance` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
-									}else{
-										$sqlpreinqty = "SELECT SUM(`mbin_qty`)- SUM(`mbout_qty`) AS totalpre FROM `inv_damagebalance` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `warehouse_id` = '$warehouse_id' AND `mb_materialid` = '$mb_materialid' AND `mb_date` < '$from_date'";
-									}
-									
-									$resultpreinqty = mysqli_query($conn, $sqlpreinqty);
-									$rowpreinqty = mysqli_fetch_object($resultpreinqty);
-									
-									if($rowpreinqty->totalpre > 0){
-										$opening_stock = $rowpreinqty->totalpre;
-									}
-									else {
-											$opening_stock = 0;
-										}
-									//echo $opening_stock;
-									echo number_format((float)$opening_stock, 2, '.', '');
-								?>
-							</td>
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							<!-- partner and party wise Replace Receive -->
-							<td style="text-align:right;">
-								<?php 
-									if($_SESSION['logged']['user_type'] !== 'whm'){
-										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_damagebalance` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `mb_materialid` = '$mb_materialid' AND `mbtype`='REPLACE RECEIVE' and mb_date BETWEEN '$from_date' AND '$to_date'";
-									}else{
-										$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_damagebalance` WHERE warehouse_id = $warehouse_id and `partner_id` = '$partner_id' and `party_id` = '$party_id' AND `mbtype`='REPLACE RECEIVE' and `mb_materialid` = '$mb_materialid' AND mb_date BETWEEN '$from_date' AND '$to_date'";
-									}
-									
-									$resultinqty = mysqli_query($conn, $sqlinqty);
-									$rowinqty = mysqli_fetch_object($resultinqty) ;
-									$stockin = $rowinqty->totalin;
-									echo number_format((float)$stockin);
-								?>
-							</td>
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							<!-- Replace Out -->
-							
-							<td style="text-align:right;">
-							<?php 
-							if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_damagebalance` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `mb_materialid` = '$mb_materialid' AND `mbtype`='REPLACE OUT' AND mb_date BETWEEN '$from_date' AND '$to_date'";
-							}else{
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_damagebalance` WHERE warehouse_id = $warehouse_id  AND `partner_id` = '$partner_id' and `party_id` = '$party_id' and `mb_materialid` = '$mb_materialid' AND `mbtype`='REPLACE OUT' AND mb_date BETWEEN '$from_date' AND '$to_date'";
-							}
-							
-							$resultoutqty = mysqli_query($conn, $sqloutqty);
-							$rowoutqty = mysqli_fetch_object($resultoutqty) ;
-							$stockout = $rowoutqty->totalout;
-							echo number_format((float)$stockout);
-							?>
-							</td>
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							<!-- closing stock -->
-							<td style="text-align:right;">
-								<?php $closingStock = $opening_stock + $stockin -$stockout; echo number_format((float)$closingStock);?>
-							</td>
-							
-							
-							
-							
-							
+						<td><?php echo $row['mbin_qty']; ?></td>
+						<td><?php echo $row['mbout_qty']; ?></td>
 						
+				
 							
-							
-							
-							
-							
-							
-							
-							
-							
+					
 </tr>
 						
 						
@@ -323,13 +252,41 @@ if(isset($_GET['submit'])){
 						
 						
 						<?php
-							}
-							$rowcount=mysqli_num_rows($result);
+
+							} ?>
+							
+							<tr>
+								<td> </td>
+							
+							</tr>
+							
+							<tr>
+								<td colspan="4" style="text-align:right">Total Replace Receive</td>
+								<td><b><?php echo $totalReceiveQty; ?></b></td>
+								
+							</tr>
+							<tr>
+								<td colspan="4" style="text-align:right">Total Replace Out</td>
+								<td><b><?php echo $totalOutQty; ?></b></td>
+								
+							</tr>
+							
+							<tr>
+								<td colspan="4" style="text-align:right">Balance</td>
+								<td><b><?php echo $balanceqty=$totalReceiveQty-$totalOutQty; ?></b></td>
+								
+							</tr>
+							
+							<?php $rowcount=mysqli_num_rows($result);
 							if($rowcount < 1) { ?>
 								<tr><td colspan="6"><center>No Data Found</center></td></tr>
 	<?php } ?>
 					</tbody>
-				</table>
+</table>
+				
+				
+				
+				
 				<center><div class="row">
 					<div class="col-sm-6"></br></br>--------------------</br>Receiver Signature</div>
 					<div class="col-sm-6"></br></br>--------------------</br>Authorised Signature</div>

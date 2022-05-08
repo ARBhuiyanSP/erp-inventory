@@ -25,8 +25,8 @@ include 'includes/return_process.php';
 
 include 'includes/payment_process.php';
 include 'includes/party_payment_process.php';
-
-
+include 'includes/transport_process.php';
+include 'includes/partnerpayment_process.php';
 
 
 include 'includes/scrap_process.php';

@@ -8,18 +8,21 @@
 	font-size:12px;
 }
 </style>
+
 <div class="card mb-3">
     <div class="card-header">
-		<button class="btn btn-success linktext"> Individual Material sales Report</button>
+		<button class="btn btn-success linktext"onclick="window.location.href='consumption_report.php';"> Individual Material sales Report</button>
 		
-		<button class="btn btn-info linktext" onclick="window.location.href='consumption_group_report.php';"> Material Groupwise Sales Report</button>
+	
 		
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit Report</button>
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date Wise Sales Report</button>
 		
+		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>
 		
+		<button class="btn btn-info linktext" onclick="window.location.href='salesdetailmemo_report.php';"> Memo wise Sales Detail Report</button>
 		
 	</div>
 		

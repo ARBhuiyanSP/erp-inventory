@@ -1,41 +1,39 @@
 
-							
 <style>
 .dtext{
 	text-decoration:underline;
 }
-.linktext{
-	font-size:12px;
-}
 </style>
 <div class="card mb-3">
     <div class="card-header">
-		
-		<button class="btn btn-info linktext" onclick="window.location.href='scrapprofit_report.php';"> Partner wise scrap Profit Report</button>
-		
-		<button class="btn btn-info linktext" onclick="window.location.href='scrap_report.php';"> Date wise scrap Sales  Report</button>
+        <i class="fas fa-search"></i>
+        </div>
 		
 		
-	</div>
 		
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
-                        <tr> 
+                        <tr>  
 							<td>
                           
                             <div class="form-group">
                                 <label>Partner Name</label>
-                                <select class="form-control" id="partner_id" name="partner_id" readonly >
+                                <select class="form-control" id="id" name="id" readonly >
                                     <?php
                                     $projectsData = getTableDataByTableName('partner');
                                     ;
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
+											if($_GET['id'] == $data['id']){
+													$selected	= 'selected';
+													}else{
+													$selected	= '';
+													}
                                             ?>
-                                            <option value="<?php echo $data['partner_id']; ?>"><?php echo $data['name']; ?></option>
+                                            <option value="<?php echo $data['id']; ?>"  <?php echo $selected; ?>><?php echo $data['name']; ?></option>
                                             <?php
                                         }
                                     }
@@ -46,12 +44,14 @@
 						
 						
                             </td>
+							
 							<td>
                                 <div class="form-group">
                                     <label for="todate">From Date</label>
                                     <input type="text" class="form-control" id="from_date" value="<?php if(isset($_GET['from_date'])){ echo $_GET['from_date']; } ?>" name="from_date" autocomplete="off" required >
                                 </div>
                             </td>
+						
 							<td>
                                 <div class="form-group">
                                     <label for="todate">To Date</label>
@@ -59,12 +59,25 @@
                                 </div>
                             </td>
 							
-							<td>
+							
+							
+							
+							
+							
+							
+							
+							
+							<td style="width:15%">
                                 <div class="form-group">
                                     <label for="todate">.</label>
-									<button type="submit" name="submit" class="form-control btn btn-primary">Search</button>
+									<button type="submit" name="submitpartneraccounts" class="form-control btn btn-primary">Partner Accounts</button>
                                 </div>
                             </td>
+							
+							
+							
+							
+							
                         </tr>
                     </tbody>
                 </table>
@@ -73,15 +86,19 @@
     </div>
 </div>
 <?php
-if(isset($_GET['submit'])){
-	
+if(isset($_GET['submitpartneraccounts'])){
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
+	
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
-	$partner_id	=	$_GET['partner_id'];
+	$partner_id	=	$_GET['id'];
 	
+										$sqlunit	=	"SELECT * FROM `partner` WHERE `id` = '$partner_id' ";
+										$resultunit = mysqli_query($conn, $sqlunit);
+										$rowunit=mysqli_fetch_array($resultunit);
+										$partnername	= $rowunit['name'];
+	?>
 	
-?>
 <center>
 	
 	<div class="row">
@@ -92,85 +109,88 @@ if(isset($_GET['submit'])){
 					<center>
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
-							<span>scrap Profit share  Report</span><br>
-							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
+							<span>partner Accounts Report</span><br>
+							<span><b>partner Name:<?php echo $partnername; ?></span></b><br>
+							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> </span><br>
 						</p>
 					</center>
 				</div>
 			</div>
-				<table id="" class="table table-bordered table-striped ">
+				<table id="" class="table table-bordered">
 					<thead>
 						<tr>
-							<th>S Bill No</th>
-							<th>Bill date</th>
-							<th>Patner ID</th>
-							<th>Scrap Sale amount</th>
+							<th>Tran Date</th>
+							<th>Tran no</th>
+							<th>Tran Type</th>
+							  
+							  
+							<th>Amount Deposit</th>
+							<th>Amount withdraw</th>
+							<th>Due Balance</th>
+						  
+							<th>Description</th>
 							
-							<th>Profit Share amount</th>
+							
 						</tr>
 					</thead>
 					<tbody>
-					
-					
-					
-					
-					
-					<?php
-					
-						$totalshareamount = 0;
-						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_profitsharescrap` WHERE `partnerid` = '$partner_id' AND `billdate` BETWEEN '$from_date' AND '$to_date'";
-						}else{
-							$sql	=	"SELECT * FROM `inv_profitsharescrap` WHERE `warehouse_id` = '$warehouse_id' AND `partnerid` = '$partner_id' AND `billdate` BETWEEN '$from_date' AND '$to_date'";
-						}
-						$result = mysqli_query($conn, $sql);
-
-						while($row=mysqli_fetch_array($result))
-						{
-							$totalshareamount += $row['profitpatneramount'];
-					?>
-					
-					
-					
-					
-				<tr>
-							<td><?php echo $row['billno']; ?></td>
-							<td><?php echo $row['billdate']; ?></td>
 						
 						
-						<td>
-							<?php 
-											$dataresult =   getDataRowByTableAndIdPartner('partner', $row['partnerid']);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
-							?></td>
-							
-							
-							
-							
-							<td style="text-align:right;"><?php echo number_format((float)$row['totalamount'], 2, '.', ''); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$row['profitpatneramount'], 2, '.', ''); ?></td>
-				</tr>
 						<?php
-							}?>
 							
 							
+						$sql	=	"SELECT * FROM `partnerpayment` WHERE `partner_id`='$partner_id' AND `trandate` BETWEEN '$from_date' AND '$to_date' order by `trandate` asc;";
+							$result = mysqli_query($conn, $sql);
+							$totaldeposit = 0;
+							$totalwithdraw = 0;
+							while($row=mysqli_fetch_array($result))
+							{
+								
+								//colour row code start
+								$ref_letter 	=	substr($row['trantype'], 0, 1);
+								
+								if($ref_letter == "D"){
+									$bg_color 	= "#F0FFFF";
+								}else if($ref_letter == "p"){
+									$bg_color 	= "#FFE4C4";
+								}else{
+									$bg_color 	= "#E9ECEF";
+								}
+								//colour row code end
+								
+								$deposit = $row['amountdeposit'];
+								$totaldeposit += $row['amountdeposit'];
+								
+								$withdraw = $row['amountwithdraw'];
+								$totalwithdraw += $row['amountwithdraw'];
+									
+								$balance =  $totaldeposit - $totalwithdraw;
+						?>
+						<tr style="background-color:<?php echo $bg_color; ?>">
+							<td><?php echo date("jS F Y", strtotime($row['trandate']));?></td>
+							<td><?php echo $row['tranid']; ?></td>
+								<td><?php echo $row['trantype']; ?></td>
 							
-						<tr>
-							<td colspan="4" class="grand_total" style="text-align:right;">Grand Total:</td>
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totalshareamount, 2, '.', '');
-								?>
-							</td>
+							<td><?php echo $row['amountdeposit']; ?></td>
+							<td><?php echo $row['amountwithdraw']; ?></td>
+							
+							<?php 
+							$adate			=	$row['trandate'];
+							/* $sqlcredit 		=	"SELECT SUM(`sb_cr_amount`) AS tcredit FROM `inv_supplierbalance` WHERE `sb_supplier_id` = '$supplier_id' AND `warehouse_id`='$warehouse_id' AND `sb_date` < '$adate'"; */
+							
+							
+							$sqlcredit 		=	"SELECT SUM(`amountwithdraw`) AS tcredit FROM `partnerpayment` WHERE `partner_id` = '$partner_id' AND `trandate` < '$adate'";
+							$resultcredit 	= 	mysqli_query($conn, $sqlcredit);
+							$rowcredit 		=	mysqli_fetch_object($resultcredit);
+							$creditamount	=	$rowcredit->tcredit;
+							?>
+							<td><?php echo $balance; ?></td>
+						    <td><?php echo $row['expensedesc']; ?></td>
+							
+					
+							
 						</tr>
-						
-						
-						
-						
-						<?php 
-							$rowcount=mysqli_num_rows($result);
-							if($rowcount < 1) { ?>
-								<tr><td colspan="6"><center>No Data Found</center></td></tr>
-							<?php } ?>
+						<?php } ?>
 					</tbody>
 				</table>
 				<center><div class="row">
@@ -188,10 +208,8 @@ if(isset($_GET['submit'])){
 		<center><button class="btn btn-default" onclick="printDiv('printableArea')"><i class="fa fa-print" aria-hidden="true" style="    font-size: 17px;"> Print</i></button></center>
 		<div class="col-md-1"></div>
 </center>
-<?php }?>
 
-
-
+<?php } ?>
 <script>
 function printDiv(divName) {
 	 var printContents = document.getElementById(divName).innerHTML;

@@ -258,6 +258,23 @@
             <span>Party Payment</span></a>
     </li>
 	
+	
+    <li class="nav-item">
+        <a class="nav-link" href="transport.php">
+            <i class="fa fa-money-bill" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Transport Cost</span></a>
+    </li>
+	
+    <li class="nav-item">
+        <a class="nav-link" href="partnerpayment.php">
+            <i class="fa fa-money-bill" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Partner Accounts</span></a>
+    </li>	
+	
+
+	
+	
+	
 
 	<?php } ?>
 	<li class="nav-item" style="background-color:#007BFF;">
@@ -282,6 +299,14 @@
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
             <span>Stock Reports</span></a>
     </li>
+	
+		<li class="nav-item">
+        <a class="nav-link" href="netprofitparty_report.php">
+            <i class="fa fa-money-bill" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Net Profit</span></a>
+    </li>
+	
+	
 	<li class="nav-item">
         <a class="nav-link" href="movement_report.php">
             <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>

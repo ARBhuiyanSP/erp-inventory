@@ -3,12 +3,14 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Stock management Filters</a>
+            <a href="allsupplierbalance_report.php">All supplier Balance</a>
         </li>
+		
+	
         <li class="breadcrumb-item active">List</li>
     </ol>
     <!-- receive search start here -->
-    <?php include 'search/replacepartnerpartymovement_report_search.php'; ?>
+    <?php include 'search/allsupplierbalance_report_search.php'; ?>
     <!-- end receive search -->
 
 

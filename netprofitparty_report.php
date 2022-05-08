@@ -8,7 +8,7 @@
         <li class="breadcrumb-item active">List</li>
     </ol>
     <!-- receive search start here -->
-    <?php include 'search/replacepartnerpartymovement_report_search.php'; ?>
+    <?php include 'search/netprofitparty_report_search.php'; ?>
     <!-- end receive search -->
 
 

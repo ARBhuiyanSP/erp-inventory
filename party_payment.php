@@ -6,8 +6,19 @@ include 'header.php';
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="party_ledger.php">Report</a>
+            <a href="party_ledger.php">Party Ledger Report</a>
+			
         </li>
+		<li class="breadcrumb-item">
+            <a href="allpartyaccountstatus_report.php">All Party Balance REport</a>
+			
+        </li>
+		
+		<li class="breadcrumb-item">
+            <a href="allpartyaccountstatuspartnerandpartywise_report.php">Partner and  Party wise Balance Report</a>
+			
+        </li>
+		
         <li class="breadcrumb-item active"> Party Payment Receive Form</li>
     </ol>
     <!-- DataTables Example -->
@@ -36,30 +47,48 @@ include 'header.php';
 						
 						
 						<div class="col-xs-2">
+							<div class="form-group">
+								<label for="id">Partner</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);" required >
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('partner', '', 'name');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+						
+						
+                        <div class="col-xs-3">
+							<div class="form-group">
+								<label for="id">Party</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('party','','partyname');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+                        <div class="col-xs-1">
                             <div class="form-group">
-                                <label for="id">Party Name</label>
-                                <select class="form-control" id="party_name" name="party_name" required onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
-                                    <option value="">Select</option>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('party');
-
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['partyname']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                                <label for="id">party ID</label>
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
                             </div>
                         </div>
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label for="id">Party ID</label>
-                                <input type="text" name="party_id" id="party_id" class="form-control" required readonly>
-                            </div>
-                        </div>
+                       
 						
 						
 						<div class="col-xs-2">
@@ -67,7 +96,8 @@ include 'header.php';
                                 <label>Payment Type</label>
                                 <select name="paymenttype" id="paymenttype" class="form-control">
 									<option value="cash">Cash</option>
-									<option value="credit">Credit</option>
+									<option value="credit">BKASH</option>
+									<option value="credit">NOGOD</option>
 								</select>
                             </div>
                         </div>
@@ -80,6 +110,21 @@ include 'header.php';
                                 <input type="text" name="amount" id="amount" class="form-control">
                             </div>
                         </div>
+						
+						  <div class="form-group">
+                                <label>Warehouse</label>
+
+                                <?php
+                                $warehouse_id = $_SESSION['logged']['warehouse_id'];
+                                $dataresult = getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
+                                ?>
+                                <input type="text" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
+
+                                <input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control" readonly="readonly" value="<?php echo $_SESSION['logged']['warehouse_id']; ?>">
+
+                            </div>
+							
+							
 						<div class="col-xs-6">
                             <div class="form-group">
                                 <label>Remarks</label>
@@ -173,4 +218,16 @@ include 'header.php';
 
 </div>
 <!-- /.container-fluid -->
+<script>
+	$(function() {
+	$("#voucherdate").datepicker({
+			inline: true,
+			dateFormat:"yy-mm-dd",
+			yearRange:"-50:+10",
+			changeYear: true,
+			changeMonth: true
+	});
+});
+</script>
+
 <?php include 'footer.php' ?>

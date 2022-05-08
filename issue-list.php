@@ -6,7 +6,7 @@ include 'header.php';
 
 <div class="container-fluid">
     <!-- DataTables Example -->
-    <div class="card mb-3">
+    <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table"></i>
             Material Issue List</div>
@@ -14,11 +14,13 @@ include 'header.php';
             <table id="example" class="table table-striped table-bordered" style="width:100%">
 				<thead>
 					<tr>
-						<th>Issue ID</th>
-						<th>Issue Date</th>
-						<th>Project</th>
-						<th>Ware House</th>
-					     <th>Action</th>
+						<th>Bill ID</th>
+						<th>Bill Date</th>
+						<th>MemoNo</th>
+						<th>Partner</th>
+						<th>Party</th>
+						<th>warehouse</th>
+					    <th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -38,12 +40,24 @@ include 'header.php';
 							<?php  }?>
 								<td><?php echo $item['issue_id']; ?></td>
 								<td><?php echo $item['issue_date']; ?></td>
+								<td><?php echo $item['memono']; ?></td>
+							
+								
 								<td>
 									<?php 
-									$dataresult =   getDataRowByTableAndId('projects', $item['project_id']);
+									$dataresult =   getDataRowByTableAndId('partner', $item['partner_id']);
 									echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 									?>
 								</td>
+								
+								<td>
+									<?php 
+									$dataresult =   getDataRowByTableAndId1('party', $item['party_id']);
+									echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+									?>
+								</td>
+								
+								
 								<td>
 									<?php 
 									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $item['warehouse_id']);
@@ -52,7 +66,13 @@ include 'header.php';
 								</td>
 								<td>
 									<span><a class="action-icons c-approve" href="issue-view.php?no=<?php echo $item['issue_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
-									<span><a class="action-icons c-delete" href="issue_edit.php?edit_id=<?php echo $item['id']; ?>" title="edit"><i class="fa fa-edit text-info mborder"></i></a></span>
+									
+									
+									
+									<span><a class="action-icons c-delete" href="issue_edit.php?edit_id=<?php echo $item['id']; ?>" title="edit"><i class="fa fa-edit text-info mborder"></i></a></span> 
+									
+									
+									
 									<?php if($_SESSION['logged']['user_type'] == 'superAdmin') {?>
 										<span><a class="action-icons c-delete" href="issue_approve.php?issue=<?php echo $item['issue_id']; ?>" title="approve"><i class="fa fa-check text-info mborder"></i></a></span>
 										<?php } ?>
