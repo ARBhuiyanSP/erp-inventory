@@ -464,7 +464,6 @@
 
         for(let mySubValue = 0;  mySubValue < subBuyAmount.length; mySubValue++){
             subBuyTotal+= parseFloat($("#" + subBuyAmount[mySubValue].id).val());
-            console.log('subBuyTotal' + subBuyTotal);
         }
         
         document.getElementById('allcur').value = subBuyTotal.toFixed(2);
