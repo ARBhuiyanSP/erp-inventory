@@ -432,7 +432,7 @@
         $(document).on('click', '.btn_remove', function () {
             var button_id = $(this).attr("id");
             $('#row' + button_id + '').remove();
-            cur_amount_total();
+            calculate_total_buy_amount();
             sum_total();
         });
     });

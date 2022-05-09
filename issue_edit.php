@@ -253,7 +253,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                                                 <?php if ($key == 0) { ?>
                                                     <td><button type="button" name="add" id="add" class="btn" style="background-color:#2e3192;color:#ffffff;">+</button></td>
                                                 <?php } else { ?>
-                                                    <td><button type="button" name="remove" id="<?php echo $key; ?>" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td>
+                                                    <td><button type="button" name="remove" id="<?php echo $editDatas->id; ?>" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td>
                                                 <?php } ?>
                                             </tr>
                                         <?php
@@ -456,7 +456,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
         $(document).on('click', '.btn_remove', function() {
             var button_id = $(this).attr("id");
             $('#row' + button_id + '').remove();
-            cur_amount_total();
+            calculate_total_buy_amount();
             sum_total();
         });
     });
