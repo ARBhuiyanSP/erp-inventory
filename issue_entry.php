@@ -218,7 +218,7 @@
                                 <th width="10%">In Stock</th>
 								
 								
-                                <th width="10%">Qty </th>
+                                <th width="10%">Qty <span class="reqfield"> ***req</span></th>
 								<th width="10%">Buy Price</th>
 								<th width="10%">Buy Amount</th>
 								<th width="10%">Sale Price</th>
@@ -302,8 +302,8 @@
 								
 								
 								<tr>
-									<td>Discount Amount</td>
-									<td><input type="text" class="form-control" name="discount_amount" id="discount" class="form-control"></td>
+									<td>Discount Amount <span class="reqfield"> req</span></td>
+									<td><input type="text" class="form-control" name="discount_amount" id="discount" class="form-control" required></td>
 								</tr>
 								
 								
@@ -316,8 +316,8 @@
 								
 								
 								<tr>
-									<td>Paid Amount</td>
-									<td><input type="text" class="form-control" name="paid_amount" id="paid" class="form-control"></td>
+									<td>Paid Amount <span class="reqfield"> req</span></td>
+									<td><input type="text" class="form-control" name="paid_amount" id="paid" class="form-control" required></td>
 								</tr>
 								<tr>
 									<td>Due Amount</td>

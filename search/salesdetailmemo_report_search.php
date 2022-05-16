@@ -86,6 +86,7 @@ if(isset($_GET['submit'])){
 							<th>Sale Price</th>
 							<th>Sale amount</th>
 							<th>Profit amount</th>
+							<th>Net Profit</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -133,6 +134,16 @@ if(isset($_GET['submit'])){
 								?>
 							</td>
 							
+							
+								<td colspan="4">Discount : <?php 
+								$memono = $row['memono'];
+								$sqlunit	=	"SELECT discount_amount FROM `inv_issue` WHERE `memono` = '$memono' ";
+								$resultunit = mysqli_query($conn, $sqlunit);
+								$rowunit=mysqli_fetch_array($resultunit);
+								echo $rowunit['discount_amount'];
+								?>
+							</td>
+							
 						</tr>
 						
 						
@@ -146,6 +157,11 @@ if(isset($_GET['submit'])){
 						 $damount=0;
 						
 						 $profitsumamount=0;
+						 
+						 
+						 $netprofit=0;
+						 
+						 
 							$memono = $row['memono'];
 							$sqlall	=	"SELECT * FROM `inv_issuedetail` WHERE `memono` = '$memono';";
 							$resultall = mysqli_query($conn, $sqlall);
@@ -169,14 +185,15 @@ if(isset($_GET['submit'])){
 							
 							
 							<td style="text-align:center;"><?php echo number_format((float)$rowall['issue_qty']); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$rowall['cur_price']); ?></td>
+							<td style="text-align:center;"><?php echo number_format((float)$rowall['cur_price']); ?></td>
 							<td style="text-align:center;"><?php echo number_format((float)$rowall['cur_price_amount'], 2, '.', ''); ?></td>
-							<td style="text-align:right;"><?php echo number_format((float)$rowall['issue_price'], 2, '.', ''); ?></td>
+							<td style="text-align:center;"><?php echo number_format((float)$rowall['issue_price'], 2, '.', ''); ?></td>
 							<td style="text-align:center;"><?php echo number_format((float)$rowall['amount'], 2, '.', ''); ?></td>
 							
-							<td style="text-align:right;">
+							<td style="text-align:center;">
 								<?php $profitamount =  $rowall['amount']-$rowall['cur_price_amount']; echo number_format((float)$profitamount, 2, '.', '');?>
 							</td>
+							
 						</tr>
 						<?php } ?>
 						<tr>
@@ -190,6 +207,11 @@ if(isset($_GET['submit'])){
 							
 							
 							<td style="text-align:center;"><b><?php echo $profitsumamount; ?></b></td>
+							
+							
+							<td style="text-align:center;">
+				<?php $netprofit =  $profitsumamount-$rowunit['discount_amount']; echo number_format((float)$netprofit, 2, '.', '');?>
+							</td>
 							
 						</tr>
 						

@@ -2,7 +2,7 @@
 include 'header.php';
 if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
     $edit_id            = $_GET['edit_id'];
-    $data               = getissueDataDetailsById($edit_id);
+    $data               = getissueDataDetailsById($edit_id);   // this function issue_process.php file ar vitor
     $issueData          = $data['receiveData'];
     $issueDetailsData   = $data['receiveDetailsData'];
 }
@@ -65,14 +65,14 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Partner</label>
-                                <select class="form-control" id="partner_id" name="partner_id" readonly>
+                                <select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);" required >
                                     <?php
                                     $projectsData = getTableDataByTableName('partner');;
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                     ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
-                                            <option value="<?php echo $data['id']; ?>" <?php if (isset($issueData->id) && $issueData->id == $data['id']) {
+                                      
+                                            <option value="<?php echo $data['id']; ?>" <?php if (isset($issueData->partner_id) && $issueData->partner_id == $data['id']) {
                                                                                             echo 'selected';
                                                                                         } ?>><?php echo $data['name']; ?></option>
                                     <?php
@@ -88,14 +88,14 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                         <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Party</label>
-                                <select class="form-control" id="party_id" name="party_id" readonly>
+                                <select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
                                     <?php
                                     $projectsData = getTableDataByTableName('party');;
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                     ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['partyname']; ?></option>
-                                            <option value="<?php echo $data['id']; ?>" <?php if (isset($issueData->id) && $issueData->id == $data['id']) {
+                                           
+                                            <option value="<?php echo $data['id']; ?>" <?php if (isset($issueData->party_id) && $issueData->party_id == $data['party_id']) {
                                                                                             echo 'selected';
                                                                                         } ?>><?php echo $data['partyname']; ?></option>
                                     <?php
@@ -110,7 +110,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                         <div class="col-xs-1">
                             <div class="form-group">
                                 <label for="id">party ID</label>
-                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
+                                <input type="text" name="party_id" id="party_id" class="form-control"  value="<?php echo (isset($issueData) && !empty($issueData) ? $issueData->party_id : ''); ?>">
                             </div>
                         </div>
 
@@ -217,7 +217,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
 
                                                 <!--  Qty -->
                                                 <td>
-                                                    <input type="text" name="issue_qty[]" id="quantity<?php echo $editDatas->id; ?>" onchange="check_stock_quantity_validation(<?php echo $editDatas->id; ?>)" onkeyup="buy_amount(<?php echo $editDatas->id; ?>)" onchange="sum(<?php echo $editDatas->id; ?>)" class="form-control" value="<?php echo (isset($editDatas->issue_qty) && !empty($editDatas->issue_qty) ? $editDatas->issue_qty : ''); ?>">
+                                                    <input type="text" name="quantity[]" id="quantity<?php echo $editDatas->id; ?>" onchange="check_stock_quantity_validation(<?php echo $editDatas->id; ?>)" onkeyup="buy_amount(<?php echo $editDatas->id; ?>)" onchange="sum(<?php echo $editDatas->id; ?>)" class="form-control" value="<?php echo (isset($editDatas->issue_qty) && !empty($editDatas->issue_qty) ? $editDatas->issue_qty : ''); ?>">
                                                 </td>
 
 
@@ -230,13 +230,13 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
 
                                                 <!-- Buy Amount -->
                                                 <td>
-                                                    <input type="text" name="cur_price_amount[]" id="buy_amount<?php echo $editDatas->id; ?>" onchange="sum(<?php echo $editDatas->id; ?>)" class="form-control sub_buy_amount" value="<?php echo (isset($editDatas->cur_price_amount) && !empty($editDatas->cur_price_amount) ? $editDatas->cur_price_amount : ''); ?>">
+                                                    <input type="text" name="cur_amount[]" id="buy_amount<?php echo $editDatas->id; ?>" onchange="sum(<?php echo $editDatas->id; ?>)" class="form-control sub_buy_amount" value="<?php echo (isset($editDatas->cur_price_amount) && !empty($editDatas->cur_price_amount) ? $editDatas->cur_price_amount : ''); ?>">
                                                 </td>
 
 
                                                 <!-- Sale Price -->
                                                 <td>
-                                                    <input type="text" name="issue_price[]" id="unit_price<?php echo $editDatas->id; ?>" onchange="sum(<?php echo $editDatas->id; ?>)" class="form-control" value="<?php echo (isset($editDatas->issue_price) && !empty($editDatas->issue_price) ? $editDatas->issue_price : ''); ?>">
+                                                    <input type="text" name="unit_price[]" id="unit_price<?php echo $editDatas->id; ?>" onchange="sum(<?php echo $editDatas->id; ?>)" class="form-control" value="<?php echo (isset($editDatas->issue_price) && !empty($editDatas->issue_price) ? $editDatas->issue_price : ''); ?>">
                                                 </td>
 
                                                 <!-- Sale Amount -->
@@ -337,7 +337,11 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                         <div class="col-sm-8">
                             <div class="form-group">
                                 <label>Remarks</label>
-                                <textarea id="remarks" name="remarks" class="form-control" rows="6"></textarea>
+                                 <textarea id="remarks" name="remarks" class="form-control"><?php
+                                                                                    if (isset($issueData->remarks)) {
+                                                                                        echo $issueData->remarks;
+                                                                                    }
+                                                                                    ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -394,16 +398,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
 
 
             <div class="row" style="">
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <label>Remarks</label>
-                        <textarea id="remarks" name="remarks" class="form-control"><?php
-                                                                                    if (isset($issueData->remarks)) {
-                                                                                        echo $issueData->remarks;
-                                                                                    }
-                                                                                    ?></textarea>
-                    </div>
-                </div>
+                
                 <div class="col-xs-12">
                     <div class="form-group">
                         <div class="modal-footer">

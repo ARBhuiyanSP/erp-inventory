@@ -207,9 +207,9 @@ $result2 = $conn->query($query4);
 
 
 
-/*  talk with atiq 09-03-22
 
-function getissueDataDetailsById($id){
+
+function getscrapDataDetailsById($id){
     global $conn;
     $receieves      =   "";
     $receiveDetails =   "";
@@ -238,7 +238,7 @@ function getissueDataDetailsById($id){
     return $feedbackData;
 }
 
-*/
+
 
 
 if(isset($_GET['process_type']) && $_GET['process_type'] == 'get_building_by_package'){

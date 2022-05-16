@@ -9,8 +9,7 @@
  * *****************************************************************************
  */
 if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
-    $receive_total      =   0;
-    $no_of_material     =   0;
+  
     for ($count = 0; $count < count($_POST['quantity']); $count++) {
         
         /*
@@ -24,26 +23,10 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
         $unit               = $_POST['unit'][$count];
         $part_no            = $_POST['part_no'][$count];
         $quantity           = $_POST['quantity'][$count];
-        $no_of_material     = $no_of_material+$quantity;
         $unit_price         = $_POST['unit_price'][$count];
-        $totalamount        = $_POST['totalamount'][$count];
-		
-        $receive_total      = $receive_total+$totalamount;
-		
         $project_id         = $_POST['project_id'];
         $remarks            = $_POST['remarks'];     
-        $expense_acct_id    =   '0';
-        $cost_center        =   '0';
-        
-        $sales_pricer       =   '0';
-        $total_sales        =   '0';
-        $sales_profit       =   '0';
-        $sales_margin       =   '0';
-        $id_serial_id       =   '0';  
-        $warehouse_id		=	$_SESSION['logged']['warehouse_id'];
-		
-		/* code 29-3-22 */
-		
+        $warehouse_id		= $_SESSION['logged']['warehouse_id'];
         $partner_id 		= $_POST['partner_id'];
         $party_id   		= $_POST['party_id'];
 		
@@ -74,18 +57,7 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
     /*
     *  Insert Data Into inv_damage Table:
     */
-    
-    $damage_date	= $_POST['damage_date'];
-    $buyer_id       = $_POST['project_id'];
-    $posted_to_gl   = 0;
-    $remarks        = $_POST['remarks'];
-    $return_type	= 'return';
-    $return_unit_id	= 'return';
-    $chk_year_end   = 0;
-    $no_of_material = $no_of_material;
-    $issue_total    = $receive_total;
-    $indent_no      = '1';
-    $receiver_name  = $_POST['receiver_name'];
+
     
     $query2 		= "INSERT INTO `inv_damage` (`damage_id`,`damage_date`,`remarks`,`project_id`,`warehouse_id`,`partner_id`,`party_id`) VALUES ('$damage_id','$damage_date','$remarks','$project_id','$warehouse_id','$partner_id','$party_id')";
     $result2 = $conn->query($query2);
@@ -93,6 +65,39 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
     $_SESSION['success']    =   "Damage Data process have been successfully completed.";
     header("location: damage_entry.php");
     exit();
+}
+
+
+
+
+
+function getReplaceRecDataDetailsById($id){
+    global $conn;
+    $receieves      =   "";
+    $receiveDetails =   "";
+    
+    // get receive data
+    $sql1           = "SELECT * FROM inv_damage where id=".$id;
+    $result1        = $conn->query($sql1);
+
+    if ($result1->num_rows > 0) {
+        $receieves = $result1->fetch_object();
+        // get receive details data
+        $table                  =   'Inv_damagedetail where damage_id='."'$receieves->damage_id'";
+        $order                  =   'DESC';
+        $column                 =   'return_qty';
+        $dataType               =   'obj';
+        $receiveDetailsData     = getTableDataByTableName($table, $order, $column, $dataType);
+        if(isset($receiveDetailsData) && !empty($receiveDetailsData)){
+            $receiveDetails     =   $receiveDetailsData;
+        }
+    }
+    $feedbackData   =   [
+        'receiveData'           =>  $receieves,
+        'receiveDetailsData'    =>  $receiveDetails
+    ];
+    
+    return $feedbackData;
 }
 
 
@@ -107,89 +112,82 @@ if (isset($_POST['damage_submit']) && !empty($_POST['damage_submit'])) {
  * *****************************************************************************
  */
 
-if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])){
-    $receive_total      =   0;
-    $no_of_material     =   0;
-    $edit_id            =   $_POST['edit_id'];
-    $mrr_no             =   $_POST['issue_no'];
+if(isset($_POST['damage_update_submit']) && !empty($_POST['damage_update_submit'])){
+
+
+    $edit_id               =   $_POST['edit_id'];  
+    $damage_id             =   $_POST['damage_id'];
     
-    // first delete all from inv_receivedetail; 
-    $delsql    = "DELETE FROM inv_issuedetail WHERE issue_id='$mrr_no'";
+    // first delete all from Inv_damagedetail; 
+    $delsql    = "DELETE FROM `Inv_damagedetail` WHERE `damage_id`='$damage_id'";
     $conn->query($delsql);
-    // first delete all from inv_materialbalance; 
-    $delsq2    = "DELETE FROM inv_materialbalance WHERE mb_ref_id='$mrr_no'";
+    // first delete all from Inv_damagebalance; 
+    $delsq2    = "DELETE FROM `Inv_damagebalance` WHERE `mb_ref_id`='$damage_id'";
     $conn->query($delsq2);
+	
+	
+	
+	
     
-    for ($count = 0; $count < count($_POST['quantity']); $count++) {
+       for ($count = 0; $count < count($_POST['quantity']); $count++) {
+        
         /*
-         *  Insert Data Into inv_issuedetail Table:
+         *  Insert Data Into inv_damagedetail Table:
         */       
         
-        $issue_date         = $_POST['issue_date'];
-        $issue_id           = $_POST['issue_no'];
+        $damage_date		= $_POST['damage_date'];
+        $damage_id			= $_POST['damage_id'];
         $material_name      = $_POST['material_name'][$count];
         $material_id        = $_POST['material_id'][$count];
         $unit               = $_POST['unit'][$count];
         $part_no            = $_POST['part_no'][$count];
         $quantity           = $_POST['quantity'][$count];
-        $no_of_material     = $no_of_material+$quantity;
         $unit_price         = $_POST['unit_price'][$count];
-        $totalamount        = $_POST['totalamount'][$count];
-        $receive_total      = $receive_total+$totalamount;
         $project_id         = $_POST['project_id'];
         $remarks            = $_POST['remarks'];     
-        $expense_acct_id    =   '0';
-        $cost_center        =   '0';
+        $warehouse_id		=	$_SESSION['logged']['warehouse_id'];
+        $partner_id 		= $_POST['partner_id'];
+        $party_id   		= $_POST['party_id'];
+		
+		
+		
         
-        $sales_pricer       =   '0';
-        $total_sales        =   '0';
-        $sales_profit       =   '0';
-        $sales_margin       =   '0';
-        $id_serial_id       =   '0';// 
-        
-        $query = "INSERT INTO `inv_issuedetail` (`issue_id`,`material_id`,`unit_id`,`expense_acct_id`,`cost_center`,`issue_qty`,`issue_price`,`sl_no`,`total_issue`,`sales_price`,`total_sales`,`sales_profit`,`sales_margin`,`id_serial_id`,`part_no`) VALUES ('$issue_id','$material_id','$unit','$expense_acct_id','$cost_center','$quantity','$unit_price','1','$totalamount','$sales_pricer','$total_sales','$sales_profit','$sales_margin','$id_serial_id','$part_no')";
+        $query = "INSERT INTO `inv_damagedetail` (`damage_id`,`damage_date`,`material_id`,`material_name`,`unit`,`return_qty`,`return_price`,`part_no`,`project_id`,`warehouse_id`) VALUES ('$damage_id','$damage_date','$material_id','$material_name','$unit','$quantity','$unit_price','$part_no','$project_id','$warehouse_id')";
         $conn->query($query);
         
-        /*
-         *  Insert Data Into inv_materialbalance Table:
-        */
-        $mb_ref_id      = $return_id;
+       
+         /*  Insert Data Into inv_damagebalance Table: talk with ma motors*/
+       
+        $mb_ref_id      = $damage_id;
         $mb_materialid  = $material_id;
-        $mb_date        = (isset($issue_date) && !empty($issue_date) ? date('Y-m-d h:i:s', strtotime($issue_date)) : date('Y-m-d h:i:s'));
+        $mb_date        = (isset($damage_date) && !empty($damage_date) ? date('Y-m-d h:i:s', strtotime($damage_date)) : date('Y-m-d h:i:s'));
         $mbin_qty       = $quantity;
-        $mbin_val       = $totalamount;
+        $mbin_val       = 0;
         $mbout_qty      = 0;
         $mbout_val      = 0;
-        $mbprice        = $unit_price;
-        $mbtype         = 'Return';
-        $mbserial       = '1.1';
+        $mbprice        = 0;
+        $mbtype         = 'REPLACE RECEIVE';
         $mbunit_id      = $project_id;
-        $mbserial_id    = 0;
-        $jvno           = $return_id;
-        $part_no        = $part_no;        
+                    
         
-        $query_inmb = "INSERT INTO `inv_materialbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbin_val`,`mbout_qty`,`mbout_val`,`mbprice`,`mbtype`,`mbserial`,`mbserial_id`,`mbunit_id`,`jvno`,`part_no`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbin_val','$mbout_qty','$mbout_val','$mbprice','$mbtype','$mbserial','$mbunit_id','$mbserial_id','$jvno','$part_no')";
+        $query_inmb = "INSERT INTO `inv_damagebalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`partner_id`,`party_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$partner_id','$party_id','$mb_date')";
         $conn->query($query_inmb);
-    }
-    /*
-        *  Update Data Into inv_receive Table:
-    */
-    $issue_date     = $_POST['issue_date'];
-    $buyer_id       = $_POST['project_id'];
-    $posted_to_gl   = 0;
-    $remarks        = $_POST['remarks'];
-    $issue_type     = 'issue';
-    $issue_unit_id  = 'issue';
-    $chk_year_end   = 0;
-    $no_of_material = $no_of_material;
-    $issue_total    = $receive_total;
-    $indent_no      = '1';
-    $receiver_name  = $_POST['receiver_name'];
-    $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',buyer_id='$buyer_id',posted_to_gl='$posted_to_gl',remarks='$remarks',issue_type='$issue_type',remarks='$remarks',issue_unit_id='$issue_unit_id',chk_year_end='$chk_year_end',no_of_material='$no_of_material',issue_total='$issue_total',indent_no='$indent_no',receiver_name='$receiver_name' WHERE id=$edit_id";
-    $result2 = $conn->query($query2);
+	   }
     
-    $_SESSION['success']    =   "Issue process have been successfully updated.";
-    header("location: issue_edit.php?edit_id=".$edit_id);
+
+	
+      /*  *  Update Data Into inv_damage Table: */
+   
+		
+				
+
+    $query2    = "UPDATE inv_damage SET damage_id='$damage_id',damage_date='$damage_date',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',partner_id='$partner_id',party_id='$party_id' WHERE id=$edit_id";
+    $result2 = $conn->query($query2);
+	
+	
+    
+    $_SESSION['success']    =   "Replace Receive update process have been successfully updated.";
+    header("location: replacereceive_edit.php?edit_id=".$edit_id);
     exit();
 }
 

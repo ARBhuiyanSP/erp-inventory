@@ -5,38 +5,29 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="return_report.php">Report</a>
+             <a href="supplierreplacemovement_report.php">Report</a>
         </li>
-        <li class="breadcrumb-item active">Return from party Entry</li>
-		
-		  <li class="breadcrumb-item" style="text-align:right;">
-								
-								<?php  
-									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
-									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
-								
-								echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
-		</li>
+        <li class="breadcrumb-item active">Replace Out To Supplier Entry Form</li>
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
-            <i class="fas fa-table"></i>
-            Return Entry Form</div>
+            <i class="fas fa-table"></i><b>
+            Replace Out To Supplier Entry Form</b></div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
-                <form action="" method="post" name="add_issue" id="return_entry_form" onsubmit="showFormIsProcessing('return_entry_form');">
+                <form action="" method="post" name="add_damageout" id="damageout_entry_form" onsubmit="showFormIsProcessing('damageout_entry_form');">
                     <div class="row" id="div1" style="">
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Return Date</label>
-                                <input type="text" autocomplete="off" name="return_date" id="return_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <label> Date</label>
+                                <input type="text" autocomplete="off" name="damageout_date" id="damageout_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Return No</label>
+                                <label>Replace Return No</label>
 								<?php if($_SESSION['logged']['user_type'] == 'whm')
 									{
 										$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
@@ -44,98 +35,28 @@
 										$result = mysqli_query($conn, $sql);
 										$row=mysqli_fetch_array($result);
 										$short_name = $row['short_name'];
-										$returnCode= 'RTN-'.$short_name;
+										$damageoutCode= 'SO-'.$short_name;
 									} else{
-										$returnCode= 'RTN-CW';
+										$damageoutCode= 'SO-CW';
 									}
 								?>
-                                <input type="text" name="return_id" id="return_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_return', 'return_id', '03d', '001', $returnCode) ?>">
-                                <input type="hidden" name="return_no" id="return_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_return', 'return_id', '03d', '001', $returnCode) ?>">
+        <input type="text" name="ros_id" id="ros_id" class="form-control" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_replaceoutsupplier', 'ros_id', '03d', '001', $damageoutCode) ?>">
+                                <input type="hidden" name="damage_no" id="damage_no" value="<?php echo getDefaultCategoryCodeByWarehouse('inv_replaceoutsupplier', 'ros_id', '03d', '001', $damageoutCode) ?>">
                             </div>
                         </div>
 						
 						
 						
+			
 						
-						
-						
-							<div class="col-xs-2">
-							<div class="form-group">
-								<label for="id">Partner</label><span class="reqfield"> ***required</span>
-		
-								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
-	
-									<option value="">Select</option>
-									<?php
-									$parentCats = getTableDataByTableName('partner', '', 'name');
-									if (isset($parentCats) && !empty($parentCats)) {
-										foreach ($parentCats as $pcat) {
-											?>
-											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
-										<?php }
-									} ?>
-								</select>
-							</div>
-                        </div>
-						
-						
-						
-						
-						 <div class="col-xs-3">
-							<div class="form-group">
-								<label for="id">Party</label><span class="reqfield"> ***required</span>
-								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
-									<option value="">Select</option>
-									<?php
-									$parentCats = getTableDataByTableName('party','','partyname');
-									if (isset($parentCats) && !empty($parentCats)) {
-										foreach ($parentCats as $pcat) {
-											?>
-											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
-										<?php }
-									} ?>
-								</select>
-							</div>
-                        </div>
-						
-						
-						<div class="col-xs-1">
+						 <div class="col-xs-2">
                             <div class="form-group">
-                                <label for="id">party ID</label>
-                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
-                            </div>
-                        </div>
-						
-						
-						
-						
-						
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label></label>
-								<?php 
-									$warehouse_id		=	$_SESSION['logged']['warehouse_id'];
-									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);	
-								?>
-								<input type="hidden" autocomplete="off" name="warehouse_id" id="warehouse_id" class="form-control datepicker" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>" readonly >
-                            </div>
-                        </div>
-						
-						
-						
-						
-						
-						
-						<!--
-						
-						
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Project</label><span class="reqfield"> ***required</span>
-                                <select class="form-control" id="project_id" name="project_id" required>
+                                <label for="id">Supplier</label><span class="reqfield"> ***required</span>
+                                <select class="form-control material_select_2" id="supplier_name" name="supplier_name" required onchange="getItemCodeByParam(this.value, 'suppliers', 'code', 'supplier_id');">
+                                    <option value="">Select</option>
                                     <?php
-                                    $projectsData = getTableDataByTableName('projects');
-                                    ;
+                                    $projectsData = getTableDataByTableName('suppliers');
+
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                             ?>
@@ -147,17 +68,68 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label for="id">Supplier ID</label>
+                                <input type="text" name="supplier_id" id="supplier_id" class="form-control" required>
+                            </div>
+                        </div>
 						
-						-->
-						
-			
+						<input type="hidden" value="2" name="project_id" />
 						
 						
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label>Warehouse</label>
+								<?php 
+									$warehouse_id		=	$_SESSION['logged']['warehouse_id'];
+									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);	
+								?>
+								<input type="text" autocomplete="off" name="warehouse_id" id="warehouse_id" class="form-control datepicker" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>" readonly >
+                            </div>
+                        </div>
+                       
+					<!--	<div class="col-xs-2">
+                            <div class="form-group">
+                                <label>Package</label><span class="reqfield"> ***required</span>
+                                <select class="form-control" id="package_id" name="package_id" required>
+                                    <option value="">Select</option>
+                                    <?php
+                                    $projectsData = getTableDataByTableName('packages');
+                                    ;
+                                    if (isset($projectsData) && !empty($projectsData)) {
+                                        foreach ($projectsData as $data) {
+                                            ?>
+                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div> 
 						
+						
+						<div class="col-xs-2">
+                            <div class="form-group">
+                                <label>Buildings</label><span class="reqfield"> ***required</span>
+                                <select class="form-control" id="building_id" name="building_id" required>
+                                    <option value="">Select</option>
+                                    <?php
+                                    $projectsData = getTableDataByTableName('buildings');
+                                    ;
+                                    if (isset($projectsData) && !empty($projectsData)) {
+                                        foreach ($projectsData as $data) {
+                                            ?>
+                                            <option value="<?php echo $data['building_id']; ?>"><?php echo $data['building_id']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div> -->
                     </div>
-					
-					
-					
                     <div class="row" id="div1"  style="">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dynamic_field">
@@ -234,7 +206,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="modal-footer">
-                                    <input type="submit" name="return_submit" id="return_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
+                                    <input type="submit" name="Replaceouttosupplier_submit" id="Replaceouttosupplier_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />
                                 </div>    
                             </div>
                         </div>
@@ -301,7 +273,7 @@
 </script>
 <script>
     $(function () {
-        $("#return_date").datepicker({
+        $("#damageout_date").datepicker({
             inline: true,
             dateFormat: "yy-mm-dd",
             yearRange: "-50:+10",
