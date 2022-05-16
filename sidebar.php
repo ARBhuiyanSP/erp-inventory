@@ -158,6 +158,8 @@
             <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">W.Transfer List</span></a>
         </div>
     </li>
+	
+	 <!--
 	<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-undo" aria-hidden="true" style="color: #007BFF;"></i>
@@ -167,7 +169,7 @@
             <a class="dropdown-item" href="return_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Material Return</span></a>
             <a class="dropdown-item" href="return-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Return List</span></a>
         </div>
-    </li>
+    </li> -->
 	
 	
 	
@@ -214,7 +216,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="damage_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive</span></a>
-            <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive List</span></a>
+            <a class="dropdown-item" href="replacereceive-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive List</span></a>
         </div>
 </li>
 
@@ -228,7 +230,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="damageout_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out</span></a>
-            <a class="dropdown-item" href="transfer-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out List</span></a>
+            <a class="dropdown-item" href="replaceout-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out List</span></a>
         </div>
 </li>
 
@@ -272,7 +274,30 @@
     </li>	
 	
 
-	
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-text-width " aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Replace Out To Supplier</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="replaceOutToSupplier.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out To Supplier</span></a>
+            <a class="dropdown-item" href="replacereceive-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out from supplier List</span></a>
+        </div>
+</li>
+
+
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-text-width " aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Replace Receive from Supplier</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="replacereceivefromsupplier.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive from Supplier</span></a>
+            <a class="dropdown-item" href="replacereceive-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive from Supplier List</span></a>
+        </div>
+</li>
+
+
 	
 	
 

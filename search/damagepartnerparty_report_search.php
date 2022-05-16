@@ -15,6 +15,7 @@
 		<button class="btn btn-info linktext" onclick="window.location.href='damage_report.php';"> Date wise Damarage Sales Detail Report</button>
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='damagepartnerparty_report.php';"> Date wise partner and party Damarage Sales Detail Report</button>
+		
 	</div>
 		
     <div class="card-body">
@@ -22,12 +23,59 @@
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
-                        <tr> 
-							
+                        <tr>  
+						
+						
+						<div class="col-xs-2">
+							<div class="form-group">
+								<label for="id">Partner</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('partner', '', 'name');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+						
+						
+						 <div class="col-xs-3">
+							<div class="form-group">
+								<label for="id">Party</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('party','','partyname');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+                        <div class="col-xs-1">
+                            <div class="form-group">
+                                <label for="id">party ID</label>
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
+                            </div>
+                        </div>
+						
+						
+						
+						
 							<td>
                                 <div class="form-group">
                                     <label for="todate">From Date</label>
-                                    <input type="text" class="form-control" id="from_date" value="<?php if(isset($_GET['from_date'])){ echo $_GET['from_date']; } ?>" name="from_date" autocomplete="off" required >
+                                    <input type="text" class="form-control" id="from_date" name="from_date" value="<?php if(isset($_GET['from_date'])){ echo $_GET['from_date']; } ?>" autocomplete="off" required >
                                 </div>
                             </td>
 							<td>
@@ -56,7 +104,9 @@ if(isset($_GET['submit'])){
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
-
+	
+	 $partner_id 		= $_GET['partner_id'];
+     $party_id   		= $_GET['party_id'];
 	
 	
 ?>
@@ -71,6 +121,20 @@ if(isset($_GET['submit'])){
 						<p>
 							<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/><br>
 							<span>Date Wise Damarage Sales  Report</span><br>
+							
+							
+							<br><span>PARTNER:<?php 
+											$dataresult =   getDataRowByTableAndId('partner', $partner_id);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
+							                              ?></span>
+										
+										<br><span>PARTY:<?php 
+											$dataresult =   getDataRowByTableAndId1('party', $party_id);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+							                            ?></span><br>
+														
+														
+														
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
@@ -119,9 +183,9 @@ if(isset($_GET['submit'])){
 						$profitsumamount=0;
 						
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_damaragedetailsale` WHERE  `ds_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_damaragedetailsale` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `ds_date` BETWEEN '$from_date' AND '$to_date'";
 						}else{
-							$sql	=	"SELECT * FROM `inv_damaragedetailsale` WHERE `warehouse_id` = '$warehouse_id'  `ds_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_damaragedetailsale` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `warehouse_id` = '$warehouse_id'  `ds_date` BETWEEN '$from_date' AND '$to_date'";
 						}
 						$result = mysqli_query($conn, $sql);
 

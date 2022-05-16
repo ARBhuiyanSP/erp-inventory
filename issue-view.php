@@ -56,13 +56,20 @@ $issue_id=$_GET['no']; ?>
 								
 								
 								
-								
-								
-								<tr>
+									
+									<tr>
 										<th>Party:</th>
-										<td><?php
-										echo $rowd['party_id'] ?></td>
+										<td>
+											<?php 
+											$party_id = $rowd['party_id'];
+											$sqlunit	=	"SELECT partyname FROM `party` WHERE `party_id` = '$party_id' ";
+											$resultunit = mysqli_query($conn, $sqlunit);
+											$rowunit=mysqli_fetch_array($resultunit);
+											echo   $rowunit['partyname']."[".$party_id."]";
+											?>
+										</td>
 									</tr>
+									
 									
 									
 									
@@ -133,55 +140,74 @@ $issue_id=$_GET['no']; ?>
 								
 								
 								<tr>
-									<td colspan="6" class="grand_total">Total Amount:</td>
+									<td colspan="6" class="grand_total" style="text-align:right;">Total Amount:</td>
 									<td>
 										<?php 
 										$sql2 = "SELECT totalamount FROM  `inv_issue` where `issue_id`='$issue_id'";
 										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$fgfg3=number_format((float)$row2['totalamount'], 2, '.', '');
+										$totalamountvar=number_format((float)$row2['totalamount']);
 										
-										echo $fgfg3 ;
+										echo $totalamountvar ;
 										}
 										?>
 									</td>
-									<td colspan="2" class=""></td>
 								</tr>
+								
+								
+								
+																<tr>
+									<td colspan="6" class="grand_total" style="text-align:right;">Discount Amount:</td>
+									<td>
+										<?php 
+										$sql2 = "SELECT discount_amount FROM  `inv_issue` where `issue_id`='$issue_id'";
+										$result2 = mysqli_query($conn, $sql2);
+										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
+									//	$discountvar=number_format((float)$row2['discount_amount'], 2, '.', '');
+									    $discountvar=number_format((float)$row2['discount_amount']);
+										
+										echo $discountvar ;
+										}
+										?>
+									</td>
+									
+								</tr>
+								
 								
 								
 								
 								
 									<tr>
-									<td colspan="6" class="grand_total">Paid Amount:</td>
+									<td colspan="6" class="grand_total" style="text-align:right;">Paid Amount:</td>
 									<td>
 										<?php 
 										$sql2 = "SELECT paidamount FROM  `inv_issue` where `issue_id`='$issue_id'";
 										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$fgfg3=number_format((float)$row2['paidamount'], 2, '.', '');
-										
-										echo $fgfg3 ;
+										//$paidamountvar=number_format((float)$row2['paidamount'], 2, '.', '');
+										$paidamountvar=number_format((float)$row2['paidamount']);
+										echo $paidamountvar ;
 										}
 										?>
 									</td>
-									<td colspan="2" class=""></td>
+									
 								</tr>
 								
 								
 								<tr>
-									<td colspan="6" class="grand_total">Due Amount:</td>
+									<td colspan="6" class="grand_total" style="text-align:right;">Due Amount:</td>
 									<td>
 										<?php 
 										$sql2 = "SELECT Dueamount FROM  `inv_issue` where `issue_id`='$issue_id'";
 										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$fgfg3=number_format((float)$row2['Dueamount'], 2, '.', '');
+										$dueamountvar=number_format((float)$row2['Dueamount'], 2, '.', '');
 										
-										echo $fgfg3 ;
+										echo $dueamountvar;
 										}
 										?>
 									</td>
-									<td colspan="2" class=""></td>
+								
 								</tr>
 								
 								
@@ -194,7 +220,7 @@ $issue_id=$_GET['no']; ?>
 								
 								
 								<tr>
-									<td colspan="7">Remarks:</br>
+									<td colspan="7">Remarks:
 										<?php 
 										echo $rowd['remarks'];
 										?>
@@ -202,6 +228,13 @@ $issue_id=$_GET['no']; ?>
 								</tr>
 							</tbody>
 						</table>
+						
+						
+						<b>Total Amount in words: 
+							<span class="amountWords"><?php echo convertNumberToWords($dueamountvar).' Only';?></span>
+						</b>
+						
+						
 						<div class="row" style="text-align:center">
 							<div class="col-sm-5"></br><?php echo $rowd['received_by'];?></br>--------------------</br>Receiver Signature</div>			
 							<div class="col-sm-2">

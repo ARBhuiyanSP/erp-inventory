@@ -19,6 +19,14 @@
 		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
 		
 		
+		
+		
+		<button class="btn btn-info linktext" onclick="window.location.href='salespartner_report.php';"> Partner wise Daily Sales  Report</button>
+		
+		
+		
+		
+		
 		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>
 		
 		

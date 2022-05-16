@@ -58,11 +58,21 @@ $ss_id=$_GET['no']; ?>
 								
 								
 								
-								<tr>
-										<th>Party:</th>
-										<td><?php
-										echo $rowd['party_id'] ?></td>
+								
+									
+									<tr>
+										<th>Partner:</th>
+										<td>
+											<?php 
+											$partner_id = $rowd['partner_id'];
+											$sqlunit	=	"SELECT `name` FROM `partner` WHERE `partner_id` = '$partner_id' ";
+											$resultunit = mysqli_query($conn, $sqlunit);
+											$rowunit=mysqli_fetch_array($resultunit);
+											echo   $rowunit['name']."[".$partner_id."]";
+											?>
+										</td>
 									</tr>
+									
 									
 									
 									
@@ -133,26 +143,26 @@ $ss_id=$_GET['no']; ?>
 								
 								
 								<tr>
-									<td colspan="6" class="grand_total">Total Amount:</td>
+									<td colspan="6" class="grand_total"style="text-align:right;">Total Amount:</td>
 									<td>
 										<?php 
 										$sql2 = "SELECT totalamount FROM  `inv_scrap` where `ss_id`='$ss_id'";
 										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$fgfg3=number_format((float)$row2['totalamount'], 2, '.', '');
+										$totalamountvar=number_format((float)$row2['totalamount'], 2, '.', '');
 										
-										echo $fgfg3 ;
+										echo $totalamountvar ;
 										}
 										?>
 									</td>
-									<td colspan="2" class=""></td>
+									
 								</tr>
 								
 								
 								
 								
 									<tr>
-									<td colspan="6" class="grand_total">Paid Amount:</td>
+									<td colspan="6" class="grand_total"style="text-align:right;">Paid Amount:</td>
 									<td>
 										<?php 
 										$sql2 = "SELECT paidamount FROM  `inv_scrap` where `ss_id`='$ss_id'";
@@ -164,24 +174,24 @@ $ss_id=$_GET['no']; ?>
 										}
 										?>
 									</td>
-									<td colspan="2" class=""></td>
+									
 								</tr>
 								
 								
 								<tr>
-									<td colspan="6" class="grand_total">Due Amount:</td>
+									<td colspan="6" class="grand_total"style="text-align:right;">Due Amount:</td>
 									<td>
 										<?php 
 										$sql2 = "SELECT Dueamount FROM  `inv_scrap` where `ss_id`='$ss_id'";
 										$result2 = mysqli_query($conn, $sql2);
 										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$fgfg3=number_format((float)$row2['Dueamount'], 2, '.', '');
+										$DUEAMOUNTVAR=number_format((float)$row2['Dueamount'], 2, '.', '');
 										
-										echo $fgfg3 ;
+										echo $DUEAMOUNTVAR ;
 										}
 										?>
 									</td>
-									<td colspan="2" class=""></td>
+									
 								</tr>
 								
 								
@@ -202,10 +212,14 @@ $ss_id=$_GET['no']; ?>
 								</tr>
 							</tbody>
 						</table>
+						
+						<b>Total Amount in words: 
+							<span class="amountWords"><?php echo convertNumberToWords($totalamountvar).' Only';?></span>
+						</b>
 						<div class="row" style="text-align:center">
 							<div class="col-sm-5"></br><?php echo $rowd['received_by'];?></br>--------------------</br>Receiver Signature</div>			
 							<div class="col-sm-2">
-								<?php $queryedit	= "SELECT `approval_status` FROM `inv_issue` WHERE `issue_id`='$issue_id'";
+								<?php $queryedit	= "SELECT `approval_status` FROM `inv_scrap` WHERE `ss_id`='$ss_id'";
 								$result		=	$conn->query($queryedit);
 								$row		=	mysqli_fetch_assoc($result);
 								if($row['approval_status'] == 0){?>

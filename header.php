@@ -33,6 +33,9 @@ include 'includes/scrap_process.php';
 include 'includes/damage_process.php';
 include 'includes/damageout_process.php';
 include 'includes/damaragesale_process.php';
+include 'includes/Replacereceivefromsupplier_process.php';
+include 'includes/Replaceouttosupplier_process.php';
+
 
 ?>
 <!DOCTYPE html>

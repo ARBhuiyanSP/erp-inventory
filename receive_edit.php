@@ -18,6 +18,18 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
             <a href="dashboard.php">Dashboard</a>
         </li>
         <li class="breadcrumb-item active">Receive Edit</li>
+		
+		
+		 <li class="breadcrumb-item" style="text-align:right;">
+								
+								<?php  
+									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
+									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
+								
+								echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
+		</li>
+		
+		
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
@@ -42,42 +54,22 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                                 <input type="hidden" name="receive_no" id="receive_no" value="<?php echo $receiveData->mrr_no; ?>">
                             </div>
                         </div>
+                        
+                       
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label>Purchase ID</label>
-                                <input type="text" name="purchase_id" id="purchase_id" class="form-control" value="<?php echo (isset($receiveData->purchase_id) && !empty($receiveData->purchase_id) ? $receiveData->purchase_id : ''); ?>">
-                            </div>
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Purchase Date</label>
-                                <input type="text" autocomplete="off" name="Purchase_date" id="Purchase_date" class="form-control datepicker" value="<?php echo (isset($receiveData->mrr_date) && !empty($receiveData->mrr_date) ? date('Y-m-d', strtotime($receiveData->mrr_date)) : ''); ?>">	
-                            </div>
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label for="id">Supplier Challan No</label>
+                                <label for="id">Memo/Challan No</label>
                                 <input type="text" name="challan_no" id="challan_no" class="form-control" value="<?php echo (isset($receiveData->challanno) && !empty($receiveData->challanno) ? $receiveData->challanno : ''); ?>">
                             </div>
                         </div>
                         <div class="col-xs-2">
                             <div class="form-group">
-                                <label for="id">Challan Date</label>
+                                <label for="id">Memo/Challan Date</label>
                                 <input type="text" autocomplete="off" name="challan_date" id="challan_date" class="form-control datepicker" value="<?php echo (isset($receiveData->challan_date) && !empty($receiveData->challan_date) ? $receiveData->challan_date : ''); ?>">
                             </div>
                         </div>
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label for="id">Requisition No.</label>
-                                <input type="text" name="requisition_no" id="requisition_no" class="form-control" value="<?php echo (isset($receiveData->requisitionno) && !empty($receiveData->requisitionno) ? $receiveData->requisitionno : ''); ?>">
-                            </div>
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label for="id">Requisition Date</label>
-                                <input type="text" autocomplete="off" name="requisition_date" id="requisition_date" class="form-control datepicker" value="<?php echo (isset($receiveData->requisition_date) && !empty($receiveData->requisition_date) ? $receiveData->requisition_date : ''); ?>">
-                            </div>
-                        </div>
+                       
+                      
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label for="id">Supplier</label>
@@ -105,6 +97,8 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                                 <input type="text" name="supplier_id" id="supplier_id" class="form-control" value="<?php echo (isset($receiveData->supplier_id) && !empty($receiveData->supplier_id) ? $receiveData->supplier_id : ''); ?>">
                             </div>
                         </div>
+						
+						<!--
 						<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Project</label>
@@ -125,26 +119,18 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
 								</select>
                             </div>
                         </div>
-						<div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Warehouse</label>
-                                <select class="form-control" id="warehouse_id" name="warehouse_id" readonly>
-									<?php
-									$projectsData = getTableDataByTableName('inv_warehosueinfo');
-									;
-									if (isset($projectsData) && !empty($projectsData)) {
-										foreach ($projectsData as $data) {
-											?>
-											<option value="<?php echo $data['id']; ?>" <?php if (isset($receiveData->warehouse_id) && $receiveData->warehouse_id == $data['id']) {
-                                        echo 'selected';
-                                    } ?>><?php echo $data['name']; ?></option>
-											<?php
-										}
-									}
-									?>
-								</select>
-                            </div>
-                        </div>
+						-->
+						
+					           <?php  
+									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
+									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
+								?>
+								<input type="hidden" class="form-control" readonly="readonly" value="<?php echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : ''); ?>">
+								
+								<input type="hidden" name="warehouse_id" id="warehouse_id" class="form-control" readonly="readonly" value="<?php echo $_SESSION['logged']['warehouse_id']; ?>">
+						
+						
+						
                     </div>
                     <div class="row" id="div1"  style="">
                         <div class="table-responsive">
@@ -153,7 +139,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                                 <th>Material Name</th>
                                 <th>Material ID</th>
                                 <th>Unit</th>
-                                <th>Part No</th>
+                                <th>Brand</th>
                                 <th>Quantity</th>
                                 <th>Unit Price</th>
                                 <th>Total Amount</th>

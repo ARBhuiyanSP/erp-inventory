@@ -29,103 +29,10 @@ $(document).ready(function() {
 			if (isset($projectsData) && !empty($projectsData)) {
 				foreach ($projectsData as $data) {
 					?>
-			<div class="col-xl-4 col-sm-6 mb-4">
-				<div class="card text-white bg-info">
-					<center><h3><?php echo $data['name']; ?></h3></center>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Type</th>
-								<th>Quantity</th>
-								<th>Approved</th>
-								<th>Pending</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<?php 
-								$warehouse = $data['id'];
-								$sqlmrr	=	"SELECT * FROM `inv_receive` WHERE `warehouse_id`=$warehouse";
-								$resultmrr = mysqli_query($conn, $sqlmrr);
-								$totalMrr = mysqli_num_rows($resultmrr);	
+					
 
-									$sqlpmrr	=	"SELECT * FROM `inv_receive` WHERE `warehouse_id`=$warehouse AND `approval_status`='0'";
-									$resultpmrr = mysqli_query($conn, $sqlpmrr);
-									$totalpMrr = mysqli_num_rows($resultpmrr);
-								$totalaMrr	=	$totalMrr-$totalpMrr;
-								?>
-								<td>Receive</td>
-								<td><?php echo $totalMrr; ?></td>
-								<td><?php echo $totalaMrr; ?></td>
-								<td><?php echo $totalpMrr; ?></td>
-							</tr>
-							<tr>
-								<?php 
-								$sqliss	=	"SELECT * FROM `inv_issue` WHERE `warehouse_id`=$warehouse";
-								$resultiss = mysqli_query($conn, $sqliss);
-								$totalIss = mysqli_num_rows($resultiss);	
-
-									$sqlpiss	=	"SELECT * FROM `inv_issue` WHERE  `warehouse_id`=$warehouse AND `approval_status`='0'";
-									$resultpiss = mysqli_query($conn, $sqlpiss);
-									$totalpIss = mysqli_num_rows($resultpiss);
-								$totalaIss	=	$totalIss-$totalpIss;
-								?>
-								<td>Issue</td>
-								<td><?php echo $totalIss; ?></td>
-								<td><?php echo $totalaIss; ?></td>
-								<td><?php echo $totalpIss; ?></td>
-							</tr>
-							<tr>
-								<?php 
-								$sqltrn	=	"SELECT * FROM `inv_transfermaster` WHERE `from_warehouse`='$warehouse'";
-								$resulttrn = mysqli_query($conn, $sqltrn);
-								$totalTrn = mysqli_num_rows($resulttrn);	
-
-									$sqlptrn	=	"SELECT * FROM `inv_transfermaster` WHERE `from_warehouse`=$warehouse";
-									$resultptrn = mysqli_query($conn, $sqlptrn);
-									$totalpTrn = mysqli_num_rows($resultptrn);
-								$totalaTrn	=	$totalTrn-$totalpTrn;
-								?>
-								<td>Transfer</td>
-								<td><?php echo $totalTrn; ?></td>
-								<td><?php echo $totalaTrn; ?></td>
-								<td><?php echo $totalpTrn; ?></td>
-							</tr>
-							<tr>
-								<?php 
-								$sqlrtn	=	"SELECT * FROM `inv_return` WHERE `warehouse_id`=$warehouse";
-								$resultrtn = mysqli_query($conn, $sqlrtn);
-								$totalRtn = mysqli_num_rows($resultrtn);	
-
-									$sqlprtn	=	"SELECT * FROM `inv_return` WHERE `warehouse_id`=$warehouse";
-									$resultprtn = mysqli_query($conn, $sqlprtn);
-									$totalpRtn = mysqli_num_rows($resultprtn);
-								$totalaRtn	=	$totalRtn-$totalpRtn;
-								?>
-								<td>Return</td>
-								<td><?php echo $totalRtn; ?></td>
-								<td><?php echo $totalaRtn; ?></td>
-								<td><?php echo $totalpRtn; ?></td>
-							</tr>
-						</tbody>
-					</table>
-					<!-- box -->
-					<center>
-						<div class="btn-group">
-							<?php
-							$warehouse = $data['id'];
-							$sqlpck	=	"SELECT * FROM `partner` ";
-							$resultpck = mysqli_query($conn, $sqlpck);
-							while($rowpck=mysqli_fetch_array($resultpck))
-							{ ?>
-							<button type="button" class="btn btn-warning" onclick="window.location.href='consumption_pakg_build_report.php?project_id=2&package_id=<?php echo $rowpck['id']; ?>';"><?php echo $rowpck['short_name']; ?></button>
-							<?php } ?>
-						</div>
-					</center>
-						
-					<!-- /.box -->
-				</div>
-			</div>
+			
+			
 			<?php
 				}
 			}
@@ -234,7 +141,7 @@ $(document).ready(function() {
 									$resultpmrr = mysqli_query($conn, $sqlpmrr);
 									$totalPendingMrr = mysqli_num_rows($resultpmrr);
 									?>
-										<div class="mr-5"><?php echo $totalPendingMrr; ?> Pending MRR</div>
+										<div class="mr-5">Total Received MRR:<?php echo $totalPendingMrr; ?> </div>
 									</div>
 									<a class="card-footer text-white clearfix small z-1" href="receive-list.php">
 									<span class="float-left">View Details</span>
@@ -260,7 +167,7 @@ $(document).ready(function() {
 									$resultpmrr = mysqli_query($conn, $sqlpmrr);
 									$totalPendingMrr = mysqli_num_rows($resultpmrr);
 									?>
-										<div class="mr-5"><?php echo $totalPendingMrr; ?> Pending Issue</div>
+										<div class="mr-5">Total sale Invoice:<?php echo $totalPendingMrr; ?></div>
 									</div>
 									<a class="card-footer text-white clearfix small z-1" href="issue-list.php">
 									<span class="float-left">View Details</span>
@@ -392,109 +299,7 @@ $(document).ready(function() {
         </div>
 		
 <?php } ?>
-<div class="row">
-	<div class="col-xl-12 col-sm-12 mb-3"><!--here your code will go-->
-			<script>
-			window.onload = function () {
 
-			var chart = new CanvasJS.Chart("chartContainer", {
-				animationEnabled: true,
-				title:{
-					text: "Top items stock at a glance"
-				},	
-				axisY: {
-					title: "Items in Qty",
-					titleFontColor: "#4F81BC",
-					lineColor: "#4F81BC",
-					labelFontColor: "#4F81BC",
-					tickColor: "#4F81BC"
-				},
-				axisY2: {
-					title: "Items in Qty",
-					titleFontColor: "#C0504E",
-					lineColor: "#C0504E",
-					labelFontColor: "#C0504E",
-					tickColor: "#C0504E"
-				},	
-				toolTip: {
-					shared: true
-				},
-				legend: {
-					cursor:"pointer",
-					itemclick: toggleDataSeries
-				},
-				data: [
-				<?php
-				$projectsData = getwarehouseinfo('inv_warehosueinfo');
-				if (isset($projectsData) && !empty($projectsData)) {
-					foreach ($projectsData as $data) {
-				?>
-				
-				
-				{
-					type: "column",	
-					name: "<?php echo $data['name']; ?>",
-					legendText: "<?php echo $data['name']; ?>",
-					axisYType: "secondary",
-					showInLegend: true,
-					dataPoints:[
-					
-					<?php 
-					$sql	=	"SELECT * FROM inv_material WHERE material_id = 13";
-						$result = mysqli_query($conn, $sql);
-						while($row=mysqli_fetch_array($result))
-						{
-							$warehouse 		= $data['id'];
-							$to_date 		= date('Y-m-d');
-							$mb_materialid 	= $row['material_id_code'];
-							
-							$sqlinqty = "SELECT SUM(`mbin_qty`) AS totalin FROM `inv_materialbalance` WHERE warehouse_id = $warehouse AND `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
-							$resultinqty = mysqli_query($conn, $sqlinqty);
-							$rowinqty = mysqli_fetch_object($resultinqty) ;
-							
-							
-							$sqloutqty = "SELECT SUM(`mbout_qty`) AS totalout FROM `inv_materialbalance` WHERE warehouse_id = $warehouse AND `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
-							$resultoutqty = mysqli_query($conn, $sqloutqty);
-							$rowoutqty = mysqli_fetch_object($resultoutqty) ;
-							
-							//echo $rowinqty->totalin -$rowoutqty->totalout;
-							
-							$instock = $rowinqty->totalin -$rowoutqty->totalout;
-							
-					?>
-						{ label: "<?php echo $row['material_description']; ?>", y: <?php echo number_format((float)$instock, 2, '.', ''); ?> },
-						
-						<?php } ?>
-					]
-				},
-				
-					<?php
-					}
-				}
-				?>
-				
-				
-				]
-			});
-			chart.render();
-
-			function toggleDataSeries(e) {
-				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-					e.dataSeries.visible = false;
-				}
-				else {
-					e.dataSeries.visible = true;
-				}
-				chart.render();
-			}
-
-			}
-			</script>
-
-			<div id="chartContainer" style="height: auto; width: 100%;"></div>
-			<script src="js/canvasjs.min.js"></script>
-            <!--here your code will go--></div>
-</div>
 		
 		
 		

@@ -102,7 +102,7 @@ if(isset($_GET['submit'])){
 							<th>Sale amount</th>
 							
 							
-							<th>Profit amount</th>
+				
 						</tr>
 					</thead>
 					
@@ -121,7 +121,7 @@ if(isset($_GET['submit'])){
 						
 						 $dissue_price=0;
 						 $damount=0;
-						$profitsumamount=0;
+						
 						
 						if($_SESSION['logged']['user_type'] !== 'whm'){
 							$sql	=	"SELECT * FROM `inv_issuedetail` WHERE  `issue_date` BETWEEN '$from_date' AND '$to_date'";
@@ -142,7 +142,7 @@ if(isset($_GET['submit'])){
 							    $dissue_price =0;
 								$damount += $row['amount'];
 								
-								$profitsumamount += $row['amount'] - $row['cur_price_amount'];
+							
 					?>
 					
 					
@@ -190,9 +190,7 @@ if(isset($_GET['submit'])){
 							
 							
 							
-							<td style="text-align:right;">
-								<?php $profitamount =  $row['amount']-$row['cur_price_amount']; echo number_format((float)$profitamount, 2, '.', '');?>
-							</td>
+							
 							
 				</tr>
 				
@@ -222,10 +220,7 @@ if(isset($_GET['submit'])){
 								?>
 							</td>
 							
-							<td style="text-align:right;">
-								<?php echo number_format((float)$profitsumamount, 2, '.', '');
-								?>
-							</td>
+						
 							
 							
 						</tr>
