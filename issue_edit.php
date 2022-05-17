@@ -44,6 +44,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label>Bill No</label>
+								<!--issue_id =column name-->
                                 <input type="text" name="issue_id" id="issue_id" class="form-control" readonly="readonly" value="<?php echo $issueData->issue_id; ?>">
                                 <input type="hidden" name="issue_no" id="issue_no" value="<?php echo $issueData->issue_id; ?>">
                             </div>
@@ -56,7 +57,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                             <div class="form-group">
                                 <label>Memo No</label>
                                 <input type="text" name="memono" id="memono" class="form-control" value="<?php echo $issueData->memono; ?>">
-                                <input type="hidden" name="memono" id="memono" value="<?php echo $issueData->memono; ?>">
+                                <input type="hidden" name="memo_no" id="memo_no" value="<?php echo $issueData->memono; ?>">
                             </div>
                         </div>
 

@@ -289,8 +289,8 @@ if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])
 				$issue_date         = $_POST['issue_date'];
 				$issue_id           = $_POST['issue_id'];
 		
-				$party_id         = $_POST['party_id'];
-                $memono         = $_POST['memono'];
+				$party_id           = $_POST['party_id'];
+                $memono             = $_POST['memono'];
 				$project_id         = 1;
 				$warehouse_id   	= $_POST['warehouse_id'];
 				$material_name      = $_POST['material_name'][$count];
@@ -380,7 +380,7 @@ if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])
 			$var_profit	= $profitamount  / 2;	
 				
 
-    $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',memono='$memono',party_id='$party_id',partner_id='$partner_id',received_by='$received_by',totalcur='$total_cur',totalamount='$total_amount',discount_amount='$discount_amount',netsale_amount='$netsale_amount',paidamount='$paid_amount',Dueamount='$due_amount',profitamount='$profitamount',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',issue_image='$issue_image',created_at='$issue_date' WHERE id=$edit_id";
+     $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',memono='$memono',party_id='$party_id',partner_id='$partner_id',received_by='$received_by',totalcur='$total_cur',totalamount='$total_amount',discount_amount='$discount_amount',netsale_amount='$netsale_amount',paidamount='$paid_amount',Dueamount='$due_amount',profitamount='$profitamount',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',issue_image='$issue_image',created_at='$issue_date' WHERE id=$edit_id";
     $result2 = $conn->query($query2);
 	
 	
