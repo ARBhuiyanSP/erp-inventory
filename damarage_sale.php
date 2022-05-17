@@ -11,27 +11,17 @@
         <li class="breadcrumb-item">
             <a href="damage_report.php">Damarage Sales Report</a>
         </li>
-       
-		
-		
-		        <li class="breadcrumb-item" style="text-align:right;">
-								
-								<?php  
-									$warehouse_id = $_SESSION['logged']['warehouse_id'];								
-									$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
-								
-								echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
+		<li class="breadcrumb-item" style="text-align:right;">
+			<?php  
+				$warehouse_id = $_SESSION['logged']['warehouse_id'];								
+				$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $warehouse_id);
+			
+			echo 'Warehouse: <b>'.(isset($dataresult) && !empty($dataresult) ? $dataresult->name : '').'</b>'; ?>
 		</li>
-		
-		
-		
-		
     </ol>
     <!-- DataTables Example -->
     <div class="card mb-3">
-        <div class="card-header">
-            <i class="fas fa-table"></i>
-            Damarage sale Entry Form</div>
+        <div class="card-header"><i class="fas fa-table"></i>Damarage sale Entry Form</div>
         <div class="card-body">
             <!--here your code will go-->
             <div class="form-group">
