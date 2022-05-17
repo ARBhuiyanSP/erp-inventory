@@ -22,7 +22,7 @@
                         <div class="col-xs-2">
                             <div class="form-group">
                                 <label> Date</label>
-                                <input type="text" autocomplete="off" name="damageout_date" id="damageout_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <input type="text" autocomplete="off" name="ros_date" id="ros_date" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="col-xs-2">
@@ -89,46 +89,7 @@
                             </div>
                         </div>
                        
-					<!--	<div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Package</label><span class="reqfield"> ***required</span>
-                                <select class="form-control" id="package_id" name="package_id" required>
-                                    <option value="">Select</option>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('packages');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div> 
-						
-						
-						<div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Buildings</label><span class="reqfield"> ***required</span>
-                                <select class="form-control" id="building_id" name="building_id" required>
-                                    <option value="">Select</option>
-                                    <?php
-                                    $projectsData = getTableDataByTableName('buildings');
-                                    ;
-                                    if (isset($projectsData) && !empty($projectsData)) {
-                                        foreach ($projectsData as $data) {
-                                            ?>
-                                            <option value="<?php echo $data['building_id']; ?>"><?php echo $data['building_id']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div> -->
+				
                     </div>
                     <div class="row" id="div1"  style="">
                         <div class="table-responsive">

@@ -96,6 +96,7 @@ include 'header.php';
                                 <label>Payment Type</label>
                                 <select name="paymenttype" id="paymenttype" class="form-control">
 									<option value="cash">Cash</option>
+									<option value="credit">BANK</option>
 									<option value="credit">BKASH</option>
 									<option value="credit">NOGOD</option>
 								</select>

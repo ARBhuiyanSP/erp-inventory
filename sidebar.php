@@ -281,7 +281,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="replaceOutToSupplier.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out To Supplier</span></a>
-            <a class="dropdown-item" href="replacereceive-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out from supplier List</span></a>
+            <a class="dropdown-item" href="replaceOutToSupplier-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Out from supplier List</span></a>
         </div>
 </li>
 
@@ -293,7 +293,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="replacereceivefromsupplier.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive from Supplier</span></a>
-            <a class="dropdown-item" href="replacereceive-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive from Supplier List</span></a>
+            <a class="dropdown-item" href="replacereceivefromsupplier-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">Replace Receive from Supplier List</span></a>
         </div>
 </li>
 

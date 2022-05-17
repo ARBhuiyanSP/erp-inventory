@@ -73,13 +73,21 @@ function getReplacesupplierOUTDataDetailsById($id){
     $receieves      =   "";
     $receiveDetails =   "";
     
+	
     // get receive data
+	
+	
+	
     $sql1           = "SELECT * FROM inv_replaceOUTsupplier where id=".$id;
     $result1        = $conn->query($sql1);
 
     if ($result1->num_rows > 0) {
         $receieves = $result1->fetch_object();
+		
+		
         // get receive details data
+		
+		
         $table                  =   'inv_replaceOUTsupplierdetails where ros_id='."'$receieves->ros_id'";
         $order                  =   'DESC';
         $column                 =   'return_qty';
@@ -110,89 +118,87 @@ function getReplacesupplierOUTDataDetailsById($id){
  * *****************************************************************************
  */
 
-if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])){
-    $receive_total      =   0;
-    $no_of_material     =   0;
+if(isset($_POST['replaceOutToSupplier_update_submit']) && !empty($_POST['replaceOutToSupplier_update_submit'])){
+   
     $edit_id            =   $_POST['edit_id'];
-    $mrr_no             =   $_POST['issue_no'];
+    $ros_id             =   $_POST['ros_id'];
     
-    // first delete all from inv_receivedetail; 
-    $delsql    = "DELETE FROM inv_issuedetail WHERE issue_id='$mrr_no'";
+
+	
+	  // first delete all from inv_replaceOUTsupplierdetails; 
+    $delsql    = "DELETE FROM inv_replaceOUTsupplierdetails WHERE 	ros_id='$ros_id'";
     $conn->query($delsql);
-    // first delete all from inv_materialbalance; 
-    $delsq2    = "DELETE FROM inv_materialbalance WHERE mb_ref_id='$mrr_no'";
+	
+	
+	
+    // first delete all from inv_replacesupplierbalance; 
+    $delsq2    = "DELETE FROM inv_replacesupplierbalance WHERE mb_ref_id='$ros_id'";
     $conn->query($delsq2);
     
+    
     for ($count = 0; $count < count($_POST['quantity']); $count++) {
+        
         /*
-         *  Insert Data Into inv_issuedetail Table:
+         *  Insert Data Into inv_replaceOUTsupplierdetails Table:
         */       
         
-        $issue_date         = $_POST['issue_date'];
-        $issue_id           = $_POST['issue_no'];
+        $ros_date		= $_POST['ros_date'];
+        $ros_id			= $_POST['ros_id'];
+		
         $material_name      = $_POST['material_name'][$count];
         $material_id        = $_POST['material_id'][$count];
         $unit               = $_POST['unit'][$count];
         $part_no            = $_POST['part_no'][$count];
         $quantity           = $_POST['quantity'][$count];
-        $no_of_material     = $no_of_material+$quantity;
-        $unit_price         = $_POST['unit_price'][$count];
-        $totalamount        = $_POST['totalamount'][$count];
-        $receive_total      = $receive_total+$totalamount;
+    
+        $unit_price         = 1;
         $project_id         = $_POST['project_id'];
         $remarks            = $_POST['remarks'];     
-        $expense_acct_id    =   '0';
-        $cost_center        =   '0';
-        
-        $sales_pricer       =   '0';
-        $total_sales        =   '0';
-        $sales_profit       =   '0';
-        $sales_margin       =   '0';
-        $id_serial_id       =   '0';// 
-        
-        $query = "INSERT INTO `inv_issuedetail` (`issue_id`,`material_id`,`unit_id`,`expense_acct_id`,`cost_center`,`issue_qty`,`issue_price`,`sl_no`,`total_issue`,`sales_price`,`total_sales`,`sales_profit`,`sales_margin`,`id_serial_id`,`part_no`) VALUES ('$issue_id','$material_id','$unit','$expense_acct_id','$cost_center','$quantity','$unit_price','1','$totalamount','$sales_pricer','$total_sales','$sales_profit','$sales_margin','$id_serial_id','$part_no')";
+        $warehouse_id		=	$_SESSION['logged']['warehouse_id'];
+	    $supplier_id 		= $_POST['supplier_id'];
+		
+		
+		
+		  /*
+    *  Insert Data Into inv_replaceOUTsupplier Table:
+    */
+   
+    
+
+	
+	
+    
+            /*  Insert Data Into inv_replaceOUTsupplierdetails Table: talk with ma motors*/
+			
+        $query = "INSERT INTO `inv_replaceOUTsupplierdetails` (`ros_id`,`ros_date`,`material_id`,`material_name`,`unit`,`return_qty`,`return_price`,`part_no`,`project_id`,`warehouse_id`) VALUES ('$ros_id','$ros_date','$material_id','$material_name','$unit','$quantity','$unit_price','$part_no','$project_id','$warehouse_id')";
         $conn->query($query);
         
-        /*
-         *  Insert Data Into inv_materialbalance Table:
-        */
-        $mb_ref_id      = $return_id;
+       
+         /*  Insert Data Into inv_replacesupplierbalance Table: talk with ma motors*/
+       
+        $mb_ref_id      = $ros_id;
         $mb_materialid  = $material_id;
-        $mb_date        = (isset($issue_date) && !empty($issue_date) ? date('Y-m-d h:i:s', strtotime($issue_date)) : date('Y-m-d h:i:s'));
-        $mbin_qty       = $quantity;
-        $mbin_val       = $totalamount;
-        $mbout_qty      = 0;
-        $mbout_val      = 0;
-        $mbprice        = $unit_price;
-        $mbtype         = 'Return';
-        $mbserial       = '1.1';
+        $mb_date        = (isset($ros_date) && !empty($ros_date) ? date('Y-m-d h:i:s', strtotime($ros_date)) : date('Y-m-d h:i:s'));
+        $mbin_qty       = 0;
+        $mbin_val       = 0;
+        $mbout_qty      = $quantity;
+        $mbtype         = 'REPLACE OUT';
         $mbunit_id      = $project_id;
-        $mbserial_id    = 0;
-        $jvno           = $return_id;
-        $part_no        = $part_no;        
+                    
         
-        $query_inmb = "INSERT INTO `inv_materialbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbin_val`,`mbout_qty`,`mbout_val`,`mbprice`,`mbtype`,`mbserial`,`mbserial_id`,`mbunit_id`,`jvno`,`part_no`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbin_val','$mbout_qty','$mbout_val','$mbprice','$mbtype','$mbserial','$mbunit_id','$mbserial_id','$jvno','$part_no')";
+        $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$mb_date')";
         $conn->query($query_inmb);
     }
-    /*
-        *  Update Data Into inv_receive Table:
-    */
-    $issue_date     = $_POST['issue_date'];
-    $buyer_id       = $_POST['project_id'];
-    $posted_to_gl   = 0;
-    $remarks        = $_POST['remarks'];
-    $issue_type     = 'issue';
-    $issue_unit_id  = 'issue';
-    $chk_year_end   = 0;
-    $no_of_material = $no_of_material;
-    $issue_total    = $receive_total;
-    $indent_no      = '1';
-    $receiver_name  = $_POST['receiver_name'];
-    $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',buyer_id='$buyer_id',posted_to_gl='$posted_to_gl',remarks='$remarks',issue_type='$issue_type',remarks='$remarks',issue_unit_id='$issue_unit_id',chk_year_end='$chk_year_end',no_of_material='$no_of_material',issue_total='$issue_total',indent_no='$indent_no',receiver_name='$receiver_name' WHERE id=$edit_id";
+	
+	
+   $query2    = "UPDATE inv_replaceOUTsupplier SET ros_id='$ros_id',ros_date='$ros_date',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',supplier_id='$supplier_id' WHERE id=$edit_id"; //WHERE id=$edit_id"; first coloumn
     $result2 = $conn->query($query2);
+	
+	
+  
     
-    $_SESSION['success']    =   "Issue process have been successfully updated.";
-    header("location: issue_edit.php?edit_id=".$edit_id);
+    $_SESSION['success']    =   "Supplier Replace Out Data process have been successfully completed.";
+    header("location: replaceOutToSupplier_edit.php?edit_id=$edit_id");//edit_id=$edit_id"
     exit();
 }
 
