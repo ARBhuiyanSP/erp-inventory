@@ -169,7 +169,7 @@ function getissueDataDetailsByIddamarage($id){
     if ($result1->num_rows > 0) {
         $receieves = $result1->fetch_object();
         // get receive details data
-        $table                  =   'Inv_damaragedetailsale where issue_id='."'$receieves->issue_id'";
+        $table                  =   'Inv_damaragedetailsale where ds_id='."'$receieves->ds_id'";
         $order                  =   'DESC';
         $column                 =   'issue_qty';
         $dataType               =   'obj';
