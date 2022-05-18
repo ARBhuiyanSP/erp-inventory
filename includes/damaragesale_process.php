@@ -51,16 +51,8 @@ if (isset($_POST['damaragesale_submit']) && !empty($_POST['damaragesale_submit']
 				$ds_date         = $_POST['ds_date'];
 				
 				$party_id         = $_POST['party_id'];
+				$memono         = $_POST['memono'];
 				
-				
-				
-				
-				
-			
-				 $memono         = $_POST['memono'];
-				
-				
-
 				$project_id         = $_POST['project_id'];
 				$warehouse_id   	= $_POST['warehouse_id'];
 				$material_name      = $_POST['material_name'][$count];
@@ -73,32 +65,15 @@ if (isset($_POST['damaragesale_submit']) && !empty($_POST['damaragesale_submit']
 				$amount           = $_POST['amount'][$count];
 				$cur_price			= $_POST['cur_price'][$count];
 				$cur_price_amount			= $_POST['cur_amount'][$count];
-				
-				
-				
-				
-				
 				$partner_id 		= $_POST['partner_id'];
                 $party_id   		= $_POST['party_id'];
-		
-				
-				
-				$received_by		= $_POST['received_by'];     
+		        $received_by		= $_POST['received_by'];     
 				$receiver_phone		= $_POST['receiver_phone'];     
 				$remarks            = $_POST['remarks'];   
-
-
-				$total_amount       = $_POST['total_amount'];
-				
-				
-				
+                $total_amount       = $_POST['total_amount'];
 				$paid_amount           = $_POST['paid_amount'];	
 				$due_amount           = $_POST['due_amount'];
-				
 				$profitamount          = $_POST['profitamount'];
-				
-			
-				
 				$parent_item_id         = $_POST['parent_item_id'];
 				
 				
@@ -201,42 +176,54 @@ function getissueDataDetailsByIddamarage($id){
  * *****************************************************************************
  */
 
-if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])){
+if(isset($_POST['damaragesale_update_submit']) && !empty($_POST['damaragesale_update_submit'])){
 
 
     $edit_id            =   $_POST['edit_id'];
-    $mrr_no             =   $_POST['issue_no'];
+    $ds_id             =   $_POST['ds_id'];
     
     // first delete all from inv_receivedetail; 
-    $delsql    = "DELETE FROM `inv_issuedetail` WHERE `issue_id`='$mrr_no'";
+    $delsql    = "DELETE FROM `Inv_damaragedetailsale` WHERE `ds_id`='$ds_id'";
     $conn->query($delsql);
    
-    
-    for ($count = 0; $count < count($_POST['quantity']); $count++) {
-        /*
-         *  Insert Data Into inv_issuedetail Table:
-        */       
-        
-				$issue_date         = $_POST['issue_date'];
-				$issue_id           = $_POST['issue_id'];
+    	for ($count = 0; $count < count($_POST['quantity']); $count++) {
+				
+				/*
+				 *  Insert Data Into inv_issuedetail Table:
+				*/       
+				
+				
+				$ds_id           = $_POST['ds_id'];
+				$ds_date         = $_POST['ds_date'];
+				
+				$party_id         = $_POST['party_id'];
+				$memono         = $_POST['memono'];
+				
 				$project_id         = $_POST['project_id'];
 				$warehouse_id   	= $_POST['warehouse_id'];
-				
 				$material_name      = $_POST['material_name'][$count];
 				$material_id        = $_POST['material_id'][$count];
 				$unit               = $_POST['unit'][$count];
-				$brand            	= $_POST['brand'][$count];
+				//$brand            	= $_POST['brand'][$count];
 				$quantity           = $_POST['quantity'][$count];
-				$package_id   		= $_POST['package_id'][$count];
-				$building_id   		= $_POST['building_id'][$count];
-
-
 				
-				$received_by		= $_POST['received_by'];     
+				$unit_price       = $_POST['unit_price'][$count];
+				$amount           = $_POST['amount'][$count];
+				$cur_price			= $_POST['cur_price'][$count];
+				$cur_price_amount	= $_POST['cur_amount'][$count];
+				$partner_id 		= $_POST['partner_id'];
+                $party_id   		= $_POST['party_id'];
+		        $received_by		= $_POST['received_by'];     
 				$receiver_phone		= $_POST['receiver_phone'];     
-				$remarks            = $_POST['remarks'];     
+				$remarks            = $_POST['remarks'];   
+                $total_amount       = $_POST['total_amount'];
+				$paid_amount           = $_POST['paid_amount'];	
+				$due_amount           = $_POST['due_amount'];
+				$profitamount          = $_POST['profitamount'];
+				$parent_item_id         = $_POST['parent_item_id'];
+				$approval_status		= ''; 
 				
-				
+			
 				if (is_uploaded_file($_FILES['file']['tmp_name'])) 
 				{
 					$temp_file=$_FILES['file']['tmp_name'];
@@ -244,30 +231,28 @@ if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])
 					$q = move_uploaded_file($temp_file,"images/".$issue_image);
 				} 
         
-				$query = "INSERT INTO `inv_issuedetail` (`issue_id`,`issue_date`,`material_id`,`material_name`,`unit`,`issue_qty`,`issue_price`,`part_no`,`project_id`,`warehouse_id`,`package_id`,`building_id`,`approval_status`) VALUES ('$issue_id','$issue_date','$material_id','$material_name','$unit','$quantity','0','$brand','$project_id','$warehouse_id','$package_id','$building_id','0')";
+		        /*
+				 *  Insert Data Into Inv_damaragedetailsale Table:
+				*/
+				
+				
+				 $query = "INSERT INTO `Inv_damaragedetailsale` (`ds_id`,`ds_date`,`memono`,`material_id`,`material_name`,`unit`,`cur_price`,`cur_price_amount`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$ds_id','$ds_date','$memono','$material_id','$material_name','$unit','$cur_price','$cur_price_amount','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
 				$conn->query($query);
-				
-				
-    }
-    /*
-        *  Update Data Into inv_receive Table:
-    */
-				$issue_date         = $_POST['issue_date'];
-				$issue_id           = $_POST['issue_id'];
-				$project_id         = $_POST['project_id'];
-				$warehouse_id   	= $_POST['warehouse_id'];
+			
+			}
+			/*
+			*  Insert Data Into Inv_damaragesale Table:
+			*/
+			$total_cur = $_POST['total_cur'];
+			$total_amount = $_POST['total_amount'];
+			$profitamount = $_POST['profitamount'];
+	
 
-
-				
-				$received_by		= $_POST['received_by'];     
-				$receiver_phone		= $_POST['receiver_phone'];     
-				$remarks            = $_POST['remarks'];
-
-    $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',received_by='$received_by',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',approval_status='0',issue_image='$issue_image' WHERE id=$edit_id";
+     $query2    = "UPDATE Inv_damaragesale SET ds_id='$ds_id',ds_date='$ds_date',memono='$memono',party_id='$party_id',partner_id='$partner_id',received_by='$received_by',totalcur='$total_cur',totalamount='$total_amount',paidamount='$paid_amount',Dueamount='$due_amount',profitamount='$profitamount',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',issue_image='$issue_image',created_at='$issue_date' WHERE id=$edit_id";
     $result2 = $conn->query($query2);
     
-    $_SESSION['success']    =   "Issue process have been successfully updated.";
-    header("location: issue_edit.php?edit_id=".$edit_id);
+    $_SESSION['success']    =   "Damarage Sales process have been successfully updated.";
+    header("location: damarage_edit.php?edit_id=".$edit_id);
     exit();
 }
 

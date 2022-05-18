@@ -34,27 +34,22 @@ if (isset($_POST['party_payment_submit']) && !empty($_POST['party_payment_submit
 		$paymenttype		= $_POST['paymenttype'];
 		$amount		        = $_POST['amount'];
 	    $remarks		    = $_POST['remarks'];
-		
 		$warehouse_id   	= $_POST['warehouse_id'];
+		$receivermode   	= $_POST['receivermode'];
+		
 		
 		
 
-		if (is_uploaded_file($_FILES['sn_prt_image']['tmp_name'])) 
-		{
-			$temp_file=$_FILES['sn_prt_image']['tmp_name'];
-			$sp_photo=time().$_FILES['sn_prt_image']['name'];
-			$q = move_uploaded_file($temp_file,"images/".$sp_photo);
-		}
-
+		
 		
                
-        $query = "INSERT INTO `party_payment` (`voucherid`,`voucherdate`,`warehouse_id`,`partner_id`,`partyid`,`paymenttype`,`amount`,`remarks`,`sp_photo`) VALUES ('$voucherid','$voucherdate','$warehouse_id',$partner_id,'$party_id','$paymenttype','$amount','$remarks','$sp_photo')";
+         $query = "INSERT INTO `party_payment` (`voucherid`,`voucherdate`,`warehouse_id`,`partner_id`,`partyid`,`paymenttype`,`amount`,`remarks`,`receivermode`) VALUES ('$voucherid','$voucherdate','$warehouse_id',$partner_id,'$party_id','$paymenttype','$amount','$remarks','$receivermode')";
         $conn->query($query);
 		
 		
 		
 		
-		  $query3 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`partner_id`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`) VALUES ('$voucherid',$warehouse_id,'$voucherdate','$partner_id','$party_id','0','$amount','$remarks','$voucherid')";
+		  $query3 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`partner_id`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`,`receivermode`) VALUES ('$voucherid',$warehouse_id,'$voucherdate','$partner_id','$party_id','0','$amount','$remarks','$voucherid','$receivermode')";
           $result2 = $conn->query($query3);
 	
 	

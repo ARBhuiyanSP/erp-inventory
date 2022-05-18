@@ -309,6 +309,10 @@ if(isset($_GET['submit'])){
 							<th>Bill Amount</th>
 							<th>Paid Amount</th>
 							<th>Balance</th>
+							
+							<th>Receiver Mode</th>
+							<th>Remarks</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -387,6 +391,10 @@ if(isset($_GET['submit'])){
 							$creditamount	=	$rowcredit->tcredit;
 							?>
 							<td><?php echo $balance; ?></td>
+							
+							<td><?php echo $row['receivermode']; ?></td>
+						    <td><?php echo $row['pb_remark']; ?></td>
+							
 						</tr>
 						<?php } ?>
 					</tbody>

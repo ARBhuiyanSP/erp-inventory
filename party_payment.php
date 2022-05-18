@@ -112,6 +112,14 @@ include 'header.php';
                             </div>
                         </div>
 						
+						
+							<div class="col-xs-2">
+                            <div class="form-group">
+                                <label>Receiver Mode</label>
+                                <input type="text" name="receivermode" id="receivermode" class="form-control">
+                            </div>
+                        </div>
+						
 						  <div class="form-group">
                                 <label>Warehouse</label>
 
@@ -126,35 +134,19 @@ include 'header.php';
                             </div>
 							
 							
-						<div class="col-xs-6">
+						
+						
+						
+							
+							
+						<div class="col-xs-4">
                             <div class="form-group">
                                 <label>Remarks</label>
-								<textarea rows="5" name="remarks" id="remarks" class="form-control"></textarea>
+								<textarea rows="3" name="remarks" id="remarks" class="form-control"></textarea>
                             </div>
                         </div>
-						<div class="col-xs-3">
-                            <div class="form-group">
-                                <label>File Upload</label>
-								<input type="file" accept="image/*" name="sn_prt_image" onchange="loadFile(event)">
-								<p style="color:red;">*** Select an image file like .jpg or .png</p>
-								<script>
-								  var loadFile = function(event) {
-									var output = document.getElementById('output');
-									output.src = URL.createObjectURL(event.target.files[0]);
-									output.onload = function() {
-									  URL.revokeObjectURL(output.src) // free memory
-									}
-								  };
-								  
-								</script>
-                            </div>
-                        </div>
-						<div class="col-xs-3">
-                            
-							<div style="border:1px solid gray;border-radius:5px;height:150px;width:150px;">
-								<img id="output" height="150px" width="150px"/>
-                            </div>
-                        </div>
+					
+					
 						
 				
 						<div class="col-xs-12">
@@ -187,7 +179,13 @@ include 'header.php';
 											<tr>
 												<td><?php echo $item['voucherid']; ?></td>
 												<td><?php echo $item['voucherdate']; ?></td>
-												<td><?php echo $item['partyid']; ?></td>
+												
+												<td>
+									<?php 
+									$dataresult =   getDataRowByTableAndId1('party', $item['partyid']);
+									echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+									?>
+								</td>
 												<td><?php echo $item['paymenttype']; ?></td>
 												<td><?php echo $item['amount']; ?></td>
 												<td>
