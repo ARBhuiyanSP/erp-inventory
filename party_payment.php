@@ -1,5 +1,21 @@
 <?php 
 include 'header.php';
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	//echo $row['education'];
+	$id=	$_GET['id'];
+	$table 	= 'party_payment';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'party_payment_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'party_payment_submit';
+}
+
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
@@ -108,7 +124,7 @@ include 'header.php';
 						<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="text" name="amount" id="amount" class="form-control">
+                                <input type="text" name="amount" value="<?php if (isset($rowedit['amount']) && $rowedit['amount'] != '') { echo $rowedit['amount']; }?>" id="amount" class="form-control">
                             </div>
                         </div>
 						
@@ -151,7 +167,7 @@ include 'header.php';
 				
 						<div class="col-xs-12">
                             <div class="form-group">
-                                <input type="submit" name="party_payment_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
+                                <input type="submit" name="party_payment_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="<?php echo $button_name; ?>" />   
                             </div>
                         </div>
                     </div>
@@ -190,6 +206,9 @@ include 'header.php';
 												<td><?php echo $item['amount']; ?></td>
 												<td>
 													<span><a class="action-icons c-approve" href="issue-view.php?no=<?php echo $item['issue_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+													
+													<span><a class="action-icons c-approve" href="party_payment.php?id=<?php echo $item['id']; ?>" title="View"><i class="fas fa-edit text-info"></i></a></span>
+													
 											<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
 												</td>
 											</tr>
