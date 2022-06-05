@@ -497,11 +497,11 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
         });
     });
 
-    $(function() {
-        $("#netsale, #paid").keyup(function() {
-            $("#due").val(+$("#netsale").val() - +$("#paid").val());
-        });
-    });
+    $(function () {
+	  $("#allsum, #paid").keyup(function () {
+		$("#due").val(+$("#allsum").val() - +$("#paid").val());
+	  });
+	});
 </script>
 <script>
     $(function() {
