@@ -44,66 +44,84 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-xl-6 col-sm-6 mb-3">
 						<div class="card bg-default o-hidden">
-						  <div class="card-body">
-							<div class=""> Sales<br><small>Today Sales Amount - 6000</small></div>
-							
-							<table class="table table-bordered">
+							<div class="card-body">
+							<?php
+								$toDay = '2022-05-01';
+								//$toDay = date("Y-m-d");
+								if($_SESSION['logged']['user_type'] == 'superAdmin') {
+									$sqlsales	=	"select SUM(`totalamount`) AS totalamount FROM `inv_issue` WHERE  `issue_date` = '$toDay'";
+								}else{
+									$sqlsales	=	"select SUM(`totalamount`) AS totalamount FROM `inv_issue` WHERE `warehouse_id` = '$warehouse_id' AND `issue_date` = '$toDay'";
+								}
+								$resultsales = mysqli_query($conn, $sqlsales);
+								$rowsales 		= mysqli_fetch_object($resultsales) ;
+								$tadaySales			= $rowsales->totalamount;
+							?>
+							<div class=""> Sales<br><small>Today Sales Amount - <?php echo $tadaySales; ?></small></div>
+							<table class="table table-bordered table-striped">
 								<thead>
 									<th>INV No</th>
 									<th>Amount</th>
 								</thead>
 								<tbody>
+									<?php
+									$sqlsaleslist = "select * from `inv_issue` WHERE `issue_date` = '$toDay' LIMIT 3";
+									$resultsaleslist = mysqli_query($conn, $sqlsaleslist);
+										for($i=1; $rowsaleslist = mysqli_fetch_array($resultsaleslist); $i++){
+									?>
 									<tr>
-										<td>INV-001</td>
-										<td>2000</td>
+										<td><?php echo $rowsaleslist['issue_id']; ?></td>
+										<td><?php echo $rowsaleslist['totalamount']; ?></td>
 									</tr>
-									<tr>
-										<td>INV-002</td>
-										<td>2000</td>
-									</tr>
-									<tr>
-										<td>INV-003</td>
-										<td>2000</td>
-									</tr>
+									<?php } ?>
 								</tbody>
 							</table>
 						  </div>
-						  <a class="card-footer clearfix small z-1" href="supplier_entry.php">
+						  <a class="card-footer clearfix small z-1" href="#">
 							<span class="float-right">
-							  View Details <i class="fas fa-angle-right"></i>
+							  View More <i class="fas fa-angle-right"></i>
 							</span>
 						  </a>
 						</div>
 					</div>
 					<div class="col-xl-6 col-sm-6 mb-3">
 						<div class="card bg-default o-hidden">
-						  <div class="card-body">
-							<div class=""> Sales<br><small>Today Collection Amount - 6000</small></div>
-							
-							<table class="table table-bordered">
+							<div class="card-body">
+							<?php
+								$toDay = '2022-05-01';
+								//$toDay = date("Y-m-d");
+								if($_SESSION['logged']['user_type'] == 'superAdmin') {
+									$sqlpayment	=	"select SUM(`amount`) AS amount FROM `party_payment` WHERE  `voucherdate` = '$toDay'";
+								}else{
+									$sqlpayment	=	"select SUM(`amount`) AS amount FROM `party_payment` WHERE `warehouse_id` = '$warehouse_id' AND `voucherdate` = '$toDay'";
+								}
+								$resultpayment = mysqli_query($conn, $sqlpayment);
+								$rowpayment 		= mysqli_fetch_object($resultpayment) ;
+								$tadaypayment			= $rowpayment->amount;
+							?>
+							<div class=""> Collection<br><small>Today Collection Amount - <?php echo $tadaypayment; ?></small></div>
+							<table class="table table-bordered table-striped">
 								<thead>
-									<th>Vaucher No</th>
+									<th>Voucher No</th>
 									<th>Amount</th>
 								</thead>
 								<tbody>
+									<?php
+									$sqlpaymentlist = "select * from `party_payment` WHERE `voucherdate` = '$toDay' LIMIT 3";
+									$resultpaymentlist = mysqli_query($conn, $sqlpaymentlist);
+										for($i=1; $rowpaymentlist = mysqli_fetch_array($resultpaymentlist); $i++){
+									?>
 									<tr>
-										<td>VOU-001</td>
-										<td>2000</td>
+										<td><?php echo $rowpaymentlist['voucherid']; ?></td>
+										<td><?php echo $rowpaymentlist['amount']; ?></td>
 									</tr>
-									<tr>
-										<td>VOU-002</td>
-										<td>2000</td>
-									</tr>
-									<tr>
-										<td>VOU-003</td>
-										<td>2000</td>
-									</tr>
+									<?php } ?>
 								</tbody>
 							</table>
 						  </div>
-						  <a class="card-footer clearfix small z-1" href="supplier_entry.php">
+						  <a class="card-footer clearfix small z-1" href="#">
 							<span class="float-right">
-							  View Details <i class="fas fa-angle-right"></i>
+							  View More <i class="fas fa-angle-right"></i>
 							</span>
 						  </a>
 						</div>
