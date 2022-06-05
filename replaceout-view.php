@@ -1,5 +1,5 @@
 <?php include 'header.php';
-$mrr_no=$_GET['no']; ?>
+$damageout_id=$_GET['no']; ?>
 <style>
 .table-bordered {
 	border: 1px solid #000000;
@@ -33,7 +33,7 @@ $mrr_no=$_GET['no']; ?>
             <i class="fas fa-table"></i>
             Material Receive Report
 			<?php
-				$sqld = "select * from `inv_receive` where `mrr_no`='$mrr_no'";
+				$sqld = "select * from `inv_damageout` where `damageout_id`='$damageout_id'";
 				$resultd = mysqli_query($conn, $sqld);
 				$rowd = mysqli_fetch_array($resultd);
 			?>
@@ -53,17 +53,17 @@ $mrr_no=$_GET['no']; ?>
 							<div class="col-sm-6">
 								<table class="table table-bordered">
 									<tr>
-										<th>MRR No:</th>
-										<td><?php echo $mrr_no; ?></td>
+										<th>Replace Rec. No:</th>
+										<td><?php echo $damageout_id; ?></td>
 									</tr>
 									<tr>
-										<th>MRR Date:</th>
+										<th>Date:</th>
 										<td><?php
-										echo $rowd['mrr_date']; ?></td>
+										echo $rowd['damageout_date']; ?></td>
 									</tr>
 									
 									<tr>
-										<th>Warehouse:</th>
+										<th>warehouse:</th>
 										<td>
 											<?php 
 											$dataresult =   getDataRowByTableAndId('inv_warehosueinfo', $rowd['warehouse_id']);
@@ -72,22 +72,25 @@ $mrr_no=$_GET['no']; ?>
 										</td>
 									</tr>
 									<tr>
-										<th>Supplier:</th>
+										<th>Party:</th>
 										<td>
 											<?php 
-											$supplier_id = $rowd['supplier_id'];
-											$sqlunit	=	"SELECT * FROM `suppliers` WHERE `code` = '$supplier_id' ";
+											$party_id = $rowd['party_id'];
+											$sqlunit	=	"SELECT partyname FROM `party` WHERE `party_id` = '$party_id' ";
 											$resultunit = mysqli_query($conn, $sqlunit);
 											$rowunit=mysqli_fetch_array($resultunit);
-											echo $rowunit['name'];
+											echo   $rowunit['partyname']."[".$party_id."]";
 											?>
 										</td>
 									</tr>
+									
 								</table>
 							</div>
 						</div>
-						<center><button class="btn btn-block btn-secondary challan">MATERIAL RECEIVE DETAILS</button></center>
-						<table class="table table-bordered" id="material_receive_list"> 
+						<center><button class="btn btn-block btn-secondary challan">REPLACE OUT</button></center>
+						<table class="table table-bordered" id=""> 
+						<!-- id="material_receive_list = FOR SEARCH AND PAGE COUNT VIEW SHOW -->
+						
 							<thead>
 								<tr>
 									<th>SL #</th>
@@ -95,14 +98,13 @@ $mrr_no=$_GET['no']; ?>
 									<th>Material Name</th>
 									<th>Material Unit</th>
 									<th>Quantity</th>
-									<th>Unit Price</th>
-									<th>Amount</th>
+									
 								</tr>
 							</thead>
 							<tbody id="material_receive_list_body">
 								<?php
-								$transfer_id=$_GET['no'];
-								$sql = "select * from `inv_receivedetail` where `mrr_no`='$mrr_no'";
+								
+								$sql = "select * from `inv_damageoutdetail` where `damageout_id`='$damageout_id'";
 								$result = mysqli_query($conn, $sql);
 									for($i=1; $row = mysqli_fetch_array($result); $i++){
 								?>
@@ -117,71 +119,28 @@ $mrr_no=$_GET['no']; ?>
 									</td>
 									<td>
 										<?php 
-										$dataresult =   getDataRowByTableAndId('inv_item_unit', $row['unit_id']);
+										$dataresult =   getDataRowByTableAndId('inv_item_unit', $row['unit']);
 										echo (isset($dataresult) && !empty($dataresult) ? $dataresult->unit_name : '');
 										?>
 									</td>
-									<td><?php echo $row['receive_qty'] ?></td>
-									<td><?php echo $row['unit_price'] ?></td>
-									<td><?php echo $row['total_receive'] ?></td>
+									<td><?php echo $row['return_qty'] ?></td>
+						
 								</tr>
 								<?php } ?>
-								<tr>
-									<td colspan="4" class="grand_total">Grand Total:</td>
-									<td>
-										<?php 
-										$sql2 			= "SELECT sum(receive_qty) FROM  `inv_receivedetail` where `mrr_no`='$mrr_no'";
-										$result2 		= mysqli_query($conn, $sql2);
-										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$totalReceived	=$row2['sum(receive_qty)'];
-										echo $totalReceived ;
-										}
-										?>
-									</td>
-									<td></td>
-									<td>
-										<?php 
-										$sql2			= "SELECT sum(total_receive) FROM  `inv_receivedetail` where `mrr_no`='$mrr_no'";
-										$result2		= mysqli_query($conn, $sql2);
-										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
-										$totalAmount	= number_format((float)$row2['sum(total_receive)'], 2, '.', '');
-										echo $totalAmount ;
-										}
-										?>
-									</td>
-								</tr>
+						
 							</tbody>
 						</table>
-						<b>Total Amount in words: 
-							<span class="amountWords"><?php echo convertNumberToWords($totalAmount).' Only';?></span>
-						</b> 
+						
 						<div class="row" style="text-align:center">
-							<div class="col-sm-5"></br><?php 
-										if($rowd['received_by']){
-										$dataresult =   getDataRowByTableAndId('users', $rowd['received_by']);
-										echo (isset($dataresult) && !empty($dataresult) ? $dataresult->first_name . ' ' .$dataresult->last_name : '');	
-										}?></br>--------------------</br>Receiver Signature</div>
+							<div class="col-sm-5"></br></br>--------------------</br>Receiver Signature</div>
 										
 										
 										
-							<div class="col-sm-2">
-								<?php $queryedit	= "SELECT `approval_status` FROM `inv_receive` WHERE `mrr_no`='$mrr_no'";
-								$result		=	$conn->query($queryedit);
-								$row		=	mysqli_fetch_assoc($result);
-								if($row['approval_status'] == 0){?>
-								<img src="images/pending.png" height="80;" class="authimg"/>
-								<?php } else{?>
-								<img src="images/approved.png" height="80;" class="authimg"/>
-								<?php }?>
-							</div>
+						
 							
 							
 							
-							<div class="col-sm-5"></br><?php 
-										if($rowd['approved_by']){
-										$dataresult =   getDataRowByTableAndId('users', $rowd['approved_by']);
-										echo (isset($dataresult) && !empty($dataresult) ? $dataresult->first_name . ' ' .$dataresult->last_name : '');	
-										}?></br>--------------------</br>Authorised Signature</div>
+						
 						</div></br>
 						<div class="row">
 							<div class="col-sm-12" style="border:1px solid gray;border-radius:5px;padding:10px;color:#f26522;">
