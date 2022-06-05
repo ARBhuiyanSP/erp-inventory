@@ -5,20 +5,21 @@
  party_payment_process.php
 
  */
-              // party_payment_submit        party_payment.php 
-if (isset($_POST['party_payment_submit']) && !empty($_POST['party_payment_submit'])) {
+              // partyclosing_submit        party_payment.php 
+if (isset($_POST['partyclosing_submit']) && !empty($_POST['partyclosing_submit'])) {
 	
 	
-        $voucherid	        = $_POST['voucherid'];
+        $voucherid	        = 'OP';
 		$voucherdate		= $_POST['voucherdate'];
 		$partner_id 		= $_POST['partner_id'];
 		$party_id		    = $_POST['party_id'];
-		$paymenttype		= $_POST['paymenttype'];
+		$paymenttype		= 'OP';
 			
-		$amount		        = $_POST['amount'];
-	    $remarks		    = $_POST['remarks'];
+		$dramount		        = $_POST['dramount'];
+		$cramount		        = $_POST['cramount'];
+	    $remarks		    = 'OP';
 		$warehouse_id   	= $_POST['warehouse_id'];
-		$receivermode   	= $_POST['receivermode'];
+		$receivermode   	= 'OP';
 	
 	if(isset($_POST['edit_id']) && !empty($_POST['edit_id'])){
 		
@@ -42,18 +43,15 @@ if (isset($_POST['party_payment_submit']) && !empty($_POST['party_payment_submit
 		
 		                                   // UPDATE party_payment
 
-		    $query2    = "UPDATE party_payment SET voucherid='$voucherid',voucherdate='$voucherdate',warehouse_id='$warehouse_id',partner_id='$partner_id',partyid='$party_id',paymenttype='$paymenttype',amount='$amount',remarks='$remarks',receivermode='$receivermode' WHERE id=$edit_id";
-            $result2 = $conn->query($query2);
-		
  
                                            // UPDATE inv_partybalance    //pb_dr_amount=0
-       $query3 = "UPDATE inv_partybalance SET warehouse_id='$warehouse_id',pb_date='$voucherdate',partner_id='$partner_id',pb_party_id='$party_id',pb_dr_amount='0',pb_cr_amount='$amount',pb_remark='$remarks',pb_partac_id='$voucherid',receivermode='$receivermode' WHERE pb_ref_id='$voucherid'";
+       $query3 = "UPDATE inv_partybalance SET warehouse_id='$warehouse_id',pb_date='$voucherdate',partner_id='$partner_id',pb_party_id='$party_id',pb_dr_amount='$dramount',pb_cr_amount='$cramount',pb_remark='$remarks',pb_partac_id='$voucherid',receivermode='$receivermode' WHERE pb_ref_id='$voucherid'";
             $result3 = $conn->query($query3);
 		
 
         
 		$_SESSION['success']    =   "Party payment Update process have been successfully completed.";
-		header("location: party_payment.php");
+		header("location: partyclosing_Balance.php");
 		exit();
 		
 		
@@ -74,22 +72,27 @@ if (isset($_POST['party_payment_submit']) && !empty($_POST['party_payment_submit
                                     $row = mysqli_fetch_array($result);
 								}
 								
-								//INSERT  party_payment 
-               
-        $query = "INSERT INTO `party_payment` (`voucherid`,`voucherdate`,`warehouse_id`,`partner_id`,`partyid`,`paymenttype`,`amount`,`remarks`,`receivermode`) VALUES ('$voucherid','$voucherdate','$warehouse_id',$partner_id,'$party_id','$paymenttype','$amount','$remarks','$receivermode')";
-        $conn->query($query);
-		
-		
+								
+					// duplicate data check
+					$duplicate_sql 		= "SELECT * from inv_partybalance WHERE pb_ref_id= 'OP' AND pb_party_id = '$party_id'";
+					$duplicate_result	= mysqli_query($conn, $duplicate_sql);
+                    if($duplicate_result->num_rows > 0){
+					$_SESSION['error']    =   "Data have been already existed with this Party Id;";
+					header("location: partyclosing_Balance.php");
+					exit();}
+								
+								
+								
 		
 		                      //INSERT  inv_partybalance 
-$query5 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`partner_id`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`,`receivermode`) VALUES ('$voucherid',$warehouse_id,'$voucherdate','$partner_id','$party_id','0','$amount','$remarks','$voucherid','$receivermode')";
+ $query5 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`partner_id`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`,`receivermode`) VALUES ('OP',$warehouse_id,'$voucherdate','$partner_id','$party_id','$dramount','$cramount','OP','$voucherid','OP')";
            $result2 = $conn->query($query5);
 	
 	
 	
         
-		$_SESSION['success']    =   "Party payment Entry process have been successfully completed.";
-		header("location: party_payment.php");
+		$_SESSION['success']    =   "Party OPENING BALANCE process have been successfully completed.";
+		header("location: partyclosing_Balance.php");
 		exit();
 	}			
 }

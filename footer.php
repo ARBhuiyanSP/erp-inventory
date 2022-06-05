@@ -135,6 +135,35 @@
 	<script>
     $(".material_select_2").select2();
 </script>
+
+<script>
+
+function  cal_opening_balance(id){
+	let op_balance_qty = parseFloat($('#op_balance_qty_'+id).val());
+    let op_rate = parseFloat($('#op_rate_'+id).val());
+	
+	let myResult = parseFloat(op_balance_qty * op_rate);
+
+    $('#op_balance_val_'+id).val(myResult);
+}
+
+
+
+
+</script>
+
+<script>
+    $(function () {
+        $("#op_date").datepicker({
+            inline: true,
+            dateFormat: "yy-mm-dd",
+            yearRange: "-50:+10",
+            changeYear: true,
+            changeMonth: true
+        });
+    });
+</script>
+
 </body>
 </html>
 <?php include 'modal/parent_item_added_form.php'; ?>
@@ -143,3 +172,5 @@
 <?php include 'modal/item_edit_form.php'; ?>
 <?php include 'modal/sub_item_edit_form.php'; ?>
 <?php include 'modal/parent_item_edit_form.php'; ?>
+
+

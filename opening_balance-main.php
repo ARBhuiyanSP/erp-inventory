@@ -64,8 +64,7 @@ display:none;
 						<th width="10%">Material Code</th>
 						<th width="35%">Material Name</th>
 						<th width="10%">Unit</th>
-						<th width="8%">OP Stock</th>
-						<th width="8%">Rate</th>
+						<th width="10%">OP Stock</th>
 						<th width="15%">OP Stock Value</th>
 					</tr>
 				</thead>
@@ -75,7 +74,7 @@ display:none;
 						$sql	=	"SELECT * FROM inv_material  GROUP BY `material_id`";
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
-						{							
+						{
 					?>
 						<tr style="background-color:#b6d7fa;">
 							<td>
@@ -84,7 +83,7 @@ display:none;
 								echo (isset($dataresult) && !empty($dataresult) ? $dataresult->category_description : '');
 								?>
 							</td>
-							<td colspan="7"></td>
+							<td colspan="6"></td>
 						</tr>
 						<?php 
 							$material_id = $row['material_id'];
@@ -101,17 +100,14 @@ display:none;
 								echo (isset($dataresult) && !empty($dataresult) ? $dataresult->material_sub_description : '');
 								?>
 							</td>
-							<td colspan="6"></td>
+							<td colspan="5"></td>
 						</tr>
 						<?php 
 							$material_sub_id = $rowall['material_sub_id'];
 							$sqlmat	=	"SELECT * FROM inv_material WHERE `material_sub_id` = '$material_sub_id' GROUP BY `material_id_code`;";
 							$resultmat = mysqli_query($conn, $sqlmat);
 							while($rowmat=mysqli_fetch_array($resultmat))
-							{ 
-								$unique_id = $rowmat['id'];
-						
-						?>
+							{ ?>
 						
 						<tr>
 							<td></td>
@@ -131,10 +127,7 @@ display:none;
 							
 							if($rowcount > 0){
 								$mbin_qty 		= $rowop['mbin_qty'];
-								$mbprice 		= $rowop['mbprice'];
-								//$mbin_val 		= $rowop['mbin_val'];
 								$mbin_val 		= $rowop['mbin_val'];
-								
 								$submit_name	= 'op_edit';
 								if($mbin_qty > 0){
 									//$validation 	= 'readonly';
@@ -148,19 +141,14 @@ display:none;
 							}else{
 								$mbin_qty		= 0;
 								$mbin_val 		= 0;
-								$mbprice		=0;
 								$validation 	= '';
 								$submit			= '';
 								$submit_name	= 'op_submit';
 							}
 							?>
 							
-							<td><input onkeyup="cal_opening_balance(<?php echo $unique_id; ?>)" class="form-control" name="op_balance_qty[]" id="op_balance_qty_<?php echo $unique_id; ?>" type="text" value="<?php echo $mbin_qty; ?>" <?php echo $validation; ?> /></td>
-							
-							<td><input onkeyup="cal_opening_balance(<?php echo $unique_id; ?>)" class="form-control" name="op_rate[]" id="op_rate_<?php echo $unique_id; ?>" type="text" value="<?php echo $mbprice; ?>" <?php echo $validation; ?> /></td>
-									
-									
-							<td><input class="form-control" name="op_balance_val[]" id="op_balance_val_<?php echo $unique_id; ?>" type="text" value="<?php echo $mbin_val; ?>" <?php echo $validation; ?> /></td>
+							<td><input class="form-control" name="op_balance_qty[]" id="op_balance_qty" type="text" value="<?php echo $mbin_qty; ?>" <?php echo $validation; ?> /></td>
+							<td><input class="form-control" name="op_balance_val[]" id="op_balance_val" type="text" value="<?php echo $mbin_val; ?>" <?php echo $validation; ?> /></td>
 						</tr>
 						<?php } 
 						
@@ -184,6 +172,16 @@ display:none;
     </div>
 
 </div>
-
 <!-- /.container-fluid -->
 <?php include 'footer.php' ?>
+<script>
+    $(function () {
+        $("#op_date").datepicker({
+            inline: true,
+            dateFormat: "yy-mm-dd",
+            yearRange: "-50:+10",
+            changeYear: true,
+            changeMonth: true
+        });
+    });
+</script>

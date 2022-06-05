@@ -158,7 +158,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			*  Insert Data Into inv_partybalance Table: Table: change 28/4/2022
 			*/
 			
-			 $query3 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`memono`,`partner_id`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`,`approval_status`) VALUES ('$issue_id','$warehouse_id','$issue_date','$memono','$partner_id','$party_id','$netsale_amount','$paid_amount','$remarks','$issue_id','$approval_status')";
+			 $query3 = "INSERT INTO `inv_partybalance` (`pb_ref_id`,`warehouse_id`,`pb_date`,`memono`,`partner_id`,`pb_party_id`,`pb_dr_amount`,`pb_cr_amount`,`pb_remark`,`pb_partac_id`,`receivermode`,`approval_status`) VALUES ('$issue_id','$warehouse_id','$issue_date','$memono','$partner_id','$party_id','$netsale_amount','$paid_amount','$remarks','$issue_id','NAP','$approval_status')";
     $result2 = $conn->query($query3);
 	
 	

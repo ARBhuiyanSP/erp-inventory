@@ -1,5 +1,22 @@
 <?php 
 include 'header.php';
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	//echo $row['education'];
+	$id=	$_GET['id'];
+	
+	
+	$table 	= 'transport';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'transport_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'transport_submit';
+}
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
@@ -24,22 +41,44 @@ include 'header.php';
             <div class="form-group">
                 <form action="" method="post" name="add_name" id="add_name" enctype="multipart/form-data">
                     <div class="row" id="div1" style="">
-                        <div class="col-xs-2">
-                            <div class="form-group">
-                                <label>Tran ID</label>
-                                <input type="text" name="tranid" id="tranid" class="form-control" readonly="readonly" value="<?php echo getDefaultCategoryCode('transport', 'tranid', '03d', '001', 'TRN-') ?>">
-                            </div>
-                        </div>
-						  <div class="col-xs-2">
-                            <div class="form-group">
-                                <label for="id"> Date</label>
-                                <input type="text" autocomplete="off" name="trandate" id="trandate" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
-                            </div>
-                        </div>
+                        
+						
+						
 						
 						
 						
 						<div class="col-xs-2">
+                            <div class="form-group">
+                                <label>Voucher ID</label>
+								<?php
+								
+									if(isset($rowedit['tranid']) && !empty($rowedit['tranid'])){
+										$tranid 	=$rowedit['tranid'];
+									}else{
+										$tranid 	=	getDefaultCategoryCode('transport', 'tranid', '03d', '001', 'TRN-');
+									}
+                                   ?>
+                                <input type="text" name="tranid" id="tranid" value="<?php echo $tranid; ?>" class="form-control" readonly="readonly">
+                            </div>
+</div>
+
+
+						
+						
+						
+ <div class="col-xs-2">
+                            <div class="form-group">
+                                <label for="id"> Date</label>
+                                <input type="text" autocomplete="off" name="trandate" id="trandate" value="<?php if (isset($rowedit['trandate']) && $rowedit['trandate'] != '') { echo $rowedit['trandate']; }?>" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                            </div>
+</div>
+
+
+
+						
+						
+						
+<div class="col-xs-2">
 							<div class="form-group">
 								<label for="id">Partner</label><span class="reqfield"> ***required</span>
 								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);" required >
@@ -49,12 +88,12 @@ include 'header.php';
 									if (isset($parentCats) && !empty($parentCats)) {
 										foreach ($parentCats as $pcat) {
 											?>
-											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+ <option value="<?php echo $pcat['id'] ?>"<?php if (isset($rowedit['partner_id']) && $rowedit['partner_id'] == $pcat['id']) { echo "Selected"; }?>><?php echo $pcat['name'] ?></option>
 										<?php }
 									} ?>
 								</select>
 							</div>
-                        </div>
+</div>
 						
 						
 						
@@ -65,7 +104,7 @@ include 'header.php';
 						<div class="col-xs-1">
                             <div class="form-group">
                                 <label>Cost Type</label>
-                                <select name="trantype" id="trantype" class="form-control">
+                                <select name="trantype" id="trantype" value="<?php if (isset($rowedit['trantype']) && $rowedit['trantype'] != '') { echo $rowedit['trantype']; }?>" class="form-control">
 									<option value="cash">CAR</option>
 									
 									
@@ -78,7 +117,7 @@ include 'header.php';
 						<div class="col-xs-1">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="text" name="amount" id="amount" class="form-control">
+                                <input type="text" name="amount" value="<?php if (isset($rowedit['amount']) && $rowedit['amount'] != '') { echo $rowedit['amount']; }?>" id="amount" class="form-control">
                             </div>
                         </div>
 						
@@ -97,9 +136,9 @@ include 'header.php';
 							
 							
 						<div class="col-xs-3">
-                            <div class="form-group">
+                           <div class="form-group">
                                 <label>Remarks</label>
-								<textarea rows="2" name="remarks" id="remarks" class="form-control"></textarea>
+								<textarea rows="3" name="remarks" id="remarks" class="form-control"><?php if (isset($rowedit['remarks']) && $rowedit['remarks'] != '') { echo $rowedit['remarks']; }?></textarea>
                             </div>
                         </div>
 					
@@ -107,6 +146,9 @@ include 'header.php';
 				
 						<div class="col-xs-12">
                             <div class="form-group">
+							
+							 <input type="hidden" name="edit_id" value="<?php echo (isset($rowedit['id']) && !empty($rowedit['id']) ? $rowedit['id']: ""); ?>">
+							 
                                 <input type="submit" name="transport_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
                             </div>
                         </div>
@@ -149,6 +191,11 @@ include 'header.php';
 												<td><?php echo $item['amount']; ?></td>
 												<td>
 													<span><a class="action-icons c-approve" href="issue-view.php?no=<?php echo $item['tranid']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+													
+													
+													<span><a class="action-icons c-approve" href="transport.php?id=<?php echo $item['id']; ?>" title="Edit"><i class="fas fa-edit text-info"></i></a></span>
+													
+													
 											<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
 												</td>
 											</tr>

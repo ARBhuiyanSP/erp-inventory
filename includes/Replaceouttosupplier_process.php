@@ -49,7 +49,7 @@ if (isset($_POST['Replaceouttosupplier_submit']) && !empty($_POST['Replaceouttos
         $mbunit_id      = $project_id;
                     
         
-        $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$mb_date')";
+        $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`remarks`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$remarks','$mb_date')";
         $conn->query($query_inmb);
     }
     /*
@@ -186,7 +186,7 @@ if(isset($_POST['replaceOutToSupplier_update_submit']) && !empty($_POST['replace
         $mbunit_id      = $project_id;
                     
         
-        $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$mb_date')";
+        $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`remarks`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$remarks','$mb_date')";
         $conn->query($query_inmb);
     }
 	

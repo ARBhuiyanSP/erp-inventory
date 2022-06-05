@@ -281,7 +281,7 @@ if(isset($_GET['submit'])){
 						<?php
 							/* $sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `sb_supplier_id`='$supplier_id' AND `warehouse_id`='$warehouse_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date';"; */
 							
-							$sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `sb_supplier_id`='$supplier_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date';";
+							$sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `sb_supplier_id`='$supplier_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date' ORDER BY sb_date ASC;";
 							$result = mysqli_query($conn, $sql);
 							$totaldebit = 0;
 							$totalcredit = 0;

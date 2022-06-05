@@ -5,13 +5,8 @@
 </style>
 <div class="card mb-3">
     <div class="card-header">
-	
-		<button class="btn btn-info linktext" onclick="window.location.href='receivesupplier_report.php';"> Supplier wise  Report</button>
-		
-		
-		
         <i class="fas fa-search"></i>
-        Report Search</div>
+        Receive Report Search</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
@@ -30,6 +25,43 @@
                                     <input type="text" class="form-control" id="to_date" name="to_date" value="<?php if(isset($_GET['to_date'])){ echo $_GET['to_date']; } ?>" autocomplete="off" required >
                                 </div>
                             </td>
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							 <div class="col-xs-2">
+                            <div class="form-group">
+                                <label for="id">Supplier</label><span class="reqfield"> ***required</span>
+                                <select class="form-control material_select_2" id="supplier_name" name="supplier_name" required onchange="getItemCodeByParam(this.value, 'suppliers', 'code', 'supplier_id');">
+                                    <option value="">Select</option>
+                                    <?php
+                                    $projectsData = getTableDataByTableName('suppliers');
+
+                                    if (isset($projectsData) && !empty($projectsData)) {
+                                        foreach ($projectsData as $data) {
+                                            ?>
+                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label for="id">Supplier ID</label>
+                                <input type="text" name="supplier_id" id="supplier_id" class="form-control" required>
+                            </div>
+                        </div>
+						
+						
+						
 							
 							<td>
                                 <div class="form-group">
@@ -50,7 +82,7 @@ if(isset($_GET['submit'])){
 	$from_date		=	$_GET['from_date'];
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
-	
+	$supplier_id	=	$_GET['supplier_id'];
 	
 ?>
 <center>
@@ -82,15 +114,20 @@ if(isset($_GET['submit'])){
 					</thead>
 					<tbody>
 						<?php
+						
+						  $grandtotal=0;
+						  
 							if($_SESSION['logged']['user_type'] !== 'whm'){
-								$sql	=	"SELECT * FROM `inv_receive` where `mrr_date` BETWEEN '$from_date' AND '$to_date';";
+								$sql	=	"SELECT * FROM `inv_receive` where `supplier_id`= '$supplier_id' and `mrr_date` BETWEEN '$from_date' AND '$to_date';";
 							}else{
-								$sql	=	"SELECT * FROM `inv_receive` where `warehouse_id` = '$warehouse_id' AND `mrr_date` BETWEEN '$from_date' AND '$to_date';";
+							            $sql	=	"SELECT * FROM `inv_receive` where `warehouse_id` = '$warehouse_id' AND `supplier_id`= '$supplier_id' AND `mrr_date` BETWEEN '$from_date' AND '$to_date';";
 							}
 							
 							$result = mysqli_query($conn, $sql);
 							while($row=mysqli_fetch_array($result))
 							{
+									$grandtotal += $row['no_of_material'];
+									
 						?>
 						<tr style="background-color:#E9ECEF;">
 							<td>MRR No : <?php echo $row['mrr_no']; ?></td>
@@ -139,6 +176,13 @@ if(isset($_GET['submit'])){
 							<td><?php echo $totalAmount; ?></td>
 						</tr>
 						<?php } ?>
+						
+						<tr>
+							<td colspan="3" class="grand_total" <p style="color:red"> Grand Total:</p></td>
+							<td><p style="color:red"><?php echo $grandtotal; ?></p></td>
+						
+						</tr>
+						
 					</tbody>
 				</table>
 				<center><div class="row">

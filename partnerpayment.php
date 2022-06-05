@@ -1,5 +1,25 @@
 <?php 
 include 'header.php';
+
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	//echo $row['education'];
+	$id=	$_GET['id'];
+	
+	
+	$table 	= 'partnerpayment';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'partnerpayment_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'partnerpayment_submit';
+}
+
+
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
@@ -24,22 +44,39 @@ include 'header.php';
             <div class="form-group">
                 <form action="" method="post" name="add_name" id="add_name" enctype="multipart/form-data">
                     <div class="row" id="div1" style="">
-                        <div class="col-xs-2">
+					
+					
+
+						
+						
+<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Tran ID</label>
-                                <input type="text" name="tranid" id="tranid" class="form-control" readonly="readonly" value="<?php echo getDefaultCategoryCode('partnerpayment', 'tranid', '03d', '001', 'TRN-') ?>">
+								<?php
+								
+									if(isset($rowedit['tranid']) && !empty($rowedit['tranid'])){
+										$tranid 	=$rowedit['tranid'];
+									}else{
+										$tranid 	=	getDefaultCategoryCode('partnerpayment', 'tranid', '03d', '001', 'TRN-');
+									}
+                                   ?>
+                                <input type="text" name="tranid" id="tranid" value="<?php echo $tranid; ?>" class="form-control" readonly="readonly">
                             </div>
-                        </div>
-						  <div class="col-xs-2">
+</div>
+
+
+	
+
+<div class="col-xs-2">
                             <div class="form-group">
                                 <label for="id"> Date</label>
-                                <input type="text" autocomplete="off" name="trandate" id="trandate" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <input type="text" autocomplete="off" name="trandate" id="trandate" value="<?php if (isset($rowedit['trandate']) && $rowedit['trandate'] != '') { echo $rowedit['trandate']; }?>" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
-                        </div>
+</div>
+
+	
 						
-						
-						
-						<div class="col-xs-2">
+<div class="col-xs-2">
 							<div class="form-group">
 								<label for="id">Partner</label><span class="reqfield"> ***required</span>
 								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);" required >
@@ -49,13 +86,12 @@ include 'header.php';
 									if (isset($parentCats) && !empty($parentCats)) {
 										foreach ($parentCats as $pcat) {
 											?>
-											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
+ <option value="<?php echo $pcat['id'] ?>"<?php if (isset($rowedit['partner_id']) && $rowedit['partner_id'] == $pcat['id']) { echo "Selected"; }?>><?php echo $pcat['name'] ?></option>
 										<?php }
 									} ?>
 								</select>
 							</div>
-                        </div>
-						
+</div>
 						
 						
                   
@@ -64,7 +100,7 @@ include 'header.php';
 						<div class="col-xs-4">
                             <div class="form-group">
                                 <label>Description</label>
-                                <input type="text" name="expensedesc" id="expensedesc" class="form-control">
+                                <input type="text" name="expensedesc" value="<?php if (isset($rowedit['expensedesc']) && $rowedit['expensedesc'] != '') { echo $rowedit['expensedesc']; }?>" id="expensedesc" class="form-control">
                             </div>
                         </div>
 						
@@ -73,22 +109,44 @@ include 'header.php';
 							<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Payment Type</label>
-                                <select name="trantype" id="trantype" class="form-control">
-									<option value="Deposit">Deposit</option>
-									<option value="payment/withdraw">payment/withdraw</option>
+                       <select name="trantype" id="trantype" class="form-control">
 									
-								</select>
+								
+								<option value="Deposit" <?php 
+								if (isset($rowedit['trantype']) && $rowedit['trantype'] == 'Deposit' ) { echo 'selected'; }
+								?> >Deposit</option>
+								
+								<option value="payment/withdraw" <?php 
+								if (isset($rowedit['trantype']) && $rowedit['trantype'] == 'payment/withdraw' ) { echo 'selected'; }
+								?>>payment/withdraw</option>
+								
+							</select>
                             </div>
                         </div>
+						
 						
 						
 						
 						<div class="col-xs-2">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="text" name="amount" id="amount" class="form-control">
+								<?php 
+								if (isset($rowedit['trantype']) && $rowedit['trantype'] == 'Deposit' ) 
+								{ 
+									$amount=$rowedit['amountdeposit'];
+								}else if (isset($rowedit['trantype']) && $rowedit['trantype'] == 'payment/withdraw' ) {
+									$amount=$rowedit['amountwithdraw'];
+								}
+								
+								?>
+                                <input type="text" name="amount" value="<?php if (isset($rowedit['trantype']) && $rowedit['trantype'] != '') { echo $amount; }?>" id="amount" class="form-control">
                             </div>
                         </div>
+						
+						
+						
+						
+						
 						
 						  <div class="form-group">
                                 <label></label>
@@ -110,20 +168,13 @@ include 'header.php';
 				
 						<div class="col-xs-12">
                             <div class="form-group">
+							
+	<input type="hidden" name="edit_id" value="<?php echo (isset($rowedit['id']) && !empty($rowedit['id']) ? $rowedit['id']: ""); ?>">
+							
                                 <input type="submit" name="partnerpayment_submit" id="partnerpayment_submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
                             </div>
                         </div>
                     </div>
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					
 					
 					
@@ -166,8 +217,12 @@ include 'header.php';
 												<td><?php echo $item['amountdeposit']; ?></td>
 												<td><?php echo $item['amountwithdraw']; ?></td>
 												<td>
-													<span><a class="action-icons c-approve" href="issue-view.php?no=<?php echo $item['tranid']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
-											<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
+<span><a class="action-icons c-approve" href="issue-view.php?no=<?php echo $item['tranid']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+
+<span><a class="action-icons c-approve" href="partnerpayment.php?id=<?php echo $item['id']; ?>" title="View"><i class="fas fa-edit text-info"></i></a></span>
+													
+
+<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
 												</td>
 											</tr>
 											<?php

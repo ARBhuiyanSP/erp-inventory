@@ -18,6 +18,12 @@
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='profit_report.php';"> Partner wise Profit Report</button>
 		
+		
+		<button class="btn btn-info linktext" onclick="window.location.href='salespartner_report.php';"> Partner wise Daily Sales  Report</button>
+		
+		<button class="btn btn-info linktext" onclick="window.location.href='salespartnerparty_report.php';"> partner and party wise Sales Detail Report</button>
+		
+		
 		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date Wise Sales Report</button>
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>

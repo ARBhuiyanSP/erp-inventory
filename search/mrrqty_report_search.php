@@ -82,6 +82,9 @@ if(isset($_GET['submit'])){
 					</thead>
 					<tbody>
 						<?php
+						
+						   $grandtotal=0;
+						
 							if($_SESSION['logged']['user_type'] !== 'whm'){
 								$sql	=	"SELECT * FROM `inv_receive` where `mrr_date` BETWEEN '$from_date' AND '$to_date';";
 							}else{
@@ -91,6 +94,9 @@ if(isset($_GET['submit'])){
 							$result = mysqli_query($conn, $sql);
 							while($row=mysqli_fetch_array($result))
 							{
+								
+								$grandtotal += $row['no_of_material'];
+								
 						?>
 						<tr style="background-color:#E9ECEF;">
 							<td>MRR No : <?php echo $row['mrr_no']; ?></td>
@@ -115,6 +121,7 @@ if(isset($_GET['submit'])){
 							{
 								$totalQty += $rowall['receive_qty'];
 								$totalAmount += $rowall['total_receive'];
+								
 						?>
 						<tr>
 							<td><?php echo $rowall['material_id']; ?></td>
@@ -138,7 +145,16 @@ if(isset($_GET['submit'])){
 							<td></td>
 							<td><?php echo $totalAmount; ?></td>
 						</tr>
+						
 						<?php } ?>
+						
+						<tr>
+							<td colspan="3" class="grand_total" <p style="color:red"> Grand Total:</p></td>
+							<td><p style="color:red"><?php echo $grandtotal; ?></p></td>
+						
+						</tr>
+						
+						
 					</tbody>
 				</table>
 				<center><div class="row">

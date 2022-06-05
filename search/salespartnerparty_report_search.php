@@ -19,9 +19,13 @@
 		<button class="btn btn-info linktext" onclick="window.location.href='sales_report.php';"> Date wise Sales  Report</button>
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='salespartner_report.php';"> Partner wise Daily Sales  Report</button>
+		
 		<button class="btn btn-info linktext" onclick="window.location.href='salespartnerparty_report.php';"> partner and party wise Sales Detail Report</button>
 		
+		
 		<button class="btn btn-info linktext" onclick="window.location.href='salesdetail_report.php';"> Date wise Sales Detail Report</button>
+		
+		
 		
 		
 		
@@ -51,6 +55,32 @@
 								</select>
 							</div>
                         </div>
+						
+						
+						 <div class="col-xs-3">
+							<div class="form-group">
+								<label for="id">Party</label><span class="reqfield"> ***required</span>
+								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
+									<option value="">Select</option>
+									<?php
+									$parentCats = getTableDataByTableName('party','','partyname');
+									if (isset($parentCats) && !empty($parentCats)) {
+										foreach ($parentCats as $pcat) {
+											?>
+											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
+										<?php }
+									} ?>
+								</select>
+							</div>
+                        </div>
+						
+                        <div class="col-xs-1">
+                            <div class="form-group">
+                                <label for="id">party ID</label>
+                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
+                            </div>
+                        </div>
+						
 						
 							
 							<td>
@@ -86,6 +116,7 @@ if(isset($_GET['submit'])){
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
 	 $partner_id 		= $_GET['partner_id'];
+	     $party_id   		= $_GET['party_id'];
 	
 	
 ?>
@@ -105,6 +136,14 @@ if(isset($_GET['submit'])){
 											$dataresult =   getDataRowByTableAndId('partner', $partner_id);
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 							                              ?></span>
+														  
+														  
+														  <br><span>PARTY:<?php 
+											$dataresult =   getDataRowByTableAndId1('party', $party_id);
+											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
+							                            ?></span><br>
+														
+														
 							From <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?></span> To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span><br>
 						</p>
 					</center>
@@ -147,9 +186,9 @@ if(isset($_GET['submit'])){
 						
 						
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_issue` WHERE `partner_id` = '$partner_id' and  `issue_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_issue` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and  `issue_date` BETWEEN '$from_date' AND '$to_date'";
 						}else{
-							$sql	=	"SELECT * FROM `inv_issue` WHERE `partner_id` = '$partner_id' and `warehouse_id` = '$warehouse_id'  `issue_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_issue` WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id' and `warehouse_id` = '$warehouse_id'  `issue_date` BETWEEN '$from_date' AND '$to_date'";
 						}
 						$result = mysqli_query($conn, $sql);
 

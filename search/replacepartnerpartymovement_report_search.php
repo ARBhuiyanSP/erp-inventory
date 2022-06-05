@@ -168,6 +168,7 @@ if(isset($_GET['submit'])){
 							
 							<th>Replace Receive</th>
 							<th>Replace Issue</th>
+							<th>Remarks</th>
 	
 						</tr>
 						
@@ -239,6 +240,7 @@ if(isset($_GET['submit'])){
 							
 						<td><?php echo $row['mbin_qty']; ?></td>
 						<td><?php echo $row['mbout_qty']; ?></td>
+						<td><?php echo $row['remarks']; ?></td>
 						
 				
 							

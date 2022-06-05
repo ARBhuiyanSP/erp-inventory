@@ -35,6 +35,12 @@ include 'includes/damageout_process.php';
 include 'includes/damaragesale_process.php';
 include 'includes/Replacereceivefromsupplier_process.php';
 include 'includes/Replaceouttosupplier_process.php';
+include 'includes/partyclosingbalance_process.php';
+include 'includes/supplierclosingbalance_process.php';
+include 'includes/partnerclosingbalance_process.php';
+
+
+
 
 
 ?>

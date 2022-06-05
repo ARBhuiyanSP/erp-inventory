@@ -16,6 +16,8 @@
 		
 		<button class="btn btn-info linktext" onclick="window.location.href='damagepartnerparty_report.php';"> Date wise partner and party Damarage Sales Detail Report</button>
 		
+			<button class="btn btn-info linktext" onclick="window.location.href='damagepartner_report.php';"> Date wise partner  Damarage Sales Detail Report</button>
+		
 	</div>
 		
     <div class="card-body">

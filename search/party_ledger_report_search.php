@@ -343,7 +343,7 @@ if(isset($_GET['submit'])){
 						<?php
 							/* $sql	=	"SELECT * FROM `inv_supplierbalance` WHERE `sb_supplier_id`='$supplier_id' AND `warehouse_id`='$warehouse_id' AND `sb_date` BETWEEN '$from_date' AND '$to_date';"; */
 							
-							$sql	=	"SELECT * FROM `inv_partybalance` WHERE `pb_party_id`='$party_id' AND `pb_date` BETWEEN '$from_date' AND '$to_date';";
+							$sql	=	"SELECT * FROM `inv_partybalance` WHERE `pb_party_id`='$party_id' AND `pb_date` BETWEEN '$from_date' AND '$to_date' ORDER BY pb_date ASC;";
 							$result = mysqli_query($conn, $sql);
 							$totaldebit = 0;
 							$totalcredit = 0;
@@ -356,18 +356,8 @@ if(isset($_GET['submit'])){
 								$totalcredit += $row['pb_cr_amount'];
 								
 								
-								
-								
-								
-								
-								
 									
 								$balance = $opening_stock +  $totaldebit-$totalcredit ;
-								
-								
-								
-								
-								
 								
 								
 								

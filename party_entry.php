@@ -1,5 +1,22 @@
 <?php 
 include 'header.php';
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	//echo $row['education'];
+	$id=	$_GET['id'];
+	
+	
+	$table 	= 'party';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'party_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'party_submit';
+}
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
@@ -37,34 +54,42 @@ include 'header.php';
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
                                             ?>
-                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
+   <option value="<?php echo $data['id'] ?>"<?php if (isset($rowedit['partner_id']) && $rowedit['partner_id'] == $data['id']) { echo "Selected"; }?>><?php echo $data['name'] ?></option>
+										<?php }
+									} ?>
+								</select>
                             </div>
                         </div>
 					
 						
 						
 				
-						
-						 <div class="col-xs-2">
+
+
+
+<div class="col-xs-2">
                             <div class="form-group">
-                                <label>Party ID</label>
-                                <input type="text" name="party_id" id="party_id" class="form-control" readonly="readonly" value="<?php echo getDefaultCategoryCode('party', 'party_id', '03d', 'P01', 'PA-') ?>">
+                                <label>Voucher ID</label>
+								<?php
+								
+									if(isset($rowedit['party_id']) && !empty($rowedit['party_id'])){
+										$party_id 	=$rowedit['party_id'];
+									}else{
+										$party_id 	=	getDefaultCategoryCode('party', 'party_id', '03d', 'P01', 'PA-');
+									}
+                                   ?>
+                                <input type="text" name="party_id" id="party_id" value="<?php echo $party_id; ?>" class="form-control" readonly="readonly">
                             </div>
-                        </div>
-						
-						
+</div>
+
+					
 						
 						
 						
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Party Name</label>
-                                <input type="text" name="partyname" id="partyname" class="form-control">
+                                <input type="text" name="partyname" value="<?php if (isset($rowedit['partyname']) && $rowedit['partyname'] != '') { echo $rowedit['partyname']; }?>" id="partyname" class="form-control">
                             </div>
                         </div>
 						
@@ -92,6 +117,11 @@ include 'header.php';
 						
 						<div class="col-xs-12">
                             <div class="form-group">
+							
+							
+								 <input type="hidden" name="edit_id" value="<?php echo (isset($rowedit['id']) && !empty($rowedit['id']) ? $rowedit['id']: ""); ?>">
+								 
+								 
                                 <input type="submit" name="party_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
                             </div>
                         </div>
@@ -109,7 +139,7 @@ include 'header.php';
 								</thead>
 								<tbody>
 								<?php
-                                    $projectsData = getTableDataByTableName('party');
+                                    $projectsData = getTableDataByTableName('party', '', 'id');
                                     ;
                                     if (isset($projectsData) && !empty($projectsData)) {
                                         foreach ($projectsData as $data) {
@@ -121,10 +151,21 @@ include 'header.php';
 											$dataresult =   getDataRowByTableAndId('partner', $data['partner_id']);
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 										?></td>
-										<td>
-											<a href="#"><i class="fas fa-edit text-success"></i></a>
-											<a href="#"><i class="fa fa-trash text-danger"></i></a>
-										</td>
+										
+										
+										
+										
+											<td>
+													<span><a class="action-icons c-approve" href="issue-view.php?no=<?php echo $data['tranid']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+													
+													
+													<span><a class="action-icons c-approve" href="party_entry.php?id=<?php echo $data['id']; ?>" title="Edit"><i class="fas fa-edit text-info"></i></a></span>
+													
+													
+											<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
+												</td>
+												
+												
 									</tr>
 									<?php
                                         }
