@@ -42,6 +42,74 @@ $(document).ready(function() {
 		<div class="row">
 			<div class="col-xl-12 col-sm-6 mb-4">
 				<div class="row">
+					<div class="col-xl-6 col-sm-6 mb-3">
+						<div class="card bg-default o-hidden">
+						  <div class="card-body">
+							<div class=""> Sales<br><small>Today Sales Amount - 6000</small></div>
+							
+							<table class="table table-bordered">
+								<thead>
+									<th>INV No</th>
+									<th>Amount</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td>INV-001</td>
+										<td>2000</td>
+									</tr>
+									<tr>
+										<td>INV-002</td>
+										<td>2000</td>
+									</tr>
+									<tr>
+										<td>INV-003</td>
+										<td>2000</td>
+									</tr>
+								</tbody>
+							</table>
+						  </div>
+						  <a class="card-footer clearfix small z-1" href="supplier_entry.php">
+							<span class="float-right">
+							  View Details <i class="fas fa-angle-right"></i>
+							</span>
+						  </a>
+						</div>
+					</div>
+					<div class="col-xl-6 col-sm-6 mb-3">
+						<div class="card bg-default o-hidden">
+						  <div class="card-body">
+							<div class=""> Sales<br><small>Today Collection Amount - 6000</small></div>
+							
+							<table class="table table-bordered">
+								<thead>
+									<th>Vaucher No</th>
+									<th>Amount</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td>VOU-001</td>
+										<td>2000</td>
+									</tr>
+									<tr>
+										<td>VOU-002</td>
+										<td>2000</td>
+									</tr>
+									<tr>
+										<td>VOU-003</td>
+										<td>2000</td>
+									</tr>
+								</tbody>
+							</table>
+						  </div>
+						  <a class="card-footer clearfix small z-1" href="supplier_entry.php">
+							<span class="float-right">
+							  View Details <i class="fas fa-angle-right"></i>
+							</span>
+						  </a>
+						</div>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-xl-6 col-sm-6 mb-4">
 						<div class="card">
 							<form name="" action="" method="GET">
