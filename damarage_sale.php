@@ -255,9 +255,9 @@
 										
 										<!-- Start: text QTY and Unit Price and Total amount -->
 										
-										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" onkeyup="buy_amount(0)" class="form-control common_issue_quantity" required></td>
+										<td><input type="text" name="quantity[]" id="quantity0" onchange="check_stock_quantity_validation(0)" class="form-control common_issue_quantity" required></td>
 					  
-                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control" required></td>
+                                        <td><input type="text" name="cur_price[]" id="buy_price0" class="form-control"  onkeyup="buy_amount(0)" ></td>
                                         <td><input type="text" name="cur_amount[]" id="buy_amount0" class="form-control sub_buy_amount" required readonly ></td>
                                        
 										<td><input type="text" name="unit_price[]" id="unit_price0" onkeyup="sum(0)" class="form-control" required></td>
@@ -389,7 +389,7 @@
                                             ?><option value="<?php echo $data['id']; ?>"><?php echo $data['unit_name']; ?></option><?php
                                         }
                                     }
-                                    ?></select></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity"  onkeyup="buy_amount(' + i + ')" required></td><td><input type="text" name="cur_price[]" id="buy_price' + i + '"  class="form-control" required  ></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required readonly ></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control" readonly ></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
+                                    ?></select></td><td><input type="text" name="quantity[]" id="quantity' + i + '" onchange="check_stock_quantity_validation(' + i + ')" class="form-control common_issue_quantity" required></td><td><input type="text" name="cur_price[]" id="buy_price' + i + '"  class="form-control" onkeyup="buy_amount(' + i + ')"  ></td><td><input type="text" name="cur_amount[]" id="buy_amount' + i + '"  class="form-control sub_buy_amount" required readonly ></td><td><input type="text" name="unit_price[]" id="unit_price' + i + '" onkeyup="sum(' + i + ')" class="form-control" required></td><td><input type="text" name="amount[]" id="sum' + i + '" class="form-control" readonly ></td><td><button type="button" name="remove" id="' + i + '" class="btn btn_remove" style="background-color:#f26522;color:#ffffff;">X</button></td></tr>');
 									$(".material_select_2").select2();
 									
 									<!-- COMMENTS: QTY AND UNIT PRICE AND TOTAL AMOUNT -->
@@ -405,7 +405,7 @@
         $(document).on('click', '.btn_remove', function () {
             var button_id = $(this).attr("id");
             $('#row' + button_id + '').remove();
-            cur_amount_total();
+            calculate_total_buy_amount();
             sum_total();
         });
     });
