@@ -64,7 +64,7 @@ include 'header.php';
 									?>
 								</td>
 								<td>
-									<span><a class="action-icons c-approve" href="replacereceive-view.php?no=<?php echo $item['damageout_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+									<span><a class="action-icons c-approve" href="replaceout-view.php?no=<?php echo $item['damageout_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
 									
 									
 									

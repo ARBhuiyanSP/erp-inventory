@@ -228,7 +228,7 @@ if(isset($_GET['submit'])){
 							<!-- UNIT -->
 							<td>
 								<?php 
-								$qty_unit = $rowname['qty_unit'];
+								$qty_unit = $row['unit'];
 								$sqlunit	=	"SELECT * FROM `inv_item_unit` WHERE `id` = '$qty_unit' ";
 								$resultunit = mysqli_query($conn, $sqlunit);
 								$rowunit=mysqli_fetch_array($resultunit);
