@@ -332,7 +332,7 @@ if (isset($projectsData) && !empty($projectsData)) {
 </script>
 <script>
     $(function () {
-        $("#mrr_date").datepicker({
+        $("#rrs_date").datepicker({
             inline: true,
             dateFormat: "yy-mm-dd",
             yearRange: "-50:+10",

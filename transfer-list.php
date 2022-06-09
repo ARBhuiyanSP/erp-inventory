@@ -45,6 +45,11 @@
 								</td>
 								<td>
 									<span><a class="action-icons c-approve" href="transfer-view.php?no=<?php echo $item['transfer_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+									
+									
+									<span><a class="action-icons c-delete" href="warehousetransfer_edit.php?edit_id=<?php echo $item['id']; ?>" title="edit"><i class="fa fa-edit text-info mborder"></i></a></span> 
+									
+									
 							<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
 								</td>
 							</tr>

@@ -6,36 +6,21 @@
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-search"></i>
-        Materialwise Supplier Search</div>
+        Supplier list</div>
     <div class="card-body">
         <form class="form-horizontal" action="" id="warehouse_stock_search_form" method="GET">
             <div class="table-responsive">          
                 <table class="table table-borderless search-table">
                     <tbody>
                         <tr>  
-							<td>
-								   <div class="form-group">
-									<label for="sel1">Material Type:</label>
-									<select class="form-control" id="material_id" name="material_id">
-										<option value="">Select</option>
-										<?php
-										$parentCats = getTableDataByTableName('inv_materialcategorysub', '', 'category_description');
-										if (isset($parentCats) && !empty($parentCats)) {
-											foreach ($parentCats as $pcat) {
-												?>
-												<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['category_description'] ?></option>
-											<?php }
-										} ?>
-									</select>
-								</div>
-							</td>
+							
 							
 						
 							
 							<td>
                                 <div class="form-group">
                                     <label for="todate">.</label>
-									<button type="submit" name="submit" class="form-control btn btn-primary">Search</button>
+									<button type="submit" name="submit" class="form-control btn btn-primary">Click Supplier List</button>
                                 </div>
                             </td>
                         </tr>
@@ -48,7 +33,6 @@
 <?php
 if(isset($_GET['submit'])){
 	
-	$material_id	=	$_GET['material_id'];
 
 	
 	
@@ -82,7 +66,7 @@ if(isset($_GET['submit'])){
 					</thead>
 					<tbody>
 						<?php
-							$sql	=	"SELECT * FROM `suppliers` WHERE `material_type` = '$material_id'";
+							$sql	=	"SELECT * FROM `suppliers";
 							$result = mysqli_query($conn, $sql);
 							while($row=mysqli_fetch_array($result))
 								

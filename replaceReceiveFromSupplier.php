@@ -283,7 +283,7 @@
 </script>
 <script>
     $(function () {
-        $("#damage_date").datepicker({
+        $("#rrs_date").datepicker({
             inline: true,
             dateFormat: "yy-mm-dd",
             yearRange: "-50:+10",

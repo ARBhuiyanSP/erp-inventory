@@ -137,8 +137,8 @@ display:none;
 								
 								$submit_name	= 'op_edit';
 								if($mbin_qty > 0){
-									//$validation 	= 'readonly';
-									$validation 	= '';
+									$validation 	= 'readonly';
+									//$validation 	= '';
 									//$submit			= 'disabled';
 									$submit			= '';
 								}else{

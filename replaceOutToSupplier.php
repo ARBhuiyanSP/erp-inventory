@@ -234,7 +234,7 @@
 </script>
 <script>
     $(function () {
-        $("#damageout_date").datepicker({
+        $("#ros_date").datepicker({
             inline: true,
             dateFormat: "yy-mm-dd",
             yearRange: "-50:+10",

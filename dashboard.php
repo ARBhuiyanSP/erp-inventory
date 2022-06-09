@@ -46,8 +46,8 @@ $(document).ready(function() {
 						<div class="card bg-default o-hidden">
 							<div class="card-body">
 							<?php
-								$toDay = '2022-05-01';
-								//$toDay = date("Y-m-d");
+								//$toDay = '2022-05-01';
+								$toDay = date("Y-m-d");
 								if($_SESSION['logged']['user_type'] == 'superAdmin') {
 									$sqlsales	=	"select SUM(`totalamount`) AS totalamount FROM `inv_issue` WHERE  `issue_date` = '$toDay'";
 								}else{
@@ -88,8 +88,8 @@ $(document).ready(function() {
 						<div class="card bg-default o-hidden">
 							<div class="card-body">
 							<?php
-								$toDay = '2022-05-01';
-								//$toDay = date("Y-m-d");
+								//$toDay = '2022-05-01';
+								$toDay = date("Y-m-d");
 								if($_SESSION['logged']['user_type'] == 'superAdmin') {
 									$sqlpayment	=	"select SUM(`amount`) AS amount FROM `party_payment` WHERE  `voucherdate` = '$toDay'";
 								}else{

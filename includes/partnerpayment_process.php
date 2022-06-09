@@ -35,7 +35,7 @@ if (isset($_POST['partnerpayment_submit']) && !empty($_POST['partnerpayment_subm
 		                                             if($trantype == "Deposit"){
 
 		   
-          $query3 = "UPDATE partnerpayment SET `trandate`='$trandate',`partner_id`='$partner_id',`expensedesc`='$expensedesc',`trantype`='$trantype',`amountdeposit`='$amount',`warehouse_id`='$warehouse_id'WHERE id=$edit_id";
+          $query3 = "UPDATE partnerpayment SET `trandate`='$trandate',`partner_id`='$partner_id',`expensedesc`='$expensedesc',`trantype`='$trantype',`amountdeposit`='$amount',`amountwithdraw`=0,`warehouse_id`='$warehouse_id'WHERE id=$edit_id";
           $conn->query($query3);
 		
 		
@@ -44,7 +44,7 @@ if (isset($_POST['partnerpayment_submit']) && !empty($_POST['partnerpayment_subm
 
 		
 		   
-          $query3 = "UPDATE partnerpayment SET `trandate`='$trandate',`partner_id`='$partner_id',`expensedesc`='$expensedesc',`trantype`='$trantype',`amountwithdraw`='$amount',`warehouse_id`='$warehouse_id'WHERE id=$edit_id";
+          $query3 = "UPDATE partnerpayment SET `trandate`='$trandate',`partner_id`='$partner_id',`expensedesc`='$expensedesc',`trantype`='$trantype',`amountdeposit`=0,`amountwithdraw`='$amount',`warehouse_id`='$warehouse_id'WHERE id=$edit_id";
           $conn->query($query3); 
          $conn->query($query);
 		 }

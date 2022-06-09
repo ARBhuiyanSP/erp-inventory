@@ -1,5 +1,22 @@
 <?php 
 include 'header.php';
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	//echo $row['education'];
+	$id=	$_GET['id'];
+	
+	
+	$table 	= 'inv_item_unit';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'unit_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'unit_submit';
+}
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
@@ -23,12 +40,14 @@ include 'header.php';
 						<div class="col-xs-4">
                             <div class="form-group">
                                 <label>Unit Name</label>
-                                <input type="text" name="unit_name" id="name" class="form-control" required >
+                                <input type="text" name="unit_name" value="<?php if (isset($rowedit['unit_name']) && $rowedit['unit_name'] != '') { echo $rowedit['unit_name']; }?>" id="name" id="name" class="form-control" required >
                             </div>
                         </div>
 						<div class="col-xs-4">
                             <div class="form-group">
-								<label>.</label>
+							<label>.</label>
+										<input type="hidden" name="edit_id" value="<?php echo (isset($rowedit['id']) && !empty($rowedit['id']) ? $rowedit['id']: ""); ?>">
+							
                                 <input type="submit" name="unit_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
                             </div>
                         </div>
@@ -38,7 +57,7 @@ include 'header.php';
 							<table id="dataTable" class="table table-bordered table-striped table-hover">
 								<thead>
 									<tr>
-										<th>Package Name</th>
+										<th>Unit Name</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -52,8 +71,8 @@ include 'header.php';
 									<tr>
 										<td><?php echo $data['unit_name']; ?></td>
 										<td>
-											<a href="#"><i class="fas fa-edit text-success"></i></a>
-											<a href="#"><i class="fa fa-trash text-danger"></i></a>
+
+													<span><a class="action-icons c-approve" href="unit_entry.php?id=<?php echo $data['id']; ?>" title="Edit"><i class="fas fa-edit text-info"></i></a></span>
 										</td>
 									</tr>
 									<?php

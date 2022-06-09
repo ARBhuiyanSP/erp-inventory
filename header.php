@@ -53,7 +53,7 @@ include 'includes/partnerclosingbalance_process.php';
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="images/fav.png">
-  <title>Saif Inventory</title>
+  <title>ERP Inventory</title>
   <!-- Custom fonts for this template-->
   <link href="css/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- Page level plugin CSS-->
@@ -113,8 +113,12 @@ select.form-control .select2{
 </style>
 <body id="page-top">
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-    <a class="navbar-brand mr-1" href="index.php"><img src="images/Saif_Engineering_Logo_165X72.png" height="30px;"/></a>
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+    <a class="navbar-brand mr-1" href="dashboard.php"><img src="images/Saif_Engineering_Logo_165X72.png" height="30px;"/></a>
+<button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+	 
+
+	 
+	 
       <i class="fas fa-bars"></i>
     </button>
 

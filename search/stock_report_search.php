@@ -131,6 +131,9 @@ if(isset($_GET['submit'])){
 											<td></td>
 											<td><?php echo $rowmat['material_description']; ?></td>
 											<td><?php echo getDataRowByTableAndId('inv_item_unit', $rowmat['qty_unit'])->unit_name; ?></td>
+											
+											
+											
 											<td style="text-align:right;">
 												<?php 
 													$mb_materialid = $rowmat['material_id_code'];
@@ -154,10 +157,16 @@ if(isset($_GET['submit'])){
 													$resultoutqty = mysqli_query($conn, $sqloutqty);
 													$rowoutqty = mysqli_fetch_object($resultoutqty) ;
 													
+													//instock
+													
 													$instock = $rowinqty->totalin -$rowoutqty->totalout;
 													echo number_format((float)$instock, 2, '.', '');
 												?>
 											</td>
+											
+											
+											
+											
 											<td style="text-align:right;">
 												<?php
 												if($_SESSION['logged']['user_type'] !== 'whm'){
@@ -174,9 +183,15 @@ if(isset($_GET['submit'])){
 												echo number_format((float)$avgprice, 2, '.', '');
 												} ?>
 											</td>
+											
+											
+											
+											
 											<td style="text-align:right;">
 												<?php
-												$totalinvalue = $rowinval->totalinval;
+												//$totalinvalue = $rowinval->totalinval;
+												//change 9-6-22
+												$totalinvalue = $avgprice * $instock;
 												echo $english_format_number = number_format($totalinvalue);
 												?>
 											</td>

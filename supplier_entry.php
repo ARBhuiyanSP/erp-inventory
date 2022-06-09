@@ -1,12 +1,29 @@
 <?php 
 include 'header.php';
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	
+	$id=	$_GET['id'];
+	
+	
+	$table 	= 'suppliers';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'suppliers_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'suppliers_submit';
+}
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="dashboard.php">Dashboard</a>
+            <a href="supplier_info.php">Supplier List</a>
         </li>
         <li class="breadcrumb-item active"> Suppliers Information</li>
     </ol>
@@ -20,42 +37,66 @@ include 'header.php';
             <div class="form-group">
                 <form action="" method="post" name="add_name" id="add_name">
                     <div class="row" id="div1" style="">
-                        <div class="col-xs-3">
+					
+					
+                       
+						
+<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Supplier ID</label>
-                                <input type="text" name="supplier_id" id="supplier_id" class="form-control" readonly="readonly" value="<?php echo getDefaultCategoryCode('suppliers', 'code', '03d', '001', 'SID-') ?>">
+								<?php
+								
+									if(isset($rowedit['code']) && !empty($rowedit['code'])){
+										$supplier_id =$rowedit['code'];
+									}else{
+										$supplier_id 	=	getDefaultCategoryCode('suppliers', 'code', '03d', '001', 'SID-');
+									}
+                                   ?>
+                                <input type="text" name="supplier_id" id="supplier_id" value="<?php echo $supplier_id; ?>" class="form-control" readonly="readonly">
                             </div>
-                        </div>
+</div>
+
+
+						
+						
+						
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Supplier Name</label>
-                                <input type="text" name="supplier_name" id="supplier_name" class="form-control">
+                                <input type="text" name="supplier_name" value="<?php if (isset($rowedit['name']) && $rowedit['name'] != '') { echo $rowedit['name']; }?>" id="supplier_name" class="form-control">
                             </div>
                         </div>
+						
+						
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Supplier Address</label>
-                                <input type="text" name="supplier_address" id="supplier_address" class="form-control">
+                                <input type="text" name="supplier_address" value="<?php if (isset($rowedit['address']) && $rowedit['address'] != '') { echo $rowedit['address']; }?>" id="supplier_address" class="form-control">
                             </div>
                         </div>
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Contact Person</label>
-                                <input type="text" name="contact_person" id="contact_person" class="form-control">
+                                <input type="text" name="contact_person" value="<?php if (isset($rowedit['contact_person']) && $rowedit['contact_person'] != '') { echo $rowedit['contact_person']; }?>" id="contact_person" class="form-control">
                             </div>
                         </div>
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" name="supplier_phone" id="supplier_phone" class="form-control">
+                                <input type="text" name="supplier_phone" value="<?php if (isset($rowedit['supplier_phone']) && $rowedit['supplier_phone'] != '') { echo $rowedit['supplier_phone']; }?>" id="supplier_phone" class="form-control">
                             </div>
                         </div>
+						
+						
 						<div class="col-xs-3">
                             <div class="form-group">
-                                <label>Balance</label>
-                                <input type="text" name="supplier_op_balance" id="supplier_op_balance" class="form-control">
+                                <label>Mobile</label>
+            <input type="text" name="supplier_op_balance" value="<?php if (isset($rowedit['supplier_op_balance']) && $rowedit['supplier_op_balance'] != '') { echo $rowedit['supplier_op_balance']; }?>" id="supplier_op_balance" class="form-control" >
                             </div>
                         </div>
+						
+						
+						
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Supplier Type</label>
@@ -83,6 +124,11 @@ include 'header.php';
                         </div>
 						<div class="col-xs-12">
                             <div class="form-group">
+							
+								
+								 <input type="hidden" name="edit_id" value="<?php echo (isset($rowedit['id']) && !empty($rowedit['id']) ? $rowedit['id']: ""); ?>">
+								 
+							
                                 <input type="submit" name="suppliers_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
                             </div>
                         </div>
@@ -119,8 +165,7 @@ include 'header.php';
 											?>
 										</td>
 										<td>
-											<a href="#"><i class="fas fa-edit text-success"></i></a>
-											<a href="#"><i class="fa fa-trash text-danger"></i></a>
+	<span><a class="action-icons c-approve" href="supplier_entry.php?id=<?php echo $data['id']; ?>" title="Edit"><i class="fas fa-edit text-info"></i></a></span>
 										</td>
 									</tr>
 									<?php

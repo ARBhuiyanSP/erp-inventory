@@ -61,7 +61,7 @@ include 'header.php';
 									?>
 								</td>
 								<td>
-									<span><a class="action-icons c-approve" href="replacereceive-view.php?no=<?php echo $item['damage_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
+									<span><a class="action-icons c-approve" href="replaceReceivefromSupplier-view.php?no=<?php echo $item['rrs_id']; ?>" title="View"><i class="fas fa-eye text-success"></i></a></span>
 									
 									
 									
@@ -70,7 +70,7 @@ include 'header.php';
 									
 									
 									<?php if($_SESSION['logged']['user_type'] == 'superAdmin') {?>
-										<span><a class="action-icons c-delete" href="replacereceive_approve.php?issue=<?php echo $item['damage_id']; ?>" title="approve"><i class="fa fa-check text-info mborder"></i></a></span>
+										<span><a class="action-icons c-delete" href="replacereceive_approve.php?issue=<?php echo $item['rrs_id']; ?>" title="approve"><i class="fa fa-check text-info mborder"></i></a></span>
 										<?php } ?>
 							<span><a class="action-icons c-delete" href="#" title="delete"><i class="fa fa-trash text-danger"></i></a></span>
 								</td>

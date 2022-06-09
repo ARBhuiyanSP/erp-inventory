@@ -104,14 +104,7 @@ else{
 								<label for="id">Party</label><span class="reqfield"> ***required</span>
 								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
 									<option value="">Select</option>
-									<?php
-									$parentCats = getTableDataByTableName('party','','partyname');
-									if (isset($parentCats) && !empty($parentCats)) {
-										foreach ($parentCats as $pcat) {
-											?>
-											<option value="<?php echo $pcat['id'] ?>"<?php if (isset($rowedit['partyid']) && $rowedit['partyid'] == $pcat['party_id']) { echo "Selected"; }?>><?php echo $pcat['partyname'] ?></option>
-										<?php }
-									} ?>
+									
 								</select>
 							</div>
 </div>

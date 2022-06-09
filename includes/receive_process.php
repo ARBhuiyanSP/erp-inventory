@@ -47,12 +47,12 @@ if (isset($_POST['receive_submit']) && !empty($_POST['receive_submit'])) {
         */ 
         $mrr_date           = $_POST['mrr_date'];
         $mrr_no             = $_POST['mrr_no'];
-        $purchase_id        = $_POST['purchase_id'];
-        $Purchase_date      = $_POST['Purchase_date'];
+        $purchase_id        = 'P';
+        $Purchase_date      = $_POST['mrr_date'];
         $challan_no         = $_POST['challan_no'];
         $challan_date       = $_POST['challan_date'];
-        $requisition_no     = $_POST['requisition_no'];
-        $requisition_date   = $_POST['requisition_date'];
+        $requisition_no     = 'R';
+        $requisition_date   = $_POST['mrr_date'];
         $supplier_name      = $_POST['supplier_name'];
         $supplier_id        = $_POST['supplier_id'];
         

@@ -1,5 +1,22 @@
 <?php 
 include 'header.php';
+
+if (isset($_GET['id']) && $_GET['id'] != '') { 
+	//echo $row['education'];
+	$id=	$_GET['id'];
+	
+	
+	$table 	= 'partner';
+	$sqledit = "SELECT * FROM $table WHERE `id`='$id'";
+	$resultedit = $conn->query($sqledit);
+	$rowedit = mysqli_fetch_array($resultedit);
+	$button_name = 'Update';
+	$button_post_name = 'partner_update_submit';
+}
+else{
+	$button_name = 'Save';
+	$button_post_name = 'partner_submit';
+}
 ?>
 <!-- Left Sidebar End -->
 <div class="container-fluid">
@@ -20,22 +37,39 @@ include 'header.php';
             <div class="form-group">
                 <form action="" method="post" name="add_name" id="add_name">
                     <div class="row" id="div1" style="">
-                        <div class="col-xs-3">
+					
+					
+					
+	>
+                        </div>
+						
+						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Partner ID</label>
-                                <input type="text" name="partner_id" id="partner_id" class="form-control" readonly="readonly" value="<?php echo getDefaultCategoryCode('partner', 'partner_id', '03d', 'P01', 'PID-') ?>">
+								<?php
+								
+									if(isset($rowedit['partner_id']) && !empty($rowedit['partner_id'])){
+										$partner_id 	=$rowedit['partner_id'];
+									}else{
+								$partner_id 	=	getDefaultCategoryCode('partner', 'partner_id', '03d', 'P01', 'PID-');
+									}
+                                   ?>
+                                <input type="text" name="partner_id" id="partner_id" value="<?php echo $partner_id; ?>" class="form-control" readonly="readonly">
                             </div>
-                        </div>
+</div>
+
+						
+						
 						<div class="col-xs-3">
                             <div class="form-group">
                                 <label>Partner Name</label>
-                                <input type="text" name="name" id="name" class="form-control">
+                                <input type="text" name="name"  value="<?php if (isset($rowedit['name']) && $rowedit['name'] != '') { echo $rowedit['name']; }?>" id="name" class="form-control">
                             </div>
                         </div>
 						
 						
 						
-						<!-- <div class="col-xs-3">
+											<!-- <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Project Name</label>
 								<select class="form-control" id="project_id" name="project_id" required>
@@ -79,9 +113,13 @@ include 'header.php';
 						
 						
 						
-						
 						<div class="col-xs-12">
                             <div class="form-group">
+							
+							
+							<input type="hidden" name="edit_id" value="<?php echo (isset($rowedit['id']) && !empty($rowedit['id']) ? $rowedit['id']: ""); ?>">
+							
+							
                                 <input type="submit" name="partner_submit" id="submit" class="btn btn-block" style="background-color:#007BFF;color:#ffffff;" value="Save" />   
                             </div>
                         </div>
@@ -110,7 +148,7 @@ include 'header.php';
 										
 										
 										<!-- <td><?php 
-											$dataresult =   getDataRowByTableAndId('p', $data['project_id']);
+											$dataresult =   getDataRowByTableAndId('project', $data['project_id']);
 											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
 											?></td> 
 											
@@ -121,8 +159,11 @@ include 'header.php';
 											
 											
 										<td>
-											<a href="#"><i class="fas fa-edit text-success"></i></a>
-											<a href="#"><i class="fa fa-trash text-danger"></i></a>
+												
+													<span><a class="action-icons c-approve" href="partner_entry.php?id=<?php echo $data['id']; ?>" title="Edit"><i class="fas fa-edit text-info"></i></a></span>
+													
+													
+										
 										</td>
 									</tr>
 									<?php

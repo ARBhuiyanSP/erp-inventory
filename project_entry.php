@@ -34,13 +34,13 @@ include 'header.php';
                         </div>
 						<div class="col-xs-3">
                             <div class="form-group">
-                                <label>Project Incharge</label>
+                                <label>Address(1)</label>
                                 <input type="text" name="incharge" id="incharge" class="form-control">
                             </div>
                         </div>
 						<div class="col-xs-4">
                             <div class="form-group">
-                                <label>Address</label>
+                                <label>Address(2)</label>
                                 <input type="text" name="address" id="address" class="form-control">
                             </div>
                         </div>
