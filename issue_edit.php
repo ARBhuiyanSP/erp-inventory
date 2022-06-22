@@ -161,26 +161,23 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
 
 
                                                 <td>
-                                                    <select class="form-control select2" id="material_name<?php echo $editDatas->id; ?>" name="material_name[]" required onchange="getItemCodeByParam('<?php echo $editDatas->id; ?>', 'inv_material', 'material_id_code', 'material_id0', 'qty_unit');">
+                                                    <select class="form-control select2" id="material_name<?php echo $key; ?>" name="material_name[]" required onchange="getAppendItemCodeByParam('<?php echo $key; ?>', 'inv_material', 'material_id_code', 'material_id', 'unit_id');">
                                                         <option value="">Select</option>
                                                         <?php
                                                         $projectsData = get_product_with_category();
                                                         if (isset($projectsData) && !empty($projectsData)) {
                                                             foreach ($projectsData as $data) {
-                                                        ?>
-                                                        <option value="<?php echo $data['id']; ?>" <?php
-                                                                                                            if (isset($editDatas->material_id) && $editDatas->material_id == $data['item_code']) {
-                                                                                                                echo 'selected';
-                                                                                                            }
-                                                                                                            ?>><?php echo $data['material_name']; ?></option>
-                                                        <?php
+                                                                ?>
+                                                                <option value="<?php echo $data['id']; ?>"<?php if (isset($editDatas->material_id) && $editDatas->material_id == $data['item_code']) {
+                                                    echo 'selected';
+                                                } ?>><?php echo $data['material_name']; ?></option>
+                                                                <?php
                                                             }
                                                         }
                                                         ?>
                                                     </select>
                                                 </td>
-
-
+                                                <input type="hidden" name="material_id[]" id="material_id<?php echo $key; ?>" class="form-control" value="<?php echo (isset($editDatas->material_id) && !empty($editDatas->material_id) ? $editDatas->material_id : ''); ?>">
 
 
 
@@ -212,9 +209,6 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                                                 </td>
 
 
-                                                <!--  td mani holo grid column thakbay material id ami grid show korbo na so not use <td> but material id data table save hobay  -->
-
-                                                <input type="hidden" name="material_id[]" id="material_id<?php echo $editDatas->id; ?>" class="form-control" value="<?php echo (isset($editDatas->material_id) && !empty($editDatas->material_id) ? $editDatas->material_id : ''); ?>" readonly>
 
                                                 <!--  Qty -->
                                                 <td>
@@ -280,7 +274,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
                                                     ?>
                                                 </select>
                                             </td>
-                                            <td><input type="text" name="material_id[]" id="material_id0" class="form-control" readonly></td>
+                                            <input type="hidden" name="material_id[]" id="material_id0" class="form-control" readonly>
                                             <td>
                                                 <select class="form-control" id="unit0" name="unit[]" required readonly>
                                                     <option value="">Select Unit</option>
