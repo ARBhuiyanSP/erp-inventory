@@ -173,14 +173,9 @@ $productSerial = 0;
                                             $productSerial++;
                                             ?>
                                             <tr id="row<?php echo $key; ?>">
-											
-											
 										
-
-										
-										 <!-- First start Material name/ id ( data show)-->
-											
-									  <td>
+											<!-- First start Material name/ id ( data show)-->
+												<td>
                                                     <select class="form-control select2" id="material_name<?php echo $key; ?>" name="material_name[]" required onchange="getAppendItemCodeByParam('<?php echo $key; ?>', 'inv_material', 'material_id_code', 'material_id', 'unit_id');">
                                                         <option value="">Select</option>
                                                         <?php
@@ -225,11 +220,11 @@ $productSerial = 0;
 												</td>
 												<!-- unit end( data show)-->
 												
-<td><input type="text" name="brand[]" id="brand0" class="form-control" value="brand"</td>
-												
-<td> <input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly> </td>
-                                               
-<td><input type="text" name="quantity[]" id="quantity0"  class="form-control" value="<?php echo $editDatas->transfer_qty ?>" ></td>
+												<td><input type="text" name="brand[]" id="brand0" class="form-control" value="brand"</td>
+																								
+												<td> <input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly> </td>
+																							   
+												<td><input type="text" name="quantity[]" id="quantity0"  class="form-control" value="<?php echo $editDatas->transfer_qty ?>" ></td>
 												
 
 
@@ -298,7 +293,7 @@ $productSerial = 0;
 											<!-- unit close-->
 											
                                             <td><input type="text" name="brand[]" id="brand0" class="form-control"></td>
-<td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly></td>
+											<td><input type="text" name="material_total_stock[]" id="material_total_stock0" class="form-control" readonly></td>
                                             <td><input type="text" name="quantity[]" id="quantity0" onchange="sum(0)" class="form-control"></td>
 											
 											
