@@ -276,8 +276,10 @@
                 <span class="sub_menu_text_design">Price set</span>
             </a>
 			
-			
-			
+			<a href="backup_system.php">
+			<i class="fa fa-download" aria-hidden="true" style="color: #007BFF;"></i>
+			 <span class="sub_menu_text_design">Data backup</span>
+			</a>
 			
             
         </div>
@@ -519,6 +521,12 @@
             <span>Scrap Sales report</span></a>
     </li>
 	
+	
+	<li class="nav-item">
+        <a class="nav-link" href="todaytransaction_report.php"> 
+            <i class="fa fa-registered" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>Today transaction</span></a>
+    </li>
 	
 	
 	

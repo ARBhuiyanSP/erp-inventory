@@ -104,9 +104,14 @@ $damage_id=$_GET['no']; ?>
 							<tbody id="material_receive_list_body">
 								<?php
 								
+								
+								
 								$sql = "select * from `inv_damagedetail` where `damage_id`='$damage_id'";
 								$result = mysqli_query($conn, $sql);
 									for($i=1; $row = mysqli_fetch_array($result); $i++){
+										
+											
+											
 								?>
 								<tr>
 									<td><?php echo $i; ?></td>
@@ -128,6 +133,25 @@ $damage_id=$_GET['no']; ?>
 								</tr>
 								<?php } ?>
 						
+						
+						
+							<tr>
+										<td colspan="4" class="grand_total" style="text-align:right;"> Total Qty:</td>
+									<td>	
+										<?php 
+										$sql2 			= "SELECT sum(return_qty) FROM  `inv_damagedetail` where `damage_id`='$damage_id'";
+										$result2 		= mysqli_query($conn, $sql2);
+										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
+										$totalReceived	=$row2['sum(return_qty)'];
+										echo $totalReceived ;
+										}
+										?>
+									</td>
+									
+									
+								</tr>
+							
+							
 							</tbody>
 						</table>
 						
