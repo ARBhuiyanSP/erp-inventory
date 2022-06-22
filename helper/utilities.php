@@ -1,5 +1,56 @@
 <?php
 
+function get_my_credit_amount($param){
+	global $conn;
+	if($_SESSION['logged']['user_type'] !== 'whm'){
+		$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE `pb_party_id` = '$param->pb_party_id' AND pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
+		}else{
+		$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE warehouse_id = $warehouse_id  AND `pb_party_id` = '$param->pb_party_id'  AND pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
+		}
+		
+		$resultoutqty = mysqli_query($conn, $sqloutqty);
+		$rowoutqty = mysqli_fetch_object($resultoutqty) ;
+		$totcredit = $rowoutqty->totalcredit;
+		return $totcredit;
+		
+}
+
+function get_my_debit_amount($param){
+	global $conn;
+	if($_SESSION['logged']['user_type'] !== 'whm'){
+		$sqlinqty = "SELECT SUM(`pb_dr_amount`) AS totaldebit FROM `inv_partybalance` WHERE `pb_party_id` = '$param->pb_party_id'  and pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
+	}else{
+		$sqlinqty = "SELECT SUM(`pb_dr_amount`) AS totaldebit FROM `inv_partybalance` WHERE warehouse_id = $param->warehouse_id  and `pb_party_id` = '$param->pb_party_id' AND pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
+	}
+	
+	$resultinqty = mysqli_query($conn, $sqlinqty);
+	$rowinqty = mysqli_fetch_object($resultinqty) ;
+	$totdebit = $rowinqty->totaldebit;
+	return $totdebit;
+}
+
+
+function is_showable($cr, $dt){
+	
+	$status = false;
+	
+	if($cr > 0 && $dt == 0){
+		$status = true;
+	}
+	
+	if($dt > 0 && $cr == 0){
+		$status = true;
+	}
+	
+	if($cr > 0 && $dt > 0){
+		$status = true;
+	}
+	
+	return $status;
+	
+}
+
+
 function getTableDataByTableNamePackage($table, $order = 'asc', $column='id', $dataType = '') {
     global $conn;
     $dataContainer  =   [];

@@ -88,6 +88,12 @@ if(isset($_GET['submit'])){
 					</thead>
 					<tbody>
 					<?php
+					
+					
+					$totalstockQty = 0;
+					$totalstockvalue = 0;
+					
+					
 						$sql	=	"SELECT * FROM inv_material  GROUP BY `material_id`";
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
@@ -161,6 +167,9 @@ if(isset($_GET['submit'])){
 													
 													$instock = $rowinqty->totalin -$rowoutqty->totalout;
 													echo number_format((float)$instock, 2, '.', '');
+													
+													$totalstockQty += $instock;// Grand Total qty
+													
 												?>
 											</td>
 											
@@ -169,7 +178,7 @@ if(isset($_GET['submit'])){
 											
 											<td style="text-align:right;">
 												<?php
-												if($_SESSION['logged']['user_type'] !== 'whm'){
+												/*if($_SESSION['logged']['user_type'] !== 'whm'){
 														$sqlinval = "SELECT SUM(`mbin_val`) AS totalinval FROM `inv_materialbalance` WHERE `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
 													}else{
 														$sqlinval = "SELECT SUM(`mbin_val`) AS totalinval FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id AND `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
@@ -181,7 +190,11 @@ if(isset($_GET['submit'])){
 												if($rowinqty->totalin){
 												$avgprice = $rowinval->totalinval / $rowinqty->totalin;
 												echo number_format((float)$avgprice, 2, '.', '');
-												} ?>
+												}*/ 
+												
+												$acurprice = $rowmat['cur_price'];
+												echo number_format((float)$acurprice, 2, '.', '');
+												?>
 											</td>
 											
 											
@@ -189,17 +202,43 @@ if(isset($_GET['submit'])){
 											
 											<td style="text-align:right;">
 												<?php
-												//$totalinvalue = $rowinval->totalinval;
-												//change 9-6-22
-												$totalinvalue = $avgprice * $instock;
+												
+											
+												$totalinvalue = $acurprice * $instock;
 												echo $english_format_number = number_format($totalinvalue);
+												
+													$totalstockvalue += $totalinvalue;// Grand Total Amount	
 												?>
+												
 											</td>
 										</tr>
 								<?php } 
 									} 
 								} 
 								?>
+								
+			<tr>
+							<td colspan="4" class="grand_total" style="text-align:right;">Grand Total:</td>
+							<td style="text-align:right;">
+								<?php echo number_format((float)$totalstockQty, 2, '.', '');
+								?>
+							</td>
+							
+							
+							<td style="text-align:right;">
+								
+							</td>
+						
+							<td style="text-align:right;">
+								<?php echo number_format((float)$totalstockvalue, 2, '.', '');
+								?>
+							</td>
+							
+							
+							</tr>	
+								
+								
+								
 					</tbody>
 				</table>
 				<center><div class="row">

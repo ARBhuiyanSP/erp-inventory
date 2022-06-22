@@ -14,8 +14,8 @@
 		
 		<?php if($_SESSION['logged']['user_type'] !== 'whm') {?>
 		<button class="btn btn-info linktext" onclick="window.location.href='total_stock_report.php';"> Total Stock Report</button>
-		<button class="btn btn-info linktext" onclick="window.location.href='warehouse_stock_report.php';"> Warehouse Stock Report </button>
-		<button class="btn btn-success linktext"> Warehouse Categorywise Stock Report </button>
+		<button class="btn btn-success linktext"> Warehouse Stock Report </button>
+		<button class="btn btn-info linktext" onclick="window.location.href='warehouse_categorywise_stock_report.php';"> Warehouse Categorywise Stock Report </button>
 		<?php } ?>
 	</div>
     <div class="card-body">
@@ -47,27 +47,6 @@
                             </td>
 							<td>
                                 <div class="form-group">
-									<label for="sel1">Material Category:</label>
-									<select class="form-control select2" id="material_id" name="material_id">
-										<option value="">Select</option>
-										<?php
-										$parentCats = getTableDataByTableName('inv_materialcategorysub', '', 'category_description');
-										if (isset($parentCats) && !empty($parentCats)) {
-											foreach ($parentCats as $pcat) {
-												if($_GET['material_id'] == $pcat['id']){
-													$selected	= 'selected';
-													}else{
-													$selected	= '';
-													}
-												?>
-												<option value="<?php echo $pcat['id'] ?>" <?php echo $selected; ?>><?php echo $pcat['category_description'] ?></option>
-											<?php }
-										} ?>
-									</select>
-								</div>
-                            </td>
-							<td>
-                                <div class="form-group">
                                     <label for="todate">To Date</label>
                                     <input type="text" class="form-control" id="to_date" name="to_date" value="<?php if(isset($_GET['to_date'])){ echo $_GET['to_date']; } ?>" autocomplete="off" required >
                                 </div>
@@ -88,7 +67,7 @@
 </div>
 <?php
 if(isset($_GET['submit'])){
-	$material_id	=	$_GET['material_id'];
+	
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_GET['warehouse_id'];
 	
@@ -124,11 +103,7 @@ if(isset($_GET['submit'])){
 					</thead>
 					<tbody>
 					<?php
-					
-					$totalstockQty = 0;
-					$totalstockvalue = 0;
-					
-						$sql	=	"SELECT * FROM inv_material WHERE `material_id`='$material_id'  GROUP BY `material_id`";
+						$sql	=	"SELECT * FROM inv_material  GROUP BY `material_id`";
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
 						{
@@ -183,31 +158,32 @@ if(isset($_GET['submit'])){
 													$resultoutqty = mysqli_query($conn, $sqloutqty);
 													$rowoutqty = mysqli_fetch_object($resultoutqty) ;
 													
-												   $instock = $rowinqty->totalin -$rowoutqty->totalout;
-													echo number_format((float)$instock, 2, '.', '');
+													//echo $rowinqty->totalin -$rowoutqty->totalout;
 													
-													$totalstockQty += $instock;// Grand Total qty
+													$instock = $rowinqty->totalin -$rowoutqty->totalout;
+													echo number_format((float)$instock, 2, '.', '');
 												?>
 											</td>
 											<td>
 												<?php
-												/*$sqlinval = "SELECT SUM(`mbin_val`) AS totalinval FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id AND `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
+												$sqlinval = "SELECT SUM(`mbin_val`) AS totalinval FROM `inv_materialbalance` WHERE warehouse_id = $warehouse_id AND `mb_materialid` = '$mb_materialid' AND mb_date <= '$to_date'";
 												$resultinval= mysqli_query($conn, $sqlinval);
 												$rowinval = mysqli_fetch_object($resultinval) ;								
 												if($rowinqty->totalin){
 												$avgprice = $rowinval->totalinval / $rowinqty->totalin;
 												echo number_format((float)$avgprice, 2, '.', '');
-												} */
-												$acurprice = $rowmat['cur_price'];
-												echo number_format((float)$acurprice, 2, '.', '');
-												?>
+												} ?>
 											</td>
 											<td>
 												<?php
-												$totalinvalue = $acurprice * $instock;
+												//$totalinvalue = $rowinval->totalinval;
+												//echo $english_format_number = number_format($totalinvalue);
+												
+												//$totalinvalue = $rowinval->totalinval;
+												//change 9-6-22
+												$totalinvalue = $avgprice * $instock;
 												echo $english_format_number = number_format($totalinvalue);
 												
-												$totalstockvalue += $totalinvalue;// Grand Total Amount
 												
 												?>
 											</td>
@@ -216,27 +192,6 @@ if(isset($_GET['submit'])){
 									} 
 								} 
 								?>
-								
-								
-									<tr>
-							<td colspan="4" class="grand_total" style="text-align:right;">Grand Total:</td>
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totalstockQty, 2, '.', '');
-								?>
-							</td>
-							
-							
-							<td style="text-align:right;">
-								
-							</td>
-						
-							<td style="text-align:right;">
-								<?php echo number_format((float)$totalstockvalue, 2, '.', '');
-								?>
-							</td>
-							
-							</tr>
-							
 					</tbody>
 				</table>
 				<center><div class="row">

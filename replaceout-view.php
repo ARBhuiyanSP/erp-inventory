@@ -128,6 +128,28 @@ $damageout_id=$_GET['no']; ?>
 								</tr>
 								<?php } ?>
 						
+						
+						
+						
+						
+									<tr>
+										<td colspan="4" class="grand_total" style="text-align:right;"> Total Qty:</td>
+									<td>	
+										<?php 
+										$sql2 			= "SELECT sum(return_qty) FROM  `inv_damageoutdetail` where `damageout_id`='$damageout_id'";
+										$result2 		= mysqli_query($conn, $sql2);
+										for($i=0; $row2 = mysqli_fetch_array($result2); $i++){
+										$totalReceived	=$row2['sum(return_qty)'];
+										echo $totalReceived ;
+										}
+										?>
+									</td>
+									
+									
+								</tr>
+							
+							
+							
 							</tbody>
 						</table>
 						

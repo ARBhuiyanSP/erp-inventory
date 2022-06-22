@@ -84,6 +84,10 @@ $(document).ready(function() {
 						  </a>
 						</div>
 					</div>
+					
+					
+					
+					
 					<div class="col-xl-6 col-sm-6 mb-3">
 						<div class="card bg-default o-hidden">
 							<div class="card-body">
@@ -126,6 +130,11 @@ $(document).ready(function() {
 						  </a>
 						</div>
 					</div>
+					
+					
+					
+					
+					
 				</div>
 				<div class="row">
 					<div class="col-xl-6 col-sm-6 mb-4">
@@ -384,8 +393,142 @@ $(document).ready(function() {
           </div>
         </div>
 		
-<?php } ?>
+<?php } 
+		
+		
+	$from_date		=	date('Y-m-d');
+	$to_date		=	date('Y-m-d');
+	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
+		?>
+		
+				<div class="col-md-12" id="printableArea">
+				<table id="htmltable" class="table table-bordered table-striped ">
+					<thead>
+						<tr>
+							<th colspan="9">
+								<center>
+									
+										<span></span>Today Party Transaction <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span>
+								</center>
+							</th>
+						</tr>
+						<tr>
+							<th width="15%">Party ID</th>
+							<th width="30%">Party Name</th>
+							
+							
+							<th>Bill Amount</th>
+							<th>Paid Amount</th>
+							
+							<th width="15%">Due Balance</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					
+					
+					
+					<!--  utilities.php file function: get_my_credit_amount() get_my_debit_amount() is_showable() -->
+					
+    <?php
+						if($_SESSION['logged']['user_type'] !== 'whm'){
+							$sql	=	"SELECT * FROM `inv_partybalance` GROUP BY `pb_party_id`";
+						}else{
+							$sql	=	"SELECT * FROM `inv_partybalance` WHERE `warehouse_id` = $warehouse_id GROUP BY `pb_party_id`";
+						}
+						$result = mysqli_query($conn, $sql);
+						while($row=mysqli_fetch_array($result))
+						{
+							$pb_party_id = $row['pb_party_id'];
+							
+							$cr_db_parama = (object)[
+								'from_date'		=>	$from_date,
+								'to_date'		=>	$to_date,
+								'warehouse_id'	=>	$warehouse_id,
+								'pb_party_id'	=>	$pb_party_id,
+							];
+							
+							$totcredit = get_my_credit_amount($cr_db_parama);
+							$totdebit  = get_my_debit_amount($cr_db_parama);
+							
+							if(is_showable($totcredit, $totdebit)){
+								
+								
+					?>
 
+<tr>
+						
+						    <!-- PARTY ID -->
+						
+							<td><?php echo $row['pb_party_id']; ?></td>
+							
+							
+							<!-- PARTY NAME -->
+							
+							<td>
+								<?php 
+								
+								$sqlname	=	"SELECT * FROM `party` WHERE `party_id` = '$pb_party_id' ";
+								$resultname = mysqli_query($conn, $sqlname);
+								$rowname=mysqli_fetch_array($resultname);
+								echo $rowname['partyname'];
+								?>
+							</td>
+
+							
+							<!-- Debit AMOUNT -->
+							<td style="text-align:right;">
+								<?php 
+									echo number_format((float)$totdebit, 2, '.', '');
+								?>
+							</td>
+
+							<!-- Credit AMOUNT -->
+							
+							<td style="text-align:right;">
+							<?php
+							echo number_format((float)$totcredit, 2, '.', '');
+							?>
+							</td>
+							
+						
+							
+							
+							<!-- BALANCE -->
+							<td style="text-align:right;">
+								<?php $balance =  $totdebit -$totcredit; echo number_format((float)$balance, 2, '.', '');?>
+							</td>
+							
+						
+							
+</tr>
+						
+						
+						
+						
+						
+						
+						
+						<?php
+							}
+						}
+							$rowcount=mysqli_num_rows($result);
+							if($rowcount < 1) { ?>
+								<tr><td colspan="6"><center>No Data Found</center></td></tr>
+	<?php } ?>
+					</tbody>
+				</table>
+		</br>
+				
+			</div>	
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
