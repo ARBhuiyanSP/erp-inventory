@@ -46,7 +46,11 @@ if (isset($_POST['receive_submit']) && !empty($_POST['receive_submit'])) {
          *  Insert Data Into inv_receivedetail Table:
         */ 
         $mrr_date           = $_POST['mrr_date'];
-        $mrr_no             = $_POST['mrr_no'];
+		
+		
+        $mrr_no             = $mrr_no;
+		
+		
         $purchase_id        = 'P';
         $Purchase_date      = $_POST['mrr_date'];
         $challan_no         = $_POST['challan_no'];

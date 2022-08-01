@@ -167,6 +167,7 @@ if(isset($_GET['submit'])){
 							<th>Paid amount</th>
 							<th>Due amount</th>
 							<th>Profit amount</th>
+							<th>Remarks</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -244,6 +245,9 @@ if(isset($_GET['submit'])){
 							<td style="text-align:right;"><?php echo number_format((float)$row['paidamount'], 2, '.', ''); ?></td>
 							<td style="text-align:right;"><?php echo number_format((float)$row['Dueamount'], 2, '.', ''); ?></td>
 							<td style="text-align:right;"><?php echo number_format((float)$row['profitamount'], 2, '.', ''); ?></td>
+							
+						
+							<td><?php echo $row['remarks']; ?></td>
 				</tr>
 						<?php
 							}?>

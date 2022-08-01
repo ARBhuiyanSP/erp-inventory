@@ -132,7 +132,7 @@
                                             <th>Sub Material</th>
                                             <th>Code</th>
                                             <th>Material</th>
-                                            <th>Material Min Stock</th>
+                                            <th>ROL</th>
                                             <th>Unit</th>
                                             <th>Action</th>
                                         </tr>

@@ -51,13 +51,27 @@ if (isset($_POST['Replacereceivefromsupplier_submit']) && !empty($_POST['Replace
         $mbout_qty      = 0;
         $mbout_val      = 0;
         $mbprice        = 0;
-        $mbtype         = 'REPLACE RECEIVE';
+        $mbtype         = 'Receive';
         $mbunit_id      = $project_id;
                     
         
         $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`remarks`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$remarks','$mb_date')";
         $conn->query($query_inmb);
     }
+	/*
+    *  Insert Data Into inv_materialbalance Table: dt:07-07-2022
+    */
+        $mbserial       = '1.1';
+        $mbserial_id    = 0;
+        $jvno           = $rrs_id;
+        $part_no        = 'BNA';        
+        
+        $query_inmb = "INSERT INTO `inv_materialbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbin_val`,`mbout_qty`,`mbout_val`,`mbprice`,`mbtype`,`mbserial`,`mbserial_id`,`mbunit_id`,`jvno`,`part_no`,`project_id`,`warehouse_id`,`approval_status`,`created_at`) VALUES ('$rrs_id','$mb_materialid','$mb_date','$mbin_qty','$mbin_val','$mbout_qty','$mbout_val','$mbprice','$mbtype','$mbserial','$mbunit_id','$mbserial_id','$jvno','$part_no','$project_id','$warehouse_id','$approval_status','$mb_date')";
+        $conn->query($query_inmb);
+		
+		
+		
+		
     /*
     *  Insert Data Into inv_replacerecivesupplier Table:
     */
@@ -142,6 +156,11 @@ if(isset($_POST['replaceReceiveToSupplier_update_submit']) && !empty($_POST['rep
     // first delete all from inv_replacesupplierbalance; 
     $delsq2    = "DELETE FROM inv_replacesupplierbalance WHERE mb_ref_id='$rrs_id'";
     $conn->query($delsq2);
+	
+	
+	// first delete all from inv_materialbalance; 
+		$delsq21    = "DELETE FROM inv_materialbalance WHERE mb_ref_id='$rrs_id'";
+		$conn->query($delsq21);
     
     
     for ($count = 0; $count < count($_POST['quantity']); $count++) {
@@ -187,16 +206,32 @@ if(isset($_POST['replaceReceiveToSupplier_update_submit']) && !empty($_POST['rep
         $mb_ref_id      = $rrs_id;
         $mb_materialid  = $material_id;
         $mb_date        = (isset($rrs_date) && !empty($rrs_date) ? date('Y-m-d h:i:s', strtotime($rrs_date)) : date('Y-m-d h:i:s'));
-        $mbin_qty       = 0;
+        $mbin_qty       = $quantity;
         $mbin_val       = 0;
-        $mbout_qty      = $quantity;
-        $mbtype         = 'REPLACE RECEIVE';
+        $mbout_qty      = 0;
+        $mbout_val      = 0;
+        $mbprice        = 0;
+        $mbtype         = 'Receive';
         $mbunit_id      = $project_id;
                     
         
         $query_inmb = "INSERT INTO `inv_replacesupplierbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbout_qty`,`mbtype`,`mbunit_id`,`warehouse_id`,`supplier_id`,`party_id`,`remarks`,`created_at`) VALUES ('$mb_ref_id','$mb_materialid','$mb_date','$mbin_qty','$mbout_qty','$mbtype','$mbunit_id','$warehouse_id','$supplier_id','$party_id','$remarks','$mb_date')";
         $conn->query($query_inmb);
+		
+	/*
+    *  update Data Into inv_materialbalance Table: dt:07-07-2022
+    */
+        $mbserial       = '1.1';
+        $mbserial_id    = 0;
+        $jvno           = $rrs_id;
+        $part_no        = 'BNA';        
+        
+        $query_inmb = "INSERT INTO `inv_materialbalance` (`mb_ref_id`,`mb_materialid`,`mb_date`,`mbin_qty`,`mbin_val`,`mbout_qty`,`mbout_val`,`mbprice`,`mbtype`,`mbserial`,`mbserial_id`,`mbunit_id`,`jvno`,`part_no`,`project_id`,`warehouse_id`,`approval_status`,`created_at`) VALUES ('$rrs_id','$mb_materialid','$mb_date','$mbin_qty','$mbin_val','$mbout_qty','$mbout_val','$mbprice','$mbtype','$mbserial','$mbunit_id','$mbserial_id','$jvno','$part_no','$project_id','$warehouse_id','$approval_status','$mb_date')";
+        $conn->query($query_inmb);
+		
+		
     }
+	
 	
 	
    $query2    = "UPDATE inv_replacerecivesupplier SET rrs_id='$rrs_id',rrs_date='$rrs_date',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',supplier_id='$supplier_id' WHERE id=$edit_id"; //WHERE id=$edit_id"; first coloumn

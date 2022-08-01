@@ -137,7 +137,7 @@ if(isset($_GET['submit'])){
 							
 								<td colspan="4">Discount : <?php 
 								$memono = $row['memono'];
-								$sqlunit	=	"SELECT discount_amount FROM `inv_issue` WHERE `memono` = '$memono' ";
+								$sqlunit	=	"SELECT discount_amount FROM `inv_issue` WHERE `memono` = '$memono' and `issue_date` BETWEEN '$from_date' AND '$to_date';";
 								$resultunit = mysqli_query($conn, $sqlunit);
 								$rowunit=mysqli_fetch_array($resultunit);
 								echo $rowunit['discount_amount'];
@@ -163,7 +163,7 @@ if(isset($_GET['submit'])){
 						 
 						 
 							$memono = $row['memono'];
-							$sqlall	=	"SELECT * FROM `inv_issuedetail` WHERE `memono` = '$memono';";
+							$sqlall	=	"SELECT * FROM `inv_issuedetail` WHERE `memono` = '$memono' and `issue_date` BETWEEN '$from_date' AND '$to_date';";
 							$resultall = mysqli_query($conn, $sqlall);
 							while($rowall=mysqli_fetch_array($resultall))
 							{

@@ -32,8 +32,10 @@ if (isset($_POST['transfer_submit']) && !empty($_POST['transfer_submit'])) {
          *  Insert Data Into inv_transferdetail Table:
         */ 
         $transfer_date           = $_POST['transfer_date'];
-        $transfer_id             = $_POST['transfer_id'];
-        $from_warehouse      = $_POST['from_warehouse'];
+		
+        $transfer_id             = $transfer_id;
+		
+        $from_warehouse      	 = $_POST['from_warehouse'];
         $to_warehouse         = $_POST['to_warehouse'];
 		
 

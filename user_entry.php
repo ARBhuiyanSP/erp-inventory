@@ -54,7 +54,8 @@ include 'header.php';
                                 <select class="form-control" id="warehouse_id" name="warehouse_id" required>
                                     <option value="">Select</option>
                                     <option value="">Admin</option>
-                                    <option value="">Incharge</option>
+                                    <option value="">User</option>
+									<option value="">superAdmin</option>
                                 </select>
                             </div>
                         </div>

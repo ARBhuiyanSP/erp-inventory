@@ -260,72 +260,49 @@ if(isset($_GET['process_type']) && $_GET['process_type'] == 'material_edit'){
 ?> 
         <div class="modal_body_centerize"> 
             <input type="hidden" name="material_update_id" value="<?php echo $editData->id; ?>">
-            <div class="form-group">
-                <label class="control-label col-sm-5" for="parent_code">Parent Category:</label>
+            <div class="row form-group">
+                <label class="col-sm-5" for="parent_code">Parent Category:</label>
                 <div class="col-sm-7">
-                    <select class="form-control" id="edit_main_item_id" name="parent_item_id" onchange="getSubCategoryByParent(this.value, 'edit_sub_item_id');">
-                        <option value="">Select</option>
-                        <?php
-                        $parentCats = getTableDataByTableName('inv_materialcategorysub', '', 'category_description');
-                        if (isset($parentCats) && !empty($parentCats)) {
-                            foreach ($parentCats as $pcat) {
-                                ?>
-                                <option value="<?php echo $pcat['id'] ?>" <?php if(isset($editData->material_id) && $editData->material_id == $pcat['id']){ echo 'selected'; } ?>><?php echo $pcat['category_description'].'('.$pcat['category_id'].')'; ?></option>
-                            <?php }
-                        }
-                        ?>
-                    </select>
+                   <input type="hidden" class="form-control" id="edit_main_item_id" placeholder="Enter item code" name="parent_item_id" value="<?php if(isset($editData->material_id)){ echo $editData->material_id; } ?>" readonly>
+				   
+					<input type="text" class="form-control" id="" placeholder="Enter item code" name="" value="<?php if(isset($editData->material_id)){ echo getDataRowByTableAndId('inv_materialcategorysub', $editData->material_id)->category_description; } ?>" readonly>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 <label class="control-label col-sm-5" for="parent_code">Sub Category:</label>
                 <div class="col-sm-7">
-                    <select class="form-control" id="edit_sub_item_id" name="sub_item_id" onchange="getMatCodeBySubId(this.value, 'item_edit_code');">
-                        <option value="">Select</option>
-                        <?php
-                        $parentCats = getTableDataByTableName('inv_materialcategory', '', 'material_sub_description');
-                        if (isset($parentCats) && !empty($parentCats)) {
-                            foreach ($parentCats as $pcat) {
-                                ?>
-                                <option value="<?php echo $pcat['id'] ?>"<?php if(isset($editData->material_sub_id) && $editData->material_sub_id == $pcat['id']){ echo 'selected'; } ?>><?php echo $pcat['material_sub_description'].'('.$pcat['material_sub_id'].')'; ?></option>
-                            <?php }
-                        }
-                        ?>
-                    </select>
+                    <input type="hidden" class="form-control" id="edit_sub_item_id" placeholder="Enter item code" name="sub_item_id" value="<?php if(isset($editData->material_sub_id)){ echo $editData->material_sub_id; } ?>" readonly>
+					<input type="text" class="form-control" id="" placeholder="Enter item code" name="" value="<?php if(isset($editData->material_sub_id)){ echo getDataRowByTableAndId('inv_materialcategory', $editData->material_sub_id)->material_sub_description; } ?>" readonly>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 <label class="control-label col-sm-5" for="parent_code">Material Code:</label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="item_edit_code" placeholder="Enter item code" name="item_code" value="<?php if(isset($editData->material_id_code)){ echo $editData->material_id_code; } ?>">
+                    <input type="text" class="form-control" id="item_edit_code" placeholder="Enter item code" name="item_code" value="<?php if(isset($editData->material_id_code)){ echo $editData->material_id_code; } ?>" readonly>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 <label class="control-label col-sm-5" for="name">Name:</label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" id="edit_item_name" placeholder="name" name="name" value="<?php if(isset($editData->material_description)){ echo $editData->material_description; } ?>">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 <label class="control-label col-sm-5" for="name">Brand Name:</label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" id="edit_item_name" placeholder="brand name" name="brand_name" value="<?php if(isset($editData->brand_name)){ echo $editData->brand_name; } ?>">
                 </div>
             </div>
-			<div class="form-group">
+			<div class="row form-group">
                 <label class="control-label col-sm-5" for="name">Type:</label>
                 <div class="col-sm-7">
 					<select class="form-control" id="type" name="type">
 						<option value="<?php if(isset($editData->type)){ echo $editData->type; } ?>"><?php if(isset($editData->type)){ echo $editData->type; } ?></option>
-						<option value="CIVIL">CIVIL</option>
-						<option value="ELECTRICAL">ELECTRICAL</option>
-						<option value="MACHANICAL">MACHANICAL</option>
-						<option value="SANITARY">SANITARY</option>
-						<option value="HARDWARE">HARDWARE</option>
+				
 					</select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 <label class="control-label col-sm-5" for="parent_code">Unit:</label>
                 <div class="col-sm-7">
                     <select class="form-control" id="qty_unit" name="qty_unit">
@@ -342,7 +319,7 @@ if(isset($_GET['process_type']) && $_GET['process_type'] == 'material_edit'){
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 <label class="control-label col-sm-5" for="name">Material min stock:</label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" id="material_min_stock" placeholder="Material min stock" name="material_min_stock" value="<?php if(isset($editData->material_min_stock)){ echo $editData->material_min_stock; } ?>">

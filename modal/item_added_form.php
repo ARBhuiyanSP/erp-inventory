@@ -5,11 +5,11 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header modal_header_custom_background">
-                    <h4 class="modal-title">Material add</h4>
+                    <h4 class="modal-title">MATERIAL ADD</h4>
                 </div>
                 <div class="modal-body modal_body_custom_background">
                     <div class="modal_body_centerize">                    
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="parent_code">Parent Category:</label>
                             <div class="col-sm-7">
                                 <select class="form-control" id="main_item_id" name="parent_item_id" onchange="getSubCategoryByParent(this.value);">
@@ -25,7 +25,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="parent_code">Sub Category:</label>
                             <div class="col-sm-7">
                                 <select class="form-control" id="main_sub_item_id" name="sub_item_id" onchange="getMatCodeBySubId(this.value);">
@@ -41,19 +41,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="parent_code">Material Code:</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" id="item_code" placeholder="Enter item code" name="item_code">
+                                <input type="text" class="form-control" id="item_code" placeholder="Enter item code" name="item_code" readonly>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="name">Name:</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="item_name" placeholder="name" name="name" required>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="name">Brand Name:</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="brand_name" placeholder="brand name" name="brand_name">
@@ -64,12 +64,12 @@
 						
 						
 						
-						<div class="form-group">
+						<div class="row form-group">
                             <label class="control-label col-sm-5" for="parent_code">Type:</label>
                             <div class="col-sm-7">
                                 <select class="form-control" id="type" name="type">
                                     <option value="">Select</option>
-                                    <option value="CIVIL">BATTERY</option>
+                                    <option value="BATTERY">BATTERY</option>
 								
                                 </select>
                             </div>
@@ -78,7 +78,7 @@
 						
 						
 						
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="parent_code">Unit:</label>
                             <div class="col-sm-7">
                                 <select class="form-control" id="qty_unit" name="qty_unit" required>
@@ -94,7 +94,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row form-group">
                             <label class="control-label col-sm-5" for="name">Material min stock:</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="material_min_stock" placeholder="Material min stock" name="material_min_stock" required>

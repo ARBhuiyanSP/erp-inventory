@@ -14,7 +14,7 @@ display:none;
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="opening_balanceManual.php">OP - Manual</a>
         </li>
         <li class="breadcrumb-item active">Overview</li>
     </ol>

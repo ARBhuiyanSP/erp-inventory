@@ -535,6 +535,32 @@
 	
 	
 	
+	
+	
+												
+					<li class="nav-item" style="background-color:#007BFF;">
+					<span class="nav-link" href="#">
+					<i class="fa fa-bars" aria-hidden="true" style="color: #FFF;"></i>
+					<span style="color: #FFF;">Settings</span></span>
+					</li>
+					
+					
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-truck" aria-hidden="true" style="color: #007BFF;"></i>
+            <span>User</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="user_entry.php"><i class="fa fa-plus" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">User Entry</span></a>
+            <a class="dropdown-item" href="user-list.php"><i class="fa fa-list" aria-hidden="true" style="color: #007BFF;"></i><span class="sub_menu_text_design">User List</span></a>
+        </div>
+    </li>
+	
+	
+	
+	
+	
+	
 							<li class="nav-item" style="background-color:#007BFF;">
 							<span class="nav-link" href="#">
 							<i class="fa fa-bars" aria-hidden="true" style="color: #FFF;"></i>
