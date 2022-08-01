@@ -71,3 +71,29 @@ span.sub_menu_text_design{
     padding: 2% 5% !important;
 }
 
+#div1 select{
+	height:30px;
+	font-size:12px;
+}
+
+
+.select2-container .select2-selection--single{
+	height:30px !important;
+	font-size:12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

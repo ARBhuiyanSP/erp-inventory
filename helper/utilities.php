@@ -5,7 +5,7 @@ function get_my_credit_amount($param){
 	if($_SESSION['logged']['user_type'] !== 'whm'){
 		$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE `pb_party_id` = '$param->pb_party_id' AND pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
 		}else{
-		$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE warehouse_id = $warehouse_id  AND `pb_party_id` = '$param->pb_party_id'  AND pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
+		$sqloutqty = "SELECT SUM(`pb_cr_amount`) AS totalcredit FROM `inv_partybalance` WHERE `warehouse_id` = $param->warehouse_id  AND `pb_party_id` = '$param->pb_party_id'  AND pb_date BETWEEN '$param->from_date' AND '$param->to_date'";
 		}
 		
 		$resultoutqty = mysqli_query($conn, $sqloutqty);
@@ -299,10 +299,15 @@ function getDataRowByTableAndIdPartner($table, $id1){
 
 function getDefaultCategoryCode($table, $fieldName, $modifier, $defaultCode, $prefix){
     global $conn;
-    $sql    = "SELECT count($fieldName) as total_row FROM $table";
+    
+	
+	$sql    = "SELECT count($fieldName) as total_row FROM $table";
     $result = $conn->query($sql);
     $name   =   '';
     $lastRows   = $result->fetch_object();
+	
+	
+	
     $number     = intval($lastRows->total_row) + 1;
     $defaultCode = $prefix.sprintf('%'.$modifier, $number);
     return $defaultCode;
@@ -706,3 +711,39 @@ function convertNumberToWords(float $number)
         }
         return $dataContainer;
     }
+	
+	
+	
+	
+	function getTableDataByTableNameTtransfer($table, $order = 'asc', $column='id', $dataType = '') {
+    global $conn;
+	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
+    $dataContainer  =   [];
+    $sql = "SELECT * FROM $table WHERE from_warehouse=$warehouse_id  order by $column $order";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        if (isset($dataType) && $dataType == 'obj') {
+            while ($row = $result->fetch_object()) {
+                $dataContainer[] = $row;
+            }
+        } else {
+            while ($row = $result->fetch_assoc()) {
+                $dataContainer[] = $row;
+            }
+        }
+    }
+    return $dataContainer;
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -247,7 +247,7 @@
                                         <input type="hidden" name="material_id[]" id="material_id0" class="form-control" required readonly>
                                         <td>
                                             <select class="form-control" id="unit0" name="unit[]" required readonly>
-                                                <option value="">Select Unit</option>
+                                                <option value="">Select</option>
                                                 <?php
                                                 $projectsData = getTableDataByTableName('inv_item_unit', '', 'unit_name');
                                                 if (isset($projectsData) && !empty($projectsData)) {

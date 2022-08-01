@@ -74,7 +74,7 @@ if (isset($_POST['scrap_submit']) && !empty($_POST['scrap_submit']))
 				*/       
 				
 				$ss_date         = $_POST['ss_date'];
-				$ss_id           = $_POST['ss_id'];
+				$ss_id           = $ss_id;
 				
 				
 				$partner_id         = $_POST['partner_id'];

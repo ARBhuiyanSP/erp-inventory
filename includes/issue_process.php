@@ -47,7 +47,8 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 				*/       
 				
 				$issue_date         = $_POST['issue_date'];
-				$issue_id           = $_POST['issue_id'];
+				
+				$issue_id           = $issue_id;
 		
 				$party_id         = $_POST['party_id'];
                 $memono         = $_POST['memono'];
@@ -91,13 +92,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 				
 				$approval_status		= ''; 
 				
-				
-				if (is_uploaded_file($_FILES['file']['tmp_name'])) 
-				{
-					$temp_file=$_FILES['file']['tmp_name'];
-					$issue_image=time().$_FILES['file']['name'];
-					$q = move_uploaded_file($temp_file,"images/".$issue_image);
-				} 
+			
         
 		
 		
@@ -148,7 +143,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			$var_profit	= $profitamount  / 2;
 			
 			
-			$query2 = "INSERT INTO `inv_issue` (`issue_id`,`issue_date`,`memono`,`party_id`,`partner_id`,`received_by`,`totalcur`,`totalamount`,`discount_amount`,`netsale_amount`,`paidamount`,`Dueamount`,`profitamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`issue_image`,`created_at`) VALUES ('$issue_id','$issue_date','$memono','$party_id','$partner_id','$received_by','$total_cur','$total_amount','$discount_amount','$netsale_amount','$paid_amount','$due_amount','$profitamount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_image','$issue_date')";
+			$query2 = "INSERT INTO `inv_issue` (`issue_id`,`issue_date`,`memono`,`party_id`,`partner_id`,`received_by`,`totalcur`,`totalamount`,`discount_amount`,`netsale_amount`,`paidamount`,`Dueamount`,`profitamount`,`receiver_phone`,`remarks`,`project_id`,`warehouse_id`,`created_at`) VALUES ('$issue_id','$issue_date','$memono','$party_id','$partner_id','$received_by','$total_cur','$total_amount','$discount_amount','$netsale_amount','$paid_amount','$due_amount','$profitamount','$receiver_phone','$remarks','$project_id','$warehouse_id','$issue_date')";
 			$result2 = $conn->query($query2);
 			
 		
@@ -171,7 +166,7 @@ if (isset($_POST['issue_submit']) && !empty($_POST['issue_submit']))
 			*/
 	
 	
-$query4 = "INSERT INTO `inv_profitshare` (`billno`,`billdate`,`partnerid`,`ownerid`,`partyid`,`totalcur`,`totalamount`,`profitamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`) VALUES ('$issue_id','$issue_date','$partner_id','MM-1','$party_id','$total_cur','$netsale_amount','$profitamount','$var_profit','$var_profit','$warehouse_id')";
+$query4 = "INSERT INTO `inv_profitshare` (`billno`,`billdate`,`partnerid`,`ownerid`,`partyid`,`totalcur`,`totalamount`,`profitamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`,`memono`) VALUES ('$issue_id','$issue_date','$partner_id','MM-1','$party_id','$total_cur','$netsale_amount','$profitamount','$var_profit','$var_profit','$warehouse_id','$memono')";
 $result2 = $conn->query($query4);
 
 
@@ -332,12 +327,7 @@ if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])
 				$approval_status		= '';     
 				
 				
-				if (is_uploaded_file($_FILES['file']['tmp_name'])) 
-				{
-					$temp_file=$_FILES['file']['tmp_name'];
-					$issue_image=time().$_FILES['file']['name'];
-					$q = move_uploaded_file($temp_file,"images/".$issue_image);
-				} 
+				
         
 				$query = "INSERT INTO `inv_issuedetail` (`issue_id`,`issue_date`,`memono`,`material_id`,`material_name`,`unit`,`cur_price`,`cur_price_amount`,`issue_qty`,`issue_price`,`amount`,`part_no`,`project_id`,`warehouse_id`,`partner_id`,`party_id`,`approval_status`) VALUES ('$issue_id','$issue_date','$memono','$material_id','$material_name','$unit','$cur_price','$cur_price_amount','$quantity','$unit_price','$amount','$brand','$project_id','$warehouse_id','$partner_id','$party_id','0')";
 				$conn->query($query);
@@ -380,7 +370,7 @@ if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])
 			$var_profit	= $profitamount  / 2;	
 				
 
-     $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',memono='$memono',party_id='$party_id',partner_id='$partner_id',received_by='$received_by',totalcur='$total_cur',totalamount='$total_amount',discount_amount='$discount_amount',netsale_amount='$netsale_amount',paidamount='$paid_amount',Dueamount='$due_amount',profitamount='$profitamount',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',issue_image='$issue_image',created_at='$issue_date' WHERE id=$edit_id";
+     $query2    = "UPDATE inv_issue SET issue_id='$issue_id',issue_date='$issue_date',memono='$memono',party_id='$party_id',partner_id='$partner_id',received_by='$received_by',totalcur='$total_cur',totalamount='$total_amount',discount_amount='$discount_amount',netsale_amount='$netsale_amount',paidamount='$paid_amount',Dueamount='$due_amount',profitamount='$profitamount',receiver_phone='$receiver_phone',remarks='$remarks',project_id='$project_id',warehouse_id='$warehouse_id',created_at='$issue_date' WHERE id=$edit_id";
     $result2 = $conn->query($query2);
 	
 	
@@ -402,7 +392,7 @@ if(isset($_POST['issue_update_submit']) && !empty($_POST['issue_update_submit'])
 			*/
 	
 	
-$query4 = "INSERT INTO `inv_profitshare` (`billno`,`billdate`,`partnerid`,`ownerid`,`partyid`,`totalcur`,`totalamount`,`profitamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`) VALUES ('$issue_id','$issue_date','$partner_id','MM-1','$party_id','$total_cur','$netsale_amount','$profitamount','$var_profit','$var_profit','$warehouse_id')";
+$query4 = "INSERT INTO `inv_profitshare` (`billno`,`billdate`,`partnerid`,`ownerid`,`partyid`,`totalcur`,`totalamount`,`profitamount`,`profitowneramount`,`profitpatneramount`,`warehouse_id`,`memono`) VALUES ('$issue_id','$issue_date','$partner_id','MM-1','$party_id','$total_cur','$netsale_amount','$profitamount','$var_profit','$var_profit','$warehouse_id','$memono')";
 $result2 = $conn->query($query4);
 
 	

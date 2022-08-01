@@ -39,7 +39,7 @@ include 'includes/partyclosingbalance_process.php';
 include 'includes/supplierclosingbalance_process.php';
 include 'includes/partnerclosingbalance_process.php';
 
-
+include 'includes/opening_balanceManualProcess.php';
 
 
 

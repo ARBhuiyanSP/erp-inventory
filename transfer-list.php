@@ -21,7 +21,7 @@
 					<?php
 					
 					if($_SESSION['logged']['user_type'] == 'whm') {
-						$item_details = getTableDataByTableNameTid('inv_transfermaster', '', 'id');
+						$item_details = getTableDataByTableNameTtransfer('inv_transfermaster', '', 'id');
 					}else{
 						$item_details = getTableDataByTableName('inv_transfermaster', '', 'id');
 					}
