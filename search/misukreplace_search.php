@@ -16,11 +16,9 @@
 
 		
 	 <!--	<button class="btn btn-info linktext" onclick="window.location.href='movementdamage_report.php';"> Replace Stock Report</button>-->
-		
 <button class="btn btn-info linktext" onclick="window.location.href='supplierreplacemovement_report.php';"> supplier wise movement Report</button>	
 	<button class="btn btn-info linktext" onclick="window.location.href='replacepartnerpartymovement_report.php';"> Partner and Party wise replace movement report</button>
 	<button class="btn btn-info linktext" onclick="window.location.href='misukreplace_report.php';"> Misuk Report</button>
-		
 		
 		
 		</div>
@@ -34,46 +32,33 @@
                         <tr>  
 						
 						
-						<div class="col-xs-2">
-							<div class="form-group">
-								<label for="id">Partner</label><span class="reqfield"> ***required</span>
-								<select class="form-control" id="partner_id" name="partner_id" onchange="getPartyByPartner(this.value);">
-									<option value="">Select</option>
-									<?php
-									$parentCats = getTableDataByTableName('partner', '', 'name');
-									if (isset($parentCats) && !empty($parentCats)) {
-										foreach ($parentCats as $pcat) {
-											?>
-											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['name'] ?></option>
-										<?php }
-									} ?>
-								</select>
-							</div>
-                        </div>
 						
 						
 						
-						 <div class="col-xs-3">
-							<div class="form-group">
-								<label for="id">Party</label><span class="reqfield"> ***required</span>
-								<select class="form-control" id="main_sub_item_id" name="partyname" onchange="getItemCodeByParam(this.value, 'party', 'party_id', 'party_id');">
-									<option value="">Select</option>
-									<?php
-									$parentCats = getTableDataByTableName('party','','partyname');
-									if (isset($parentCats) && !empty($parentCats)) {
-										foreach ($parentCats as $pcat) {
-											?>
-											<option value="<?php echo $pcat['id'] ?>"><?php echo $pcat['partyname'] ?></option>
-										<?php }
-									} ?>
-								</select>
-							</div>
-                        </div>
 						
-                        <div class="col-xs-1">
+						  <div class="col-xs-2">
                             <div class="form-group">
-                                <label for="id">party ID</label>
-                                <input type="text" name="party_id" id="party_id" class="form-control" readonly required>
+                                <label for="id">Supplier</label><span class="reqfield"> ***required</span>
+                                <select class="form-control material_select_2" id="supplier_name" name="supplier_name" required onchange="getItemCodeByParam(this.value, 'suppliers', 'code', 'supplier_id');">
+                                    <option value="">Select</option>
+                                    <?php
+                                    $projectsData = getTableDataByTableName('suppliers');
+
+                                    if (isset($projectsData) && !empty($projectsData)) {
+                                        foreach ($projectsData as $data) {
+                                            ?>
+                                            <option value="<?php echo $data['id']; ?>"><?php echo $data['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label for="id">Supplier ID</label>
+                                <input type="text" name="supplier_id" id="supplier_id" class="form-control" required>
                             </div>
                         </div>
 						
@@ -118,9 +103,8 @@ if(isset($_GET['submit'])){
 	$to_date		=	$_GET['to_date'];
 	$warehouse_id	=	$_SESSION['logged']['warehouse_id'];
 	
-	 $partner_id 		= $_GET['partner_id'];
-     $party_id   		= $_GET['party_id'];
-	
+	 $supplier_id 		= $_GET['supplier_id'];
+    
 	
 	
 ?>
@@ -137,18 +121,17 @@ if(isset($_GET['submit'])){
 					<center>
 										<img src="images/Saif_Engineering_Logo_165X72.png" height="100px;"/>
 										
-										<br><span>Replace Material Movement Report</span><br>
+										<br><span>Supplier Replace Material Movement Report</span><br>
 										
 										
-										<br><span>PARTNER:<?php 
-											$dataresult =   getDataRowByTableAndId('partner', $partner_id);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->name : '');
-							                              ?></span>
 										
-										<br><span>PARTY:<?php 
-											$dataresult =   getDataRowByTableAndId1('party', $party_id);
-											echo (isset($dataresult) && !empty($dataresult) ? $dataresult->partyname : '');
-							                            ?></span><br>
+										<br><span>supplier:<?php 
+											
+											$sqlunit	=	"SELECT * FROM `suppliers` WHERE `code` = '$supplier_id' ";
+											$resultunit = mysqli_query($conn, $sqlunit);
+											$rowunit=mysqli_fetch_array($resultunit);
+											echo $rowunit['name'];
+											?></span><br>
 										
 										From  <span class="dtext"><?php echo date("jS F Y", strtotime($from_date));?> </span>To  <span class="dtext"><?php echo date("jS F Y", strtotime($to_date));?> </span>
 			
@@ -171,7 +154,6 @@ if(isset($_GET['submit'])){
 							<th>Replace Receive</th>
 							<th>Replace Issue</th>
 							<th>Remarks</th>
-	
 						</tr>
 						
 						
@@ -186,9 +168,9 @@ if(isset($_GET['submit'])){
 	$totalReceiveQty=0;
 	$totalOutQty=0;
 						if($_SESSION['logged']['user_type'] !== 'whm'){
-							$sql	=	"SELECT * FROM `inv_damagebalance`WHERE `partner_id` = '$partner_id' and `party_id` = '$party_id'  and `mb_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_replacesupplierbalance`WHERE  `supplier_id` = '$supplier_id'  and `mb_date` BETWEEN '$from_date' AND '$to_date'";
 						}else{
-							$sql	=	"SELECT * FROM `inv_damagebalance` WHERE `warehouse_id` = $warehouse_id and `partner_id` = '$partner_id' and `party_id` = '$party_id' AND `mb_date` BETWEEN '$from_date' AND '$to_date'";
+							$sql	=	"SELECT * FROM `inv_replacesupplierbalance` WHERE `warehouse_id` = $warehouse_id and `supplier_id` = '$supplier_id' AND `mb_date` BETWEEN '$from_date' AND '$to_date'";
 						}
 						$result = mysqli_query($conn, $sql);
 						while($row=mysqli_fetch_array($result))
@@ -202,13 +184,7 @@ if(isset($_GET['submit'])){
 					?>
 					
 					
-					
-					
-					
-					
-<tr>
-						
-						  
+		
 						
 							<td><?php echo $row['mb_ref_id']; ?></td>
 							<td><?php echo $row['mb_date']; ?></td>
@@ -230,7 +206,7 @@ if(isset($_GET['submit'])){
 							<!-- UNIT -->
 							<td>
 								<?php 
-								$qty_unit = $row['unit'];
+								$qty_unit = $rowname['qty_unit'];
 								$sqlunit	=	"SELECT * FROM `inv_item_unit` WHERE `id` = '$qty_unit' ";
 								$resultunit = mysqli_query($conn, $sqlunit);
 								$rowunit=mysqli_fetch_array($resultunit);
@@ -244,7 +220,7 @@ if(isset($_GET['submit'])){
 						<td><?php echo $row['mbout_qty']; ?></td>
 						<td><?php echo $row['remarks']; ?></td>
 						
-				
+					
 							
 					
 </tr>

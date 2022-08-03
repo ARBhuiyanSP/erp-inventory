@@ -448,6 +448,21 @@ function get_product_stock_by_material_id($param) {
     // recieving quantity:
     $receivingQuantityData  =   get_material_balance_receiving_quantity($param);
     $receivingQuantity      =   (isset($receivingQuantityData->receivingMbInTotal) && !empty($receivingQuantityData->receivingMbInTotal) ? $receivingQuantityData->receivingMbInTotal : 0);
+	
+	
+	  // ADJUSTMENT IN:
+    $adjustmentinQuantityData  =   get_material_balance_adjustmentin_quantity($param);
+    $adjustmentinQuantity      =   (isset($adjustmentinQuantityData->adjustmentInqty) && !empty($adjustmentinQuantityData->adjustmentInqty) ? $adjustmentinQuantityData->adjustmentInqty : 0);
+	
+	
+	
+		  // ADJUSTMENT out:
+     $adjustmentOUTQuantityData  =   get_material_balance_adjustmentout_quantity($param);
+    $adjustmentoutQuantity      =   (isset($adjustmentOUTQuantityData->adjustmentoutqty) && !empty($adjustmentOUTQuantityData->adjustmentoutqty) ? $adjustmentOUTQuantityData->adjustmentoutqty : 0);
+	
+	
+	
+
     
     // issue quantity:
     $issueQuantityData      =   get_material_balance_issue_quantity($param);
@@ -466,8 +481,8 @@ function get_product_stock_by_material_id($param) {
     $transfer_inQuantity          =   (isset($transfer_inQuantityData->transferInMbInTotal) && !empty($transfer_inQuantityData->transferInMbInTotal) ? $transfer_inQuantityData->transferInMbInTotal : 0);
     
     
-    $totalIn    =   ($openingQuantity + $receivingQuantity + $returnQuantity + $transfer_inQuantity);
-    $totalOut   =   ($issueQuantity + $transfer_outQuantity);
+    $totalIn    =   ($openingQuantity + $receivingQuantity + $returnQuantity + $transfer_inQuantity + $adjustmentinQuantity);
+    $totalOut   =   ($issueQuantity + $transfer_outQuantity+ $adjustmentoutQuantity);
     
     $totalStock     =   $totalIn - $totalOut;
     return $totalStock;
@@ -638,6 +653,55 @@ function get_material_balance_transfer_in_quantity($param){
     }
     return $rowData;
 }
+
+
+
+
+
+
+
+
+
+
+function get_material_balance_adjustmentin_quantity($param){
+    global $conn;
+    $rowData    =   '';
+    $mb_materialid  =   $param['mb_materialid'];
+    $warehouse_id   =   $param['warehouse_id'];
+    $sql            =   "SELECT mb_materialid,"
+            . " sum(mbin_qty) as adjustmentInqty  FROM inv_materialbalance WHERE mb_materialid = '$mb_materialid'"
+            . " AND warehouse_id='$warehouse_id'"
+            /* . " AND `approval_status`='1'" */
+            . " AND mbtype='ADJIN'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $rowData = $result->fetch_object();
+    }
+    return $rowData;
+}
+
+
+
+
+function get_material_balance_adjustmentout_quantity($param){
+    global $conn;
+    $rowData    =   '';
+    $mb_materialid  =   $param['mb_materialid'];
+    $warehouse_id   =   $param['warehouse_id'];
+    $sql            =   "SELECT mb_materialid,"
+            . " sum(mbout_qty) as adjustmentoutqty  FROM inv_materialbalance WHERE mb_materialid = '$mb_materialid'"
+            . " AND warehouse_id='$warehouse_id'"
+            /* . " AND `approval_status`='1'" */
+            . " AND mbtype='ADJOUT'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $rowData = $result->fetch_object();
+    }
+    return $rowData;
+}
+
+
+
 
 function convertNumberToWords(float $number)
 {

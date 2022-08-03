@@ -17,9 +17,10 @@
 		
 	 <!--	<button class="btn btn-info linktext" onclick="window.location.href='movementdamage_report.php';"> Replace Stock Report</button>-->
 		
-	<button class="btn btn-info linktext" onclick="window.location.href='replacepartnerpartymovement_report.php';"> supplier wise movement Report</button>
-		
-		
+	<button class="btn btn-info linktext" onclick="window.location.href='supplierreplacemovement_report.php';"> supplier wise movement Report</button>	
+	<button class="btn btn-info linktext" onclick="window.location.href='replacepartnerpartymovement_report.php';"> Partner and Party wise replace movement report</button>
+	<button class="btn btn-info linktext" onclick="window.location.href='misukreplace_report.php';"> Misuk Report</button>
+			
 		
 		</div>
 		

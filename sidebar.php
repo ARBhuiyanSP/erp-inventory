@@ -273,8 +273,22 @@
 			
 			<a class="dropdown-item" href="buyprice.php">
                 <i class="fa fa-bullseye" aria-hidden="true" style="color: #007BFF;"></i>
-                <span class="sub_menu_text_design">Price set</span>
+                <span class="sub_menu_text_design">Buy Price set</span>
             </a>
+			
+			
+			<a class="dropdown-item" href="adjustment_balanceManual.php">
+                <i class="fa fa-bullseye" aria-hidden="true" style="color: #007BFF;"></i>
+                <span class="sub_menu_text_design">Stock Adjust(+)</span>
+            </a>
+			
+			<a class="dropdown-item" href="adjustmentout_balanceManual.php">
+                <i class="fa fa-bullseye" aria-hidden="true" style="color: #007BFF;"></i>
+                <span class="sub_menu_text_design">Stock Adjust(-)</span>
+            </a>
+			
+			
+			
 			
 			<a href="backup_system.php">
 			<i class="fa fa-download" aria-hidden="true" style="color: #007BFF;"></i>

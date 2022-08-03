@@ -40,6 +40,8 @@ include 'includes/supplierclosingbalance_process.php';
 include 'includes/partnerclosingbalance_process.php';
 
 include 'includes/opening_balanceManualProcess.php';
+include 'includes/adjustment_balanceManualProcess.php';
+include 'includes/adjustmentout_balanceManualProcess.php';
 
 
 
